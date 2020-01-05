@@ -1,0 +1,61 @@
+Changelog:
+v4:
+- tweaked main file,
+- renamed few folder and files,
+- changed numeration style.
+
+v14m3:
+- tweaks:
+	- changed icon for unmet civilization: now question mark,
+	- small code cleaning and commenting.
+- changes:
+	- added WonderProductionModifier and BuildingProductionModifier value to "Construction",
+	- expanded code for "Happiness",
+	- moved UnitUpgradeCostMod from "Defense" to Offense",
+	- added HealRateChange to "Defense",
+	- added AllowsRangeStrike to "Offense",
+	- added FreeBuilding to "FreeUnits",
+	- "Free Units" are now "FreeUnits or Buildings".
+
+v14m2:
+- changes:
+	- hid unknown civilization's cities; now if did not met civ you get "unknown" city name with blank icon; it fills after meeting.
+- tweaks:
+	- renamed "Needed" to "#"; narrowed that column to make more space for city name/tech name,
+	- changed font and color palette for main title.
+
+v14m:
+- Yield Calculator:
+	- deleted limits,
+	- added "feature, terrain and resource yields",
+	- added "yields per pop",
+- Markings:
+	- deleted limit for "Culture",
+	- added "science yields" to "Science",
+	- added "tourism yields" to "Tourism",
+	- added "holy city" to "Faith",
+	- added "supply modifiers" to "Offense",
+	- fixed "Great People" (typo), modified values for "Great People",
+	- created "Construction" from "Expansion":
+		- added missing "production yields",
+	- created "Trade" and "Golden Age" from "Gold":
+		- added missing "golden age yields" and "trade route recipient bonus".
+- Texts:
+	- added "Contruction", "Trade" and "Golden Age" to tables,
+	- renamed: 
+		- "gold" to "wealth", 
+		- "food" to "food generation", 
+		- "culture" to "cultural influence", 
+		- "science" to "research capabilities".
+	- deleted "..." from "Limit to ...".
+- Icons:
+	- changed icon for "free unit" (now plus icon instead of citizen icon).
+- UI:
+	- sorted columns,
+	- capitalized and coloured on green sorting tooltip main info,
+	- increased window, increased column width, adjusted trims,
+	- used 2 shades of grey to differentiate neighbouring columns,
+	- centered few headers, cemtered icons,
+	- shortened scroll area for era limit.
+- Overall:
+	- added VP requirement.

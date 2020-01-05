@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GameData>
+	<Language_en_US>
+		<Row Tag="TXT_KEY_WONDERPLANNER_OVERVIEW">
+			<Text>Wonder Planner</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_PLANNER">
+			<Text>Available</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_BUILT">
+			<Text>Built</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_DESTROYED">
+			<Text>Destroyed</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_ERA_LIMIT">
+			<Text>Limit to </Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_WONDER">
+			<Text>Wonder</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NAME_TT">
+			<Text>Sort by wonder name</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CITY">
+			<Text>City</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CITY_TT">
+			<Text>Sort by civilization then by city name</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH">
+			<Text>Technology</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH_TT">
+			<Text>Sort by technology</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED">
+			<Text>#</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED_TT">
+			<Text>Sort by number of technologies needed</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Happiness[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT">
+			<Text>Group wonders that grant a [COLOR_POSITIVE_TEXT]Free Unit or Building[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Faith[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Cultural Influence[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Research Capabilities[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT">
+			<Text>Group wonders that help with [COLOR_POSITIVE_TEXT]Expansion[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Construction Speed[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Food Generation[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Wealth[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_GA_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Golden Ages[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Trading[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT">
+			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Defensive Capabilities[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT">
+			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Offensive Capabilities[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Great People Generation[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Tourism[ENDCOLOR]</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED">
+			<Text>Destroyed!</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY">
+			<Text>Need to adopt {1_PolicyBrach}</Text>
+		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK">
+			<Text>Wonder Status</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK_TT">
+			<Text>Tool for deciding which wonder(s) to aim for</Text>
+		</Row>
+	</Language_en_US>
+</GameData>
