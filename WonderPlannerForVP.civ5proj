@@ -10,7 +10,7 @@
     <Teaser>Lists built and available Wonders with their focus</Teaser>
     <Description>Lists built and available Wonders with their focus. Player can sort out information by what he actually needs at the moment. Anti-cheat logic included.</Description>
     <Authors>William Howard/adan_eslavo</Authors>
-    <SpecialThanks>William Howard</SpecialThanks>
+    <SpecialThanks>William Howard,Infixo</SpecialThanks>
     <AffectsSavedGames>true</AffectsSavedGames>
     <MinCompatibleSaveVersion>0</MinCompatibleSaveVersion>
     <SupportsSinglePlayer>true</SupportsSinglePlayer>
@@ -33,9 +33,9 @@
     <ModContent>
       <Content>
         <Type>InGameUIAddin</Type>
-        <Name>WonderPlanner.lua</Name>
-        <Description>Main file</Description>
-        <FileName>UI/WonderPlanner.lua</FileName>
+        <Name>Wonder Planner</Name>
+        <Description>Tool for planning wonder building</Description>
+        <FileName>UI/WonderPlanner.xml</FileName>
       </Content>
     </ModContent>
     <ModActions>
@@ -43,11 +43,6 @@
         <Set>OnModActivated</Set>
         <Type>UpdateDatabase</Type>
         <FileName>Text/WonderPlannerTexts.xml</FileName>
-      </Action>
-      <Action>
-        <Set>OnModActivated</Set>
-        <Type>UpdateDatabase</Type>
-        <FileName>UI/WonderPlanner.xml</FileName>
       </Action>
     </ModActions>
   </PropertyGroup>
