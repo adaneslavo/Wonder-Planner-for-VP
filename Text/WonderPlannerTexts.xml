@@ -24,7 +24,7 @@
 			<Text>Wonder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NAME_TT">
-			<Text>Sort by wonder name</Text>
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Wonder Name[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CITY">
 			<Text>City</Text>
@@ -36,37 +36,19 @@
 			<Text>Technology</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH_TT">
-			<Text>Sort by technology</Text>
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Technology[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED">
 			<Text>#</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED_TT">
-			<Text>Sort by number of technologies needed</Text>
+			<Text>Sort by number of [COLOR_POSITIVE_TEXT]Technologies Needed[ENDCOLOR]</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Happiness[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT">
-			<Text>Group wonders that grant a [COLOR_POSITIVE_TEXT]Free Unit or Building[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Faith[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Cultural Influence[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Research Capabilities[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT">
-			<Text>Group wonders that help with [COLOR_POSITIVE_TEXT]Expansion[ENDCOLOR]</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Food Generation[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Growth[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT">
 			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Construction Speed[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Food Generation[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT">
 			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Wealth[ENDCOLOR]</Text>
@@ -77,22 +59,40 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT">
 			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Trading[ENDCOLOR]</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT">
-			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Defensive Capabilities[ENDCOLOR]</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Research Capabilities[ENDCOLOR]</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT">
-			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Offensive Capabilities[ENDCOLOR]</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Cultural Influence[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Great People Generation[ENDCOLOR]</Text>
-		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT">
-			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Specialists[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Great People[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT">
 			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Tourism[ENDCOLOR]</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Religion[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT">
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Happiness[ENDCOLOR] or add [COLOR_POSITIVE_TEXT]Luxuries[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT">
+			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Offensive Capabilities[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT">
+			<Text>Group wonders that grant a [COLOR_POSITIVE_TEXT]Free Unit[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Building[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT">
+			<Text>Group wonders that help with [COLOR_POSITIVE_TEXT]Expansion[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT">
+			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Defensive Capabilities[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT">
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED">
 			<Text>Destroyed!</Text>
 		</Row>

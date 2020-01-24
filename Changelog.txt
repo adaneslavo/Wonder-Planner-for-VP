@@ -1,4 +1,16 @@
 Changelog:
+v5:
+- modified header tooltips;
+- added world congress and corporation wonders;
+- name:
+	- now coloured if wonder requires policy, ideology, world congress project or holy city;
+	- added name of required policy, ideology, world congress project or holy city;
+- locker icon for policy, ideology, holy and world congress wonders if not met requirement; adjusted tooltip for that;
+- specific great person icon instead of generic great people one; wonders which have multiple focus will gain tooltip;
+- TONS of new conditions (main are: theming, resources, improvements, global yields);
+- support for dummy building according to pattern "BUILDING_WONDERNAME_DUMMY";
+- small tweaks and fixes;
+
 v4:
 - tweaked main file,
 - renamed few folder and files,
@@ -55,7 +67,7 @@ v14m:
 	- capitalized and coloured on green sorting tooltip main info,
 	- increased window, increased column width, adjusted trims,
 	- used 2 shades of grey to differentiate neighbouring columns,
-	- centered few headers, cemtered icons,
+	- centered few headers, centered icons,
 	- shortened scroll area for era limit.
 - Overall:
 	- added VP requirement.
