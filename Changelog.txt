@@ -1,4 +1,10 @@
 Changelog:
+v6:
+- added WLTKD, Settler, WC Votes and FreeGreatPerson (to free units) to logic;
+- "Espionage" is now "Diplomacy or Expsionage";
+- changed background color palette;
+- fixed texts and tooltips;
+
 v5:
 - modified header tooltips;
 - added world congress and corporation wonders;

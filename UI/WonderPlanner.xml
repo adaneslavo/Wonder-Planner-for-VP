@@ -1,305 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Context Font="TwCenMT16" FontStyle="Base">
-  <Box Style="BGBlock_ClearTopBar" />
+	<Box Style="BGBlock_ClearTopBar" />
 
-  <Instance Name="WonderPlanner">
-    <Stack ID="Wonder" Padding="0" StackGrowth="Right">
-      <Box Size="8,32" Color="Grey,0"/>
-      <Box Size="32,32" Color="Grey,0">
-        <Image ID="Icon" Anchor="C,C" Size="45,45" Texture="WonderAtlas360.dds"/>
-      </Box>
-      <Box Size="8,32" Color="Grey,0"/>
-      <Box Size="260,32" Color="Grey,0">
-        <Label ID="Name" Anchor="L,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
-      </Box>
-	  <Box Size="8,32" Color="Grey,0"/>
-	  
-      <Box Size="8,32" Color="Black,0"/>
-      <Box Size="32,32" Color="Black,0">
-        <Image ID="TechIcon" Anchor="C,C" Size="45,45" Texture="WonderAtlas360.dds"/>
-      </Box>
-      <Box Size="8,32" Color="Black,0"/>
-      <Box Size="200,32" Color="Black,0">
-        <Label ID="Tech" Anchor="L,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
-      </Box>
-	  <Box Size="8,32" Color="Black,0"/>
-	  
-	  <Box Size="8,32" Color="Black,0"/>
-	  <Box Size="20,32" Color="Black,0">
-        <Label ID="TechsNeeded" String="00" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
-      </Box>
-	  <Box Size="8,32" Color="Black,0"/>
-
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsFood" String="[ICON_FOOD]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsConstruction" String="[ICON_PRODUCTION]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsGold" String="[ICON_GOLD]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsTrade" String="[ICON_INTERNATIONAL_TRADE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsGoldenAge" String="[ICON_GOLDEN_AGE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsScience" String="[ICON_RESEARCH]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsCulture" String="[ICON_CULTURE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsGreatPeople" String="[ICON_GREAT_PEOPLE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-		<Label ID="IsTourism" String="[ICON_TOURISM]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-	  </Box>
-	  <Box Size="24,32" Color="Black,0">
-        <Label ID="IsFaith" String="[ICON_PEACE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsHappy" String="[ICON_HAPPINESS_1]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsOffense" String="[ICON_WAR]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-		<Label ID="IsFreeUnit" String="[ICON_PLUS]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-	  </Box>
-	  <Box Size="24,32" Color="Black,0">
-        <Label ID="IsExpansion" String="[ICON_ARROW_RIGHT]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Grey,0">
-        <Label ID="IsDefense" String="[ICON_STRENGTH]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-      <Box Size="24,32" Color="Black,0">
-        <Label ID="IsEspionage" String="[ICON_SPY]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-      </Box>
-	</Stack>
-  </Instance>
-
-  <Grid Size="1050,653" Anchor="C,C" Offset="0,25" Style="Grid9DetailFive140" ConsumeMouse="1">
-    <!-- Panel Header Text -->
-    <Label String="TXT_KEY_WONDERPLANNER_OVERVIEW" Anchor="C,T" Offset="0,19" Font="TwCenMT20" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
-
-    <Box Style="PopupLeftSideTreatment"/>
-    <Box Style="PopupRightSideTreatment"/>
-
-    <Image Anchor="C,T" AnchorSide="I,O" Size="256,64" Offset="0,-14"  Texture="Top512IconTrim.dds" >
-      <Image ID="CivIconBG" Size="64,64" Anchor="C,C" Offset="-1,-1" TextureOffset="77,0" Texture="CivIconBGSizes.dds" />
-      <Image ID="CivIconShadow" Size="48,48" Anchor="C,C" Offset="0,0" Texture="CivSymbolAtlas48.dds" Color="Black,128"/>
-      <Image ID="Icon" Size="48,48" Offset="-1,-1"  Anchor="C,C" Texture="CivSymbolsColor512.dds" />
-    </Image>
-
-    <!-- Top Panel  -->
-    <Box Anchor="C,T" Size="1015,32" Offset="0,44" Color="0,0,0,128" >
-      <Stack Anchor="C,T" Size="1015,32" Offset="0,0" Padding="0" StackGrowth="Right">
-        <Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_WONDERPLANNER_PLANNER" ID="PlannerButton" >
-          <ShowOnMouseOver>
-            <AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
-              <Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
-            </AlphaAnim>
-          </ShowOnMouseOver>
-          <!-- Selected State  -->
-          <Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="1" ID="PlannerHighlight" />
-        </Button>
-
-        <Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_WONDERPLANNER_BUILT" ID="BuiltButton" >
-          <ShowOnMouseOver>
-            <AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
-              <Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
-            </AlphaAnim>
-          </ShowOnMouseOver>
-          <!-- Selected State  -->
-          <Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="1" ID="BuiltHighlight" />
-        </Button>
-      </Stack>
-
-      <Image Anchor="C,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="1022,5" />
-    </Box>
-
-    <Box Size="1015,625" Anchor="C,C" Offset="0,62" Color="White,0">
-      <Box Anchor="L,T" Size="1015,450" Offset="0,0" Color="White,0" ID="PlannerPanel">
-        <Box Anchor="L,T" Size="1015,32" Offset="0,0" Color="White,0">
-          <Stack Padding="0" StackGrowth="Right">
-            <Box Size="8,32" Color="Grey,0"/>
-			<Box Size="300,32" Color="Grey,0">
-              <TextButton ID="SortPlannerName" String="TXT_KEY_WONDERPLANNER_SORT_WONDER" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NAME_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-			<Box Size="8,32" Color="Grey,0"/>
-			
-            <Box Size="8,32" Color="Black,0"/>
-            <Box Size="240,32" Color="Black,0">
-              <TextButton ID="SortPlannerTech" String="TXT_KEY_WONDERPLANNER_SORT_TECH" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TECH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-			<Box Size="8,32" Color="Black,0"/>
-			
-			<Box Size="8,32" Color="Black,0"/>
-			<Box Size="20,32" Color="Black,0">
-              <TextButton ID="SortPlannerTechsNeeded" String="TXT_KEY_WONDERPLANNER_SORT_NEEDED" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NEEDED_TT" Anchor="CC" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="8,32" Color="Black,0"/>
-
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerFood" String="[ICON_FOOD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerConstruction" String="[ICON_PRODUCTION]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerGold" String="[ICON_GOLD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerTrade" String="[ICON_INTERNATIONAL_TRADE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerGoldenAge" String="[ICON_GOLDEN_AGE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GA_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerScience" String="[ICON_RESEARCH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerCulture" String="[ICON_CULTURE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerGreatPeople" String="[ICON_GREAT_PEOPLE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerTourism" String="[ICON_TOURISM]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-			<Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerFaith" String="[ICON_PEACE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerHappy" String="[ICON_HAPPINESS_1]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-  		    <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-			  <TextButton ID="SortPlannerFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+	<Instance Name="WonderPlanner">
+		<Stack ID="Wonder" Padding="0" StackGrowth="Right">
+			<Box Size="8,32" Color="White,0"/>
+			<Box Size="32,32" Color="White,0">
+				<Image ID="Icon" Anchor="C,C" Size="45,45" Texture="WonderAtlas360.dds"/>
 			</Box>
-			<Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortPlannerDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortPlannerEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-		  </Stack>
-        </Box>
-
-        <Image Anchor="C,T" Offset="0,32" Texture="HorizontalTrim.dds" Size="1022,3" />
-
-        <ScrollPanel Anchor="L,T" ID="PlannerScrollPanel" Vertical="1" Size="1015,440" Offset="0,37" AutoScrollBar="1">
-          <!-- Scroll Controls -->
-          <ScrollBar  Anchor="R,T" Offset="0,18" Length="404" Style="VertSlider"/>
-          <UpButton   Anchor="R,T" Offset="0,0" Style="ScrollBarUp"/>
-          <DownButton Anchor="R,B" Offset="0,0" Style="ScrollBarDown"/>
-
-          <!-- Listing Stack (Dynamic) -->
-          <Stack ID="PlannerStack" StackGrowth="Bottom" Offset="0,0" Padding="0" />
-        </ScrollPanel>
-      </Box>
-
-      <Box Anchor="L,T" Size="1015,450" Offset="0,0" Color="White,0" ID="BuiltPanel">
-        <Box Anchor="L,T" Size="1015,32" Offset="0,0" Color="White,0">
-          <Stack Padding="0" StackGrowth="Right">
-            <Box Size="8,32" Color="Grey,0"/>
-			<Box Size="300,32" Color="Grey,0">
-              <TextButton ID="SortBuiltName" String="TXT_KEY_WONDERPLANNER_SORT_WONDER" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NAME_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="8,32" Color="Grey,0"/>
-			
-			<Box Size="8,32" Color="Black,0"/>
-            <Box Size="276,32" Color="Black,0">
-              <TextButton ID="SortBuiltCity" String="TXT_KEY_WONDERPLANNER_SORT_CITY" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CITY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-			<Box Size="8,32" Color="Black,0"/>
-
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltFood" String="[ICON_FOOD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltConstruction" String="[ICON_PRODUCTION]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltGold" String="[ICON_GOLD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltTrade" String="[ICON_INTERNATIONAL_TRADE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltGoldenAge" String="[ICON_GOLDEN_AGE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GA_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltScience" String="[ICON_RESEARCH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltCulture" String="[ICON_CULTURE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltGreatPeople" String="[ICON_GREAT_PEOPLE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-			  <TextButton ID="SortBuiltTourism" String="[ICON_TOURISM]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-		    </Box>
-			<Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltFaith" String="[ICON_PEACE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltHappy" String="[ICON_HAPPINESS_1]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-			<Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-			  <TextButton ID="SortBuiltFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			<Box Size="8,32" Color="White,0"/>
+			<Box Size="260,32" Color="White,0">
+				<Label ID="Name" Anchor="L,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
 			</Box>
-			<Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Grey,0">
-              <TextButton ID="SortBuiltDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-            <Box Size="24,32" Color="Black,0">
-              <TextButton ID="SortBuiltEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
-            </Box>
-		  </Stack>
-        </Box>
+			<Box Size="8,32" Color="White,0"/>
 
-        <Image Anchor="C,T" Offset="0,32" Texture="HorizontalTrim.dds" Size="1022,5" />
+			<Box Size="8,32" Color="220,200,40,20"/>
+			<Box Size="32,32" Color="220,200,40,20">
+				<Image ID="TechIcon" Anchor="C,C" Size="45,45" Texture="WonderAtlas360.dds"/>
+			</Box>
+			<Box Size="8,32" Color="220,200,40,20"/>
+			<Box Size="200,32" Color="220,200,40,20">
+				<Label ID="Tech" Anchor="L,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
+			</Box>
+			<Box Size="8,32" Color="220,200,40,20"/>
 
-        <ScrollPanel Anchor="L,T" ID="BuiltScrollPanel" Vertical="1" Size="1015,440" Offset="0,37" AutoScrollBar="1">
-          <!-- Scroll Controls -->
-          <ScrollBar  Anchor="R,T" Offset="0,18" Length="404" Style="VertSlider"/>
-          <UpButton   Anchor="R,T" Offset="0,0" Style="ScrollBarUp"/>
-          <DownButton Anchor="R,B" Offset="0,0" Style="ScrollBarDown"/>
+			<Box Size="8,32" Color="220,200,40,20"/>
+			<Box Size="20,32" Color="220,200,40,20">
+				<Label ID="TechsNeeded" String="00" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
+			</Box>
+			<Box Size="8,32" Color="220,200,40,20"/>
 
-          <!-- Listing Stack (Dynamic) -->
-          <Stack ID="BuiltStack" StackGrowth="Bottom" Offset="0,0" Padding="0" />
-        </ScrollPanel>
-      </Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsFood" String="[ICON_FOOD]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsConstruction" String="[ICON_PRODUCTION]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsGold" String="[ICON_GOLD]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsTrade" String="[ICON_INTERNATIONAL_TRADE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsGoldenAge" String="[ICON_GOLDEN_AGE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsScience" String="[ICON_RESEARCH]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsCulture" String="[ICON_CULTURE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsGreatPeople" String="[ICON_GREAT_PEOPLE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsTourism" String="[ICON_TOURISM]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsFaith" String="[ICON_PEACE]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsHappy" String="[ICON_HAPPINESS_1]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsOffense" String="[ICON_WAR]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsFreeUnit" String="[ICON_PLUS]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsExpansion" String="[ICON_ARROW_RIGHT]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="White,0">
+				<Label ID="IsDefense" String="[ICON_STRENGTH]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+			<Box Size="24,32" Color="220,200,40,20">
+				<Label ID="IsEspionage" String="[ICON_SPY]" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+			</Box>
+		</Stack>
+	</Instance>
 
-      <Image Anchor="C,B" Offset="0,143" Texture="HorizontalTrim.dds" Size="1022,5" />
-    </Box>
+	<Grid Size="1050,653" Anchor="C,C" Offset="0,25" Style="Grid9DetailFive140" ConsumeMouse="1">
+		<!-- Panel Header Text -->
+		<Label String="TXT_KEY_WONDERPLANNER_OVERVIEW" Anchor="C,T" Offset="0,19" Font="TwCenMT20" ColorSet="Beige_Black_Alpha" FontStyle="Shadow"  />
 
-    <Box Anchor="C,B" AnchorSide="I,I" Offset="0,54" Size="1015,56" Color="255,255,255,0" >
-      <GridButton Anchor="L,B" Style="SmallButton" Size="150,32"  Offset="20,0" StateOffsetIncrement="0,0" ID="CloseButton">
-        <Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
-      </GridButton>
+		<Box Style="PopupLeftSideTreatment"/>
+		<Box Style="PopupRightSideTreatment"/>
 
-      <Box ID="EraLimit" Anchor="L,B" Offset="200,2" Size="300,27" Color="Black,0">
-        <Stack Padding="10" StackGrowth="Right">
-          <Label Anchor="L,C" String="TXT_KEY_WONDERPLANNER_ERA_LIMIT" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
-          <PullDown ID="EraMenu" Anchor="L,C" Style="GenericPullDown" ScrollThreshold="75" Size="190,27" SpaceForScroll="1"/>
-        </Stack>
-      </Box>
-    </Box>
-  </Grid>
+		<Image Anchor="C,T" AnchorSide="I,O" Size="256,64" Offset="0,-14"  Texture="Top512IconTrim.dds" >
+			<Image ID="CivIconBG" Size="64,64" Anchor="C,C" Offset="-1,-1" TextureOffset="77,0" Texture="CivIconBGSizes.dds" />
+			<Image ID="CivIconShadow" Size="48,48" Anchor="C,C" Offset="0,0" Texture="CivSymbolAtlas48.dds" Color="Black,128"/>
+			<Image ID="Icon" Size="48,48" Offset="-1,-1"  Anchor="C,C" Texture="CivSymbolsColor512.dds" />
+		</Image>
+
+		<!-- Top Panel  -->
+		<Box Anchor="C,T" Size="1015,32" Offset="0,44" Color="0,0,0,0" >
+			<Stack Anchor="C,T" Size="1015,32" Offset="0,0" Padding="0" StackGrowth="Right">
+				<Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_WONDERPLANNER_PLANNER" ID="PlannerButton" >
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+							<Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+						</AlphaAnim>
+					</ShowOnMouseOver>
+					<!-- Selected State  -->
+					<Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="1" ID="PlannerHighlight" />
+				</Button>
+
+				<Button  Anchor="L,T" Size="300,24" Offset="0,0" String="TXT_KEY_WONDERPLANNER_BUILT" ID="BuiltButton" >
+					<ShowOnMouseOver>
+						<AlphaAnim Anchor="L,C" Size="300,27" Pause="0" Cycle="Bounce" Speed="1" AlphaStart="2" AlphaEnd="1"  >
+							<Grid   Size="300,27" Offset="0,2" Padding="0,0" Style="Grid9FrameTurnsHL" />
+						</AlphaAnim>
+					</ShowOnMouseOver>
+					<!-- Selected State  -->
+					<Grid Anchor="C,C" Offset="0,1" Size="300,26"  Style="Grid9FrameTurns" Hidden="1" ID="BuiltHighlight" />
+				</Button>
+			</Stack>
+
+			<Image Anchor="C,B" Offset="0,0" Texture="HorizontalTrim.dds" Size="1022,5" />
+		</Box>
+
+		<Box Size="1015,625" Anchor="C,C" Offset="0,62" Color="White,0">
+			<Box Anchor="L,T" Size="1015,450" Offset="0,0" Color="White,0" ID="PlannerPanel">
+				<Box Anchor="L,T" Size="1015,32" Offset="0,0" Color="200,0,0,0">
+					<Stack Padding="0" StackGrowth="Right">
+						<Box Size="8,32" Color="White,0"/>
+						<Box Size="300,32" Color="White,0">
+							<TextButton ID="SortPlannerName" String="TXT_KEY_WONDERPLANNER_SORT_WONDER" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NAME_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="White,0"/>
+
+						<Box Size="8,32" Color="220,200,40,20"/>
+						<Box Size="240,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerTech" String="TXT_KEY_WONDERPLANNER_SORT_TECH" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TECH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="220,200,40,20"/>
+
+						<Box Size="8,32" Color="220,200,40,20"/>
+						<Box Size="20,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerTechsNeeded" String="TXT_KEY_WONDERPLANNER_SORT_NEEDED" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NEEDED_TT" Anchor="CC" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="220,200,40,20"/>
+
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerFood" String="[ICON_FOOD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerConstruction" String="[ICON_PRODUCTION]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerGold" String="[ICON_GOLD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerTrade" String="[ICON_INTERNATIONAL_TRADE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerGoldenAge" String="[ICON_GOLDEN_AGE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GA_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerScience" String="[ICON_RESEARCH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerCulture" String="[ICON_CULTURE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerGreatPeople" String="[ICON_GREAT_PEOPLE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerTourism" String="[ICON_TOURISM]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerFaith" String="[ICON_PEACE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerHappy" String="[ICON_HAPPINESS_1]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortPlannerDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortPlannerEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+					</Stack>
+				</Box>
+
+				<Image Anchor="C,T" Offset="0,32" Texture="HorizontalTrim.dds" Size="1022,3" />
+
+				<ScrollPanel Anchor="L,T" ID="PlannerScrollPanel" Vertical="1" Size="1015,440" Offset="0,37" AutoScrollBar="1">
+					<!-- Scroll Controls -->
+					<ScrollBar  Anchor="R,T" Offset="0,18" Length="404" Style="VertSlider"/>
+					<UpButton   Anchor="R,T" Offset="0,0" Style="ScrollBarUp"/>
+					<DownButton Anchor="R,B" Offset="0,0" Style="ScrollBarDown"/>
+
+					<!-- Listing Stack (Dynamic) -->
+					<Stack ID="PlannerStack" StackGrowth="Bottom" Offset="0,0" Padding="0" />
+				</ScrollPanel>
+			</Box>
+
+			<Box Anchor="L,T" Size="1015,450" Offset="0,0" Color="200,0,0,0" ID="BuiltPanel">
+				<Box Anchor="L,T" Size="1015,32" Offset="0,0" Color="200,0,0,0">
+					<Stack Padding="0" StackGrowth="Right">
+						<Box Size="8,32" Color="White,0"/>
+						<Box Size="300,32" Color="White,0">
+							<TextButton ID="SortBuiltName" String="TXT_KEY_WONDERPLANNER_SORT_WONDER" ToolTip="TXT_KEY_WONDERPLANNER_SORT_NAME_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="White,0"/>
+
+						<Box Size="8,32" Color="220,200,40,20"/>
+						<Box Size="276,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltCity" String="TXT_KEY_WONDERPLANNER_SORT_CITY" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CITY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="220,200,40,20"/>
+
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltFood" String="[ICON_FOOD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltConstruction" String="[ICON_PRODUCTION]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CONSTRUCTION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltGold" String="[ICON_GOLD]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GOLD_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltTrade" String="[ICON_INTERNATIONAL_TRADE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TRADE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltGoldenAge" String="[ICON_GOLDEN_AGE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GA_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltScience" String="[ICON_RESEARCH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_SCIENCE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltCulture" String="[ICON_CULTURE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CULTURE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltGreatPeople" String="[ICON_GREAT_PEOPLE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_GREATPEOPLE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltTourism" String="[ICON_TOURISM]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_TOURISM_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltFaith" String="[ICON_PEACE]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FAITH_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltHappy" String="[ICON_HAPPINESS_1]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="White,0">
+							<TextButton ID="SortBuiltDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="24,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+					</Stack>
+				</Box>
+
+				<Image Anchor="C,T" Offset="0,32" Texture="HorizontalTrim.dds" Size="1022,5" />
+
+				<ScrollPanel Anchor="L,T" ID="BuiltScrollPanel" Vertical="1" Size="1015,440" Offset="0,37" AutoScrollBar="1">
+					<!-- Scroll Controls -->
+					<ScrollBar  Anchor="R,T" Offset="0,18" Length="404" Style="VertSlider"/>
+					<UpButton   Anchor="R,T" Offset="0,0" Style="ScrollBarUp"/>
+					<DownButton Anchor="R,B" Offset="0,0" Style="ScrollBarDown"/>
+
+					<!-- Listing Stack (Dynamic) -->
+					<Stack ID="BuiltStack" StackGrowth="Bottom" Offset="0,0" Padding="0" />
+				</ScrollPanel>
+			</Box>
+
+			<Image Anchor="C,B" Offset="0,143" Texture="HorizontalTrim.dds" Size="1022,5" />
+		</Box>
+
+		<Box Anchor="C,B" AnchorSide="I,I" Offset="0,54" Size="1015,56" Color="255,255,255,0" >
+			<GridButton Anchor="L,B" Style="SmallButton" Size="150,32"  Offset="20,0" StateOffsetIncrement="0,0" ID="CloseButton">
+				<Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
+			</GridButton>
+
+			<Box ID="EraLimit" Anchor="L,B" Offset="200,2" Size="300,27" Color="255,255,255,0">
+				<Stack Padding="10" StackGrowth="Right">
+					<Label Anchor="L,C" String="TXT_KEY_WONDERPLANNER_ERA_LIMIT" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
+					<PullDown ID="EraMenu" Anchor="L,C" Style="GenericPullDown" ScrollThreshold="75" Size="190,27" SpaceForScroll="1"/>
+				</Stack>
+			</Box>
+		</Box>
+	</Grid>
 </Context>

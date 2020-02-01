@@ -90,16 +90,26 @@
 			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Defensive Capabilities[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT">
-			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
+			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Diplomacy[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED">
 			<Text>Destroyed!</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY">
-			<Text>Need to adopt {1_PolicyBrach}</Text>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION">
+			<Text>Player did not found any {1_ColorHolyCity}Religion[ENDCOLOR]</Text>
 		</Row>
-
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY">
+			<Text>Player has not unlocked {1_ColorIdeology}{2_IdeologyBranch}[ENDCOLOR] yet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY">
+			<Text>Player has not finished {1_ColorPolicy}{2_PolicyBranch}[ENDCOLOR] yet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT">
+			<Text>Player has not won the congress voting for {1_ColorCongress}{2_WorldProject}[ENDCOLOR] yet</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK">
 			<Text>Wonder Status</Text>
 		</Row>

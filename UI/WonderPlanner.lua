@@ -74,6 +74,15 @@ local g_GreatPeopleIcons = {
 	'[ICON_PROPHET]',
 	'[ICON_GREAT_PEOPLE]'
 }
+
+local g_Settlers = {}
+
+for unit in GameInfo.Units() do
+	if unit.Found then
+		g_Settlers[unit.ID] = unit.Type
+		print(g_Settlers[unit.ID])
+	end
+end
 	
 function OnSort(sort)
 	if sort == g_ActiveSort then
@@ -559,7 +568,7 @@ function IsHappy(pBuilding)
 		end
 	end
 	  
-	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0 
+	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0 or pBuilding.WLTKDTurns > 0
 		or pBuilding.EmpireNeedsModifier ~= 0 or pBuilding.EmpireNeedsModifierGlobal ~= 0 
 		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0
 		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0
@@ -575,7 +584,7 @@ function IsFreeUnit(pBuilding)
 		end
 	end
 
-	return (pBuilding.FreeBuildingThisCity ~= nil)
+	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeGreatPeople > 0)
 end
 	
 -- adan_eslavo (added heal rate change)
@@ -590,6 +599,13 @@ end
 	
 -- adan_eslavo (left only expansion)
 function IsExpansion(pBuilding)
+	for i, unit in pairs(g_Settlers) do
+		print(g_Settlers[i])
+		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=g_Settlers[i]} do
+			return true
+		end
+	end
+	
 	return (pBuilding.GlobalPlotCultureCostModifier ~= 0 or pBuilding.GlobalPlotBuyCostModifier ~= 0 or pBuilding.GlobalPopulationChange ~= 0)
 end
 	
@@ -695,10 +711,11 @@ end
 	
 -- adan_eslavo (added many new possible outcomes)
 function IsEspionage(pBuilding)
+	local bVotes = pBuilding.VotesPerGPT > 0 or pBuilding.FaithToVotes > 0 or pBuilding.CapitalsToVotes > 0 or pBuilding.DoFToVotes > 0 or pBuilding.RAToVotes > 0 or pBuilding.ExtraLeagueVotes > 0
 	local bAdvancedActions = (pBuilding.AdvancedActionGold > 0 or pBuilding.AdvancedActionScience > 0 or pBuilding.AdvancedActionUnrest > 0 or pBuilding.AdvancedActionRebellion > 0 or pBuilding.AdvancedActionGP > 0 or pBuilding.AdvancedActionUnit > 0 or pBuilding.AdvancedActionWonder > 0 or pBuilding.AdvancedActionBuilding > 0)
 	local bBlockingActions = (pBuilding.BlockBuildingDestructionSpies > 0 or pBuilding.BlockWWDestructionSpies > 0 or pBuilding.BlockUDestructionSpies > 0 or pBuilding.BlockGPDestructionSpies > 0 or pBuilding.BlockRebellionSpies > 0 or pBuilding.BlockUnrestSpies > 0 or pBuilding.BlockScienceTheft > 0 or pBuilding.BlockGoldTheft > 0)
 
-	return ((pBuilding.Espionage == true or pBuilding.AffectSpiesNow == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true) or bAdvancedActions or bBlockingActions)
+	return ((pBuilding.Espionage == true or pBuilding.AffectSpiesNow == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true) or bAdvancedActions or bBlockingActions or bVotes)
 end
 	
 -- adan_eslavo (added tourism yields)
@@ -958,12 +975,12 @@ function IsLocked(pWonder, iPlayer)
 
 		if not bFoundHolyCity then
 			bLocked = true
-			sReason = Locale.ConvertTextKey("Player did not found any " .. g_ColorHoly .. "Relligion[ENDCOLOR]")
+			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION", g_ColorHoly)
 		end
 	elseif iIdeologyBranch then
 		if not pPlayer:IsPolicyBranchUnlocked(iIdeologyBranch) then
 			bLocked = true
-			sReason = 'Player have not unlocked ' .. g_ColorIdeology .. Locale.ConvertTextKey(GameInfo.PolicyBranchTypes[iIdeologyBranch].Description) .. '[ENDCOLOR] yet'
+			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY", g_ColorIdeology, Locale.ConvertTextKey(GameInfo.PolicyBranchTypes[iIdeologyBranch].Description))
 		end
 	elseif sPolicyType then
 		local iPolicyBranch, sPolicyBranchName
@@ -975,7 +992,7 @@ function IsLocked(pWonder, iPlayer)
 		
 		if not pPlayer:IsPolicyBranchFinished(iPolicyBranch) then
 			bLocked = true
-			sReason = 'Player have not finished ' .. g_ColorPolicy .. Locale.ConvertTextKey(sPolicyBranchName) .. ' Branch[ENDCOLOR] yet'
+			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, Locale.ConvertTextKey(sPolicyBranchName))
 		end
 	elseif pWonder.bLeagueProject then
 		local sProjectName
@@ -985,7 +1002,7 @@ function IsLocked(pWonder, iPlayer)
 		end
 
 		bLocked = true
-		sReason = 'Player have not win the congress voting for ' .. g_ColorCongress .. Locale.ConvertTextKey(sProjectName) .. ' Project[ENDCOLOR] yet'
+		sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT", g_ColorCongress, Locale.ConvertTextKey(sProjectName))
 	end
 	
 	return bLocked, sReason
