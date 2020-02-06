@@ -4,6 +4,7 @@ v6:
 - "Espionage" is now "Diplomacy or Expsionage";
 - changed background color palette;
 - fixed texts and tooltips;
+- sorting Great People now counts GreatPeopleRateChange value during sorting;
 
 v5:
 - modified header tooltips;

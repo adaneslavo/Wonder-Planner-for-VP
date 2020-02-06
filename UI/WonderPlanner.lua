@@ -282,7 +282,8 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 	
 	local iResult = pWonder.isGreatPeople
 	local sGreatPeopleTooltip = pWonder.isGreatPeopleTT
-	sort.greatpeople = iResult
+	local iRateChange = pWonder.isGreatPeopleRC or 0
+	sort.greatpeople = (iResult * 100) + iRateChange
 	instance.IsGreatPeople:SetText(g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult + 1])
 	if sGreatPeopleTooltip then
 		instance.IsGreatPeople:SetToolTipString(sGreatPeopleTooltip)
@@ -410,6 +411,7 @@ function GetWonders(tWonders)
 					isTrade  		= ((IsTrade(pWonder)			or IsTrade(pWonderDummy))			and -1 or 0),
 					isGreatPeople	= ((IsGreatPeople(pWonder)[1]	or IsGreatPeople(pWonderDummy)[1])	or 0),
 					isGreatPeopleTT	= (IsGreatPeople(pWonder)[2]	or IsGreatPeople(pWonderDummy)[2]),
+					isGreatPeopleRC	= (IsGreatPeople(pWonder)[3]	or IsGreatPeople(pWonderDummy)[3]),
 					isFood        	= ((IsFood(pWonder)				or IsFood(pWonderDummy))			and -1 or 0),
 					isGold        	= ((IsGold(pWonder)				or IsGold(pWonderDummy))			and -1 or 0),
 					isScience     	= ((IsScience(pWonder)			or IsScience(pWonderDummy))			and -1 or 0),
@@ -454,6 +456,7 @@ function GetWonders(tWonders)
 					isTrade  		= (IsTrade(pWonder) and -1 or 0),
 					isGreatPeople	= (IsGreatPeople(pWonder)[1] or 0),
 					isGreatPeopleTT	= IsGreatPeople(pWonder)[2],
+					isGreatPeopleRC	= IsGreatPeople(pWonder)[3],
 					isFood        	= (IsFood(pWonder) and -1 or 0),
 					isGold        	= (IsGold(pWonder) and -1 or 0),
 					isScience     	= (IsScience(pWonder) and -1 or 0),
@@ -663,12 +666,14 @@ end
 function IsGreatPeople(pBuilding)
 	local iResult1, iResult2, iResult3
 	local iNumberOfResults = 0
-	
+	local iGreatRateChange
+
 	if pBuilding.SpecialistCount > 0 or pBuilding.GreatPeopleRateChange > 0 then
 		for i, specialist in ipairs(g_AvailableSpecialists) do
 			if pBuilding.SpecialistType == specialist then
 				iResult1 = (i - #g_GreatPeopleIcons) -- reverted for sorting order
 				iNumberOfResults = iNumberOfResults + 1
+				iGreatRateChange = -pBuilding.GreatPeopleRateChange
 			end
 		end
 	end
@@ -688,9 +693,9 @@ function IsGreatPeople(pBuilding)
 	local sGreatPeopleTooltip
 	
 	if iNumberOfResults == 0 then
-		return {false, sGreatPeopleTooltip}
+		return {false, sGreatPeopleTooltip, nil}
 	elseif iNumberOfResults == 1 or (iNumberOfResults == 2 and iResult1 == iResult2) then
-		return {(iResult1 or iResult2 or iResult3), sGreatPeopleTooltip}
+		return {(iResult1 or iResult2 or iResult3), sGreatPeopleTooltip, iGreatRateChange}
 	else
 		if iResult1 ~= nil then
 			sGreatPeopleTooltip = g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1 + 1]
@@ -705,7 +710,7 @@ function IsGreatPeople(pBuilding)
 			sGreatPeopleTooltip = g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult2 + 1] .. ',[ICON_GREAT_PEOPLE]'
 		end
 
-		return {-#g_GreatPeopleIcons, sGreatPeopleTooltip}
+		return {-#g_GreatPeopleIcons, sGreatPeopleTooltip, iGreatRateChange}
 	end
 end
 	
