@@ -44,6 +44,12 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED_TT">
 			<Text>Sort by number of [COLOR_POSITIVE_TEXT]Technologies Needed[ENDCOLOR]</Text>
 		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_YEAR">
+			<Text>Year</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_YEAR_TT">
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Year of Construction[ENDCOLOR]</Text>
+		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FOOD_TT">
 			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Food Generation[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Growth[ENDCOLOR]</Text>
 		</Row>

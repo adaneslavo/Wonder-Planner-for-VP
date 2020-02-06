@@ -19,12 +19,15 @@
 				<Image ID="TechIcon" Anchor="C,C" Size="45,45" Texture="WonderAtlas360.dds"/>
 			</Box>
 			<Box Size="8,32" Color="220,200,40,20"/>
-			<Box Size="200,32" Color="220,200,40,20">
+			<Box Size="190,32" Color="220,200,40,20">
 				<Label ID="Tech" Anchor="L,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
 			</Box>
 			<Box Size="8,32" Color="220,200,40,20"/>
 
 			<Box Size="8,32" Color="220,200,40,20"/>
+			<Box Size="10,32" Color="220,200,40,20">
+				<Label ID="Year" String="00" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
+			</Box>
 			<Box Size="20,32" Color="220,200,40,20">
 				<Label ID="TechsNeeded" String="00" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20" FontStyle="Stroke"/>
 			</Box>
@@ -217,8 +220,12 @@
 						<Box Size="8,32" Color="White,0"/>
 
 						<Box Size="8,32" Color="220,200,40,20"/>
-						<Box Size="276,32" Color="220,200,40,20">
+						<Box Size="218,32" Color="220,200,40,20">
 							<TextButton ID="SortBuiltCity" String="TXT_KEY_WONDERPLANNER_SORT_CITY" ToolTip="TXT_KEY_WONDERPLANNER_SORT_CITY_TT" Anchor="C,C" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
+						</Box>
+						<Box Size="8,32" Color="220,200,40,20"/>
+						<Box Size="50,32" Color="220,200,40,20">
+							<TextButton ID="SortBuiltYear" String="TXT_KEY_WONDERPLANNER_SORT_YEAR" ToolTip="TXT_KEY_WONDERPLANNER_SORT_YEAR_TT" Anchor="CC" Color0="White,255" Color1="Black255" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="8,32" Color="220,200,40,20"/>
 

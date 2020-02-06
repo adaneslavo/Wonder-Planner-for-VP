@@ -81,7 +81,6 @@ local g_Settlers = {}
 for unit in GameInfo.Units() do
 	if unit.Found then
 		g_Settlers[unit.ID] = unit.Type
-		print(g_Settlers[unit.ID])
 	end
 end
 	
@@ -117,6 +116,7 @@ Controls.SortPlannerGoldenAge:RegisterCallback(Mouse.eLClick, function() OnSort(
 Controls.SortPlannerTrade:RegisterCallback(Mouse.eLClick, function() OnSort("trade") end)
 Controls.SortBuiltName:RegisterCallback(Mouse.eLClick, function() OnSort("name") end)
 Controls.SortBuiltCity:RegisterCallback(Mouse.eLClick, function() OnSort("city") end)
+Controls.SortBuiltYear:RegisterCallback(Mouse.eLClick, function() OnSort("year") end)
 Controls.SortBuiltHappy:RegisterCallback(Mouse.eLClick, function() OnSort("happy") end)
 Controls.SortBuiltFreeUnit:RegisterCallback(Mouse.eLClick, function() OnSort("freeunit") end)
 Controls.SortBuiltFaith:RegisterCallback(Mouse.eLClick, function() OnSort("faith") end)
@@ -166,6 +166,15 @@ function SortByValue(a, b)
 
 	return valueA < valueB
 end
+
+function OnWonderConstruction(ePlayer, eCity, eBuilding, bGold, bFaith)
+	for building in GameInfo.Buildings{ID=eBuilding} do
+		print(eBuilding)
+		SetPersistentProperty(tostring(building.ID), Game.GetGameTurnYear());
+		break
+	end
+end
+GameEvents.CityConstructed.Add(OnWonderConstruction)
 
 function UpdateData(iPlayer)
 	local pPlayer = Players[iPlayer]
@@ -254,7 +263,7 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 
 		if pWonder.iPlayer ~= GameDefines.MAX_PLAYERS then
 			sort.city = pWonder.sPlayer .. ":" .. pWonder.sCity
-			instance.Tech:SetText(pWonder.sCity)
+			TruncateString(instance.Tech, 150, pWonder.sCity)
 			instance.Tech:SetToolTipString(pWonder.sPlayer)
 		else
 			sort.city = "destroyed:" .. iWonder
@@ -264,7 +273,7 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 		
 		sort.year = GetPersistentProperty(iWonder)
 		instance.Year:SetHide(false)
-		TruncateString(instance.Year, 25, sort.year)
+		instance.Year:SetText(sort.year)
 		
 		instance.Wonder:SetHide(false)
 	end
@@ -1077,14 +1086,6 @@ function UpdateEraList(iPlayer)
 	Controls.EraMenu:CalculateInternals()
 	Controls.EraMenu:RegisterSelectionCallback(OnEraSelected)
 end
-
-function OnWonderConstruction(ePlayer, eCity, eBuilding, bGold, bFaith)
-	for building in GameInfo.Buildings(ID=eBuilding) do
-		SetPersistentProperty(ID, Game.GetGameTurnYear());
-		break
-	end
-end
-GameEvents.CityConstructed.Add(OnWonderConstruction)
 
 function OnClose()
 	ContextPtr:SetHide(true)
