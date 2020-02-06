@@ -4,6 +4,7 @@ include("IconSupport")
 include("InstanceManager")
 include("InfoTooltipInclude")
 include("SupportFunctions")
+include("NewSaveUtils")
 
 -- debug output routine
 -- Another useful idiom is (a and b) or c (or simply a and b or c, because and has a higher precedence than or), which is equivalent to the C expression a ? b : c
@@ -210,8 +211,6 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
   instance.Name:SetToolTipString(pWonder.sToolTip)
 
   if pWonder.iPlayer == -1 then
-		instance.TechsNeeded:SetHide(false)
-
 		local pTech = GameInfo.Technologies[pWonder.sTechType]
 		
 		if IconHookup(pTech.PortraitIndex, 45, pTech.IconAtlas, instance.TechIcon) then
@@ -225,6 +224,7 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 		instance.Tech:SetText(sort.tech)
 		instance.Tech:SetToolTipString(pWonder.sEraName)
 
+		instance.TechsNeeded:SetHide(false)
 		sort.needed = Players[iPlayer]:FindPathLength(GameInfoTypes[pWonder.sTechType], false);
 
 		local bLocked, sReason = IsLocked(pWonder, iPlayer)
@@ -237,11 +237,13 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 			instance.TechsNeeded:SetToolTipString(nil)
 		end
 
+		instance.Year:SetHide(true)
+		
 		instance.Wonder:SetHide(pWonder.iEra > g_EraLimit)
 	else
 		instance.TechsNeeded:SetHide(true)
 		instance.TechIcon:SetToolTipString(pWonder.sPlayer)
-    
+    		
 		if pWonder.iPlayer == -2 then
 			instance.TechIcon:SetHide(IconHookup(5, 45, "KRIS_SWORDSMAN_PROMOTION_ATLAS", instance.TechIcon) == false)
 		else
@@ -259,7 +261,11 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 			instance.Tech:SetText(sDestroyed)
 			instance.Tech:SetToolTipString(sDestroyed)
 		end
-
+		
+		sort.year = GetPersistentProperty(iWonder)
+		instance.Year:SetHide(false)
+		TruncateString(instance.Year, 25, sort.year)
+		
 		instance.Wonder:SetHide(false)
 	end
 
@@ -1072,6 +1078,13 @@ function UpdateEraList(iPlayer)
 	Controls.EraMenu:RegisterSelectionCallback(OnEraSelected)
 end
 
+function OnWonderConstruction(ePlayer, eCity, eBuilding, bGold, bFaith)
+	for building in GameInfo.Buildings(ID=eBuilding) do
+		SetPersistentProperty(ID, Game.GetGameTurnYear());
+		break
+	end
+end
+GameEvents.CityConstructed.Add(OnWonderConstruction)
 
 function OnClose()
 	ContextPtr:SetHide(true)
