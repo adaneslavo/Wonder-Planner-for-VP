@@ -11,7 +11,9 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_BUILT">
 			<Text>Built</Text>
 		</Row>
-		
+		<Row Tag="TXT_KEY_WONDERPLANNER_UNKNOWN">
+			<Text>Unknown</Text>
+		</Row>		
 		<Row Tag="TXT_KEY_WONDERPLANNER_DESTROYED">
 			<Text>Destroyed</Text>
 		</Row>
@@ -24,13 +26,13 @@
 			<Text>Wonder</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NAME_TT">
-			<Text>Sort by [COLOR_POSITIVE_TEXT]Wonder Name[ENDCOLOR]</Text>
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Wonder[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CITY">
 			<Text>City</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_CITY_TT">
-			<Text>Sort by civilization then by city name</Text>
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Civilization[ENDCOLOR] then by [COLOR_POSITIVE_TEXT]City[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH">
 			<Text>Technology</Text>

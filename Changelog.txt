@@ -1,10 +1,18 @@
 Changelog:
 v6:
 - added WLTKD, Settler, WC Votes and FreeGreatPerson (to free units) to logic;
+- sorting Great People now counts GreatPeopleRateChange value during sorting;
+- fixed sorting;
 - "Espionage" is now "Diplomacy or Expsionage";
 - changed background color palette;
+- added red highlighting for Wonders which are 2 eras behind; special sign "OUTDATED!" shows up for them;
 - fixed texts and tooltips;
-- sorting Great People now counts GreatPeopleRateChange value during sorting;
+- added "Year" column with sorting in built section showing date of construction of the wonder;
+- changed font style and text colours;
+- simplified xml columns;
+- adjusted scrolling area;
+- improved text alignment;
+- after researching wonder no tech nor tech icon is shown;
 
 v5:
 - modified header tooltips;

@@ -19,6 +19,8 @@ function dprint(sStr,p1,p2,p3,p4,p5,p6)
 	print(os.clock(), Game.GetGameTurn(), s);
 end
 
+local L = Locale.ConvertTextKey
+
 local g_PlannerIM = InstanceManager:new("WonderPlanner", "Wonder", Controls.PlannerStack)
 local g_BuiltIM = InstanceManager:new("WonderPlanner", "Wonder", Controls.BuiltStack)
 
@@ -30,7 +32,7 @@ local g_Civs = {}
 local g_Wonders = {init=false}
 local g_EraLimit = -1
 
-local sDestroyed = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_DESTROYED")
+local sDestroyed = L("TXT_KEY_WONDERPLANNER_DESTROYED")
 
 local g_ColorHoly = '[COLOR_MENU_BLUE]'
 local g_ColorPolicy = '[COLOR_MAGENTA]'
@@ -85,10 +87,13 @@ for unit in GameInfo.Units() do
 end
 	
 function OnSort(sort)
-	if sort == g_ActiveSort then
-		g_ReverseSort = not g_ReverseSort
-	else
-		g_ReverseSort = false
+	if sort then
+		if sort == g_ActiveSort then
+			g_ReverseSort = not g_ReverseSort
+		else
+			g_ReverseSort = false
+		end
+
 		g_ActiveSort = sort
 	end
 
@@ -98,41 +103,41 @@ end
 Controls.SortPlannerName:RegisterCallback(Mouse.eLClick, function() OnSort("name") end)
 Controls.SortPlannerTech:RegisterCallback(Mouse.eLClick, function() OnSort("tech") end)
 Controls.SortPlannerTechsNeeded:RegisterCallback(Mouse.eLClick, function() OnSort("needed") end)
-Controls.SortPlannerHappy:RegisterCallback(Mouse.eLClick, function() OnSort("happy") end)
-Controls.SortPlannerFreeUnit:RegisterCallback(Mouse.eLClick, function() OnSort("freeunit") end)
-Controls.SortPlannerFaith:RegisterCallback(Mouse.eLClick, function() OnSort("faith") end)
-Controls.SortPlannerCulture:RegisterCallback(Mouse.eLClick, function() OnSort("culture") end)
-Controls.SortPlannerScience:RegisterCallback(Mouse.eLClick, function() OnSort("science") end)
-Controls.SortPlannerExpansion:RegisterCallback(Mouse.eLClick, function() OnSort("expansion") end)
 Controls.SortPlannerFood:RegisterCallback(Mouse.eLClick, function() OnSort("food") end)
-Controls.SortPlannerGold:RegisterCallback(Mouse.eLClick, function() OnSort("gold") end)
-Controls.SortPlannerDefense:RegisterCallback(Mouse.eLClick, function() OnSort("defense") end)
-Controls.SortPlannerOffense:RegisterCallback(Mouse.eLClick, function() OnSort("offense") end)
-Controls.SortPlannerGreatPeople:RegisterCallback(Mouse.eLClick, function() OnSort("greatpeople") end)
-Controls.SortPlannerEspionage:RegisterCallback(Mouse.eLClick, function() OnSort("espionage") end)
-Controls.SortPlannerTourism:RegisterCallback(Mouse.eLClick, function() OnSort("tourism") end)
 Controls.SortPlannerConstruction:RegisterCallback(Mouse.eLClick, function() OnSort("construction") end)
-Controls.SortPlannerGoldenAge:RegisterCallback(Mouse.eLClick, function() OnSort("goldenage") end)
+Controls.SortPlannerGold:RegisterCallback(Mouse.eLClick, function() OnSort("gold") end)
 Controls.SortPlannerTrade:RegisterCallback(Mouse.eLClick, function() OnSort("trade") end)
+Controls.SortPlannerGoldenAge:RegisterCallback(Mouse.eLClick, function() OnSort("goldenage") end)
+Controls.SortPlannerScience:RegisterCallback(Mouse.eLClick, function() OnSort("science") end)
+Controls.SortPlannerCulture:RegisterCallback(Mouse.eLClick, function() OnSort("culture") end)
+Controls.SortPlannerGreatPeople:RegisterCallback(Mouse.eLClick, function() OnSort("greatpeople") end)
+Controls.SortPlannerTourism:RegisterCallback(Mouse.eLClick, function() OnSort("tourism") end)
+Controls.SortPlannerFaith:RegisterCallback(Mouse.eLClick, function() OnSort("faith") end)
+Controls.SortPlannerHappy:RegisterCallback(Mouse.eLClick, function() OnSort("happy") end)
+Controls.SortPlannerOffense:RegisterCallback(Mouse.eLClick, function() OnSort("offense") end)
+Controls.SortPlannerFreeUnit:RegisterCallback(Mouse.eLClick, function() OnSort("freeunit") end)
+Controls.SortPlannerExpansion:RegisterCallback(Mouse.eLClick, function() OnSort("expansion") end)
+Controls.SortPlannerDefense:RegisterCallback(Mouse.eLClick, function() OnSort("defense") end)
+Controls.SortPlannerEspionage:RegisterCallback(Mouse.eLClick, function() OnSort("espionage") end)
 Controls.SortBuiltName:RegisterCallback(Mouse.eLClick, function() OnSort("name") end)
 Controls.SortBuiltCity:RegisterCallback(Mouse.eLClick, function() OnSort("city") end)
 Controls.SortBuiltYear:RegisterCallback(Mouse.eLClick, function() OnSort("year") end)
-Controls.SortBuiltHappy:RegisterCallback(Mouse.eLClick, function() OnSort("happy") end)
-Controls.SortBuiltFreeUnit:RegisterCallback(Mouse.eLClick, function() OnSort("freeunit") end)
-Controls.SortBuiltFaith:RegisterCallback(Mouse.eLClick, function() OnSort("faith") end)
-Controls.SortBuiltCulture:RegisterCallback(Mouse.eLClick, function() OnSort("culture") end)
-Controls.SortBuiltScience:RegisterCallback(Mouse.eLClick, function() OnSort("science") end)
-Controls.SortBuiltExpansion:RegisterCallback(Mouse.eLClick, function() OnSort("expansion") end)
 Controls.SortBuiltFood:RegisterCallback(Mouse.eLClick, function() OnSort("food") end)
-Controls.SortBuiltGold:RegisterCallback(Mouse.eLClick, function() OnSort("gold") end)
-Controls.SortBuiltDefense:RegisterCallback(Mouse.eLClick, function() OnSort("defense") end)
-Controls.SortBuiltOffense:RegisterCallback(Mouse.eLClick, function() OnSort("offsense") end)
-Controls.SortBuiltGreatPeople:RegisterCallback(Mouse.eLClick, function() OnSort("greatpeople") end)
-Controls.SortBuiltEspionage:RegisterCallback(Mouse.eLClick, function() OnSort("espionage") end)
-Controls.SortBuiltTourism:RegisterCallback(Mouse.eLClick, function() OnSort("tourism") end)
 Controls.SortBuiltConstruction:RegisterCallback(Mouse.eLClick, function() OnSort("construction") end)
-Controls.SortBuiltGoldenAge:RegisterCallback(Mouse.eLClick, function() OnSort("goldenage") end)
+Controls.SortBuiltGold:RegisterCallback(Mouse.eLClick, function() OnSort("gold") end)
 Controls.SortBuiltTrade:RegisterCallback(Mouse.eLClick, function() OnSort("trade") end)
+Controls.SortBuiltGoldenAge:RegisterCallback(Mouse.eLClick, function() OnSort("goldenage") end)
+Controls.SortBuiltScience:RegisterCallback(Mouse.eLClick, function() OnSort("science") end)
+Controls.SortBuiltCulture:RegisterCallback(Mouse.eLClick, function() OnSort("culture") end)
+Controls.SortBuiltGreatPeople:RegisterCallback(Mouse.eLClick, function() OnSort("greatpeople") end)
+Controls.SortBuiltTourism:RegisterCallback(Mouse.eLClick, function() OnSort("tourism") end)
+Controls.SortBuiltFaith:RegisterCallback(Mouse.eLClick, function() OnSort("faith") end)
+Controls.SortBuiltHappy:RegisterCallback(Mouse.eLClick, function() OnSort("happy") end)
+Controls.SortBuiltOffense:RegisterCallback(Mouse.eLClick, function() OnSort("offense") end)
+Controls.SortBuiltFreeUnit:RegisterCallback(Mouse.eLClick, function() OnSort("freeunit") end)
+Controls.SortBuiltExpansion:RegisterCallback(Mouse.eLClick, function() OnSort("expansion") end)
+Controls.SortBuiltDefense:RegisterCallback(Mouse.eLClick, function() OnSort("defense") end)
+Controls.SortBuiltEspionage:RegisterCallback(Mouse.eLClick, function() OnSort("espionage") end)
 
 function SortByValue(a, b)
 	local entryA = g_SortTable[tostring(a)]
@@ -169,18 +174,17 @@ end
 
 function OnWonderConstruction(ePlayer, eCity, eBuilding, bGold, bFaith)
 	for building in GameInfo.Buildings{ID=eBuilding} do
-		print(eBuilding)
 		SetPersistentProperty(tostring(building.ID), Game.GetGameTurnYear());
 		break
 	end
 end
 GameEvents.CityConstructed.Add(OnWonderConstruction)
 
-function UpdateData(iPlayer)
-	local pPlayer = Players[iPlayer]
-	CivIconHookup(iPlayer, 64, Controls.Icon, Controls.CivIconBG, Controls.CivIconShadow, false, true)
+function UpdateData(ePlayer)
+	local pPlayer = Players[ePlayer]
+	CivIconHookup(ePlayer, 64, Controls.Icon, Controls.CivIconBG, Controls.CivIconShadow, false, true)
 
-	local tPlayerTechs = GetTechs(iPlayer)
+	local tPlayerTechs = GetTechs(ePlayer)
   
 	g_PlannerIM:ResetInstances()
 	g_BuiltIM:ResetInstances()
@@ -188,7 +192,7 @@ function UpdateData(iPlayer)
 
 	for wonderID, wonder in pairs(UpdateWonders(g_Wonders)) do
 		if wonder.iTech ~= -1 then
-			AddWonder(iPlayer, tPlayerTechs, wonderID, wonder)
+			AddWonder(ePlayer, tPlayerTechs, wonderID, wonder)
 		end
 	end
 
@@ -201,80 +205,118 @@ function UpdateData(iPlayer)
 	Controls.BuiltScrollPanel:CalculateInternalSize()
 end
 
-function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
-  local instance = (pWonder.iPlayer == -1) and g_PlannerIM:GetInstance() or g_BuiltIM:GetInstance()
-  pWonder.instance = instance
+function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
+	local instance = (pWonder.ePlayer == -1) and g_PlannerIM:GetInstance() or g_BuiltIM:GetInstance()
+	pWonder.instance = instance
 
-  local sort = {}
-  g_SortTable[tostring(instance.Wonder)] = sort
+	local sort = {}
+	g_SortTable[tostring(instance.Wonder)] = sort
 
-  if IconHookup(pWonder.pPortraitIndex, 45, pWonder.pIconAtlas, instance.Icon) then
+	if IconHookup(pWonder.pPortraitIndex, 45, pWonder.pIconAtlas, instance.Icon) then
 		instance.Icon:SetHide(false)
 		instance.Icon:SetToolTipString(pWonder.sNameWithColor)
-  else
+	else
 		instance.Icon:SetHide(true)
-  end
+	end
 
-  sort.name = pWonder.sName
-  TruncateString(instance.Name, 260, pWonder.sNameWithColor)
-  instance.Name:SetToolTipString(pWonder.sToolTip)
+	sort.name = pWonder.sName
+	TruncateString(instance.Name, 260, pWonder.sNameWithColor)
+	instance.Name:SetToolTipString(pWonder.sToolTip)
 
-  if pWonder.iPlayer == -1 then
-		local pTech = GameInfo.Technologies[pWonder.sTechType]
-		
-		if IconHookup(pTech.PortraitIndex, 45, pTech.IconAtlas, instance.TechIcon) then
-			instance.TechIcon:SetHide(false)
-			instance.TechIcon:SetToolTipString(pWonder.sTechName)
+	if pWonder.ePlayer == -1 then
+		local pTeam = Teams[Players[Game.GetActivePlayer()]:GetTeam()]
+		local eCurrentEra = pTeam:GetCurrentEra()
+		local eMaxStartEra = pWonder.eMaxStartEra
+		local bMaxEra = false
+
+		if eCurrentEra > eMaxStartEra then
+			instance.WonderOutdated:SetHide(false)
+			bMaxEra = true
 		else
-			instance.TechIcon:SetHide(true)
+			instance.WonderOutdated:SetHide(true)
 		end
+		-----------------------
+		local iTrueTechNeeded = Players[ePlayer]:FindPathLength(GameInfoTypes[pWonder.sTechType], false)
+		print(iTrueTechNeeded)
+		if bMaxEra then
+			sort.needed = -100;			
+		else
+			sort.needed = iTrueTechNeeded			
+		end
+		instance.TechsNeeded:SetHide(false)		
 
-		sort.tech = pWonder.sTechName
-		instance.Tech:SetText(sort.tech)
-		instance.Tech:SetToolTipString(pWonder.sEraName)
-
-		instance.TechsNeeded:SetHide(false)
-		sort.needed = Players[iPlayer]:FindPathLength(GameInfoTypes[pWonder.sTechType], false);
-
-		local bLocked, sReason = IsLocked(pWonder, iPlayer)
+		local bLocked, sReason = IsLocked(pWonder, ePlayer)
 	
 		if bLocked then
 			instance.TechsNeeded:SetText("[ICON_LOCKED]")
 			instance.TechsNeeded:SetToolTipString(sReason)
 		else
-			instance.TechsNeeded:SetText(sort.needed)
+			instance.TechsNeeded:SetText(iTrueTechNeeded)
 			instance.TechsNeeded:SetToolTipString(nil)
 		end
-
-		instance.Year:SetHide(true)
+		-----------------------
+		local pTech = GameInfo.Technologies[pWonder.sTechType]
 		
+		if IconHookup(pTech.PortraitIndex, 45, pTech.IconAtlas, instance.TechIcon) then
+			if iTrueTechNeeded > 0 then
+				instance.TechIcon:SetHide(false)
+				instance.TechIcon:SetToolTipString(pWonder.sTechName)
+			else
+				instance.TechIcon:SetHide(true)
+			end
+		else
+			instance.TechIcon:SetHide(true)
+		end
+		-----------------------
+		local sTrueTechName = ""
+		
+		if bMaxEra then
+			sort.tech = "AAAA"
+			sTrueTechName = "         OUTDATED!"
+		elseif iTrueTechNeeded == 0 then
+			sort.tech = "AAAB"
+			sTrueTechName = ""
+		else
+			sort.tech = pWonder.sTechName
+			sTrueTechName = sort.tech
+		end
+		instance.Tech:SetText(sTrueTechName)
+		instance.Tech:SetToolTipString(pWonder.sEraName)
+		-----------------------
+		instance.Year:SetHide(true)
 		instance.Wonder:SetHide(pWonder.iEra > g_EraLimit)
 	else
-		instance.TechsNeeded:SetHide(true)
+		instance.TechsNeeded:SetText("")
 		instance.TechIcon:SetToolTipString(pWonder.sPlayer)
     		
-		if pWonder.iPlayer == -2 then
+		if pWonder.ePlayer == -2 then
 			instance.TechIcon:SetHide(IconHookup(5, 45, "KRIS_SWORDSMAN_PROMOTION_ATLAS", instance.TechIcon) == false)
 		else
-			local pCiv = g_Civs[pWonder.iPlayer]
+			local pCiv = g_Civs[pWonder.ePlayer]
 			
 			instance.TechIcon:SetHide(IconHookup(pCiv.PortraitIndex, 45, pCiv.IconAtlas, instance.TechIcon) == false)
 		end
-
-		if pWonder.iPlayer ~= GameDefines.MAX_PLAYERS then
+		-----------------------
+		if pWonder.ePlayer ~= GameDefines.MAX_PLAYERS then
 			sort.city = pWonder.sPlayer .. ":" .. pWonder.sCity
 			TruncateString(instance.Tech, 150, pWonder.sCity)
 			instance.Tech:SetToolTipString(pWonder.sPlayer)
 		else
-			sort.city = "destroyed:" .. iWonder
+			sort.city = "destroyed:" .. eWonder
 			instance.Tech:SetText(sDestroyed)
 			instance.Tech:SetToolTipString(sDestroyed)
 		end
-		
-		sort.year = GetPersistentProperty(iWonder)
+		-----------------------
+		sort.year = GetPersistentProperty(eWonder)
+		local sBetterYearName = ""
+		if sort.year < 0 then
+			sBetterYearName = -sort.year .. " BC"
+		else
+			sBetterYearName = sort.year .. " AD"
+		end
 		instance.Year:SetHide(false)
-		instance.Year:SetText(sort.year)
-		
+		instance.Year:SetText(sBetterYearName)
+		-----------------------
 		instance.Wonder:SetHide(false)
 	end
 
@@ -322,13 +364,13 @@ function AddWonder(iPlayer, tPlayerTechs, iWonder, pWonder)
 end
 
 function GetCivs()
-	for iPlayer = 0, GameDefines.MAX_MAJOR_CIVS-1, 1 do
-		local pPlayer = Players[iPlayer]
+	for ePlayer = 0, GameDefines.MAX_MAJOR_CIVS-1, 1 do
+		local pPlayer = Players[ePlayer]
 		
 		if pPlayer:IsEverAlive() then
 			local pCiv = GameInfo.Civilizations[pPlayer:GetCivilizationType()]
 			
-			g_Civs[iPlayer] = {
+			g_Civs[ePlayer] = {
 				IconAtlas     = pCiv.IconAtlas,
 				PortraitIndex = pCiv.PortraitIndex
 			}
@@ -346,7 +388,7 @@ end
 function GetWonders(tWonders)
 	for potentialWonder in GameInfo.Buildings() do
 		if IsWonder(potentialWonder) then
-			local iWonder = potentialWonder.ID
+			local eWonder = potentialWonder.ID
 			local pWonder = potentialWonder
 			local pWonderDummy
 			local sWonderDummy = pWonder.Type .. '_DUMMY'
@@ -356,17 +398,17 @@ function GetWonders(tWonders)
 			end
 
 			local sNameWithColor
-			local sNameWithoutColor = Locale.ConvertTextKey(pWonder.Description)
+			local sNameWithoutColor = L(pWonder.Description)
 			
 			-- setting colors to names
 			if pWonder.HolyCity then
 				sNameWithColor = g_ColorHoly .. sNameWithoutColor .. ' (Holy)[ENDCOLOR]'
 			elseif pWonder.PolicyBranchType then
 				local sIdeologyName = 'TXT_KEY_' .. pWonder.PolicyBranchType
-				sNameWithColor = g_ColorIdeology .. sNameWithoutColor .. ' (' .. Locale.ConvertTextKey(sIdeologyName) .. ')[ENDCOLOR]'
+				sNameWithColor = g_ColorIdeology .. sNameWithoutColor .. ' (' .. L(sIdeologyName) .. ')[ENDCOLOR]'
 			elseif pWonder.PolicyType then
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
-				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. Locale.ConvertTextKey(sPolicyName) .. ')[ENDCOLOR]'
+				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
 				local sProjectName
 				
@@ -374,7 +416,7 @@ function GetWonders(tWonders)
 					sProjectName = row.Description
 				end
 				
-				sNameWithColor = g_ColorCongress .. sNameWithoutColor .. ' (' .. Locale.ConvertTextKey(sProjectName) .. ')[ENDCOLOR]'
+				sNameWithColor = g_ColorCongress .. sNameWithoutColor .. ' (' .. L(sProjectName) .. ')[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and not pWonder.UnlockedByLeague then
 				sNameWithColor = g_ColorCorporation .. string.gsub(sNameWithoutColor, 'Headquarters', 'HQ') .. '[ENDCOLOR]'
 			else
@@ -394,18 +436,19 @@ function GetWonders(tWonders)
 			
 			-- creating wonder table
 			if pWonderDummy ~= nil then
-				tWonders[iWonder] = {
-					iWonder			= iWonder,
+				tWonders[eWonder] = {
+					eWonder			= eWonder,
 					sType			= pWonder.Type,
 					iClass			= GameInfoTypes[pWonder.BuildingClass], 
-					sName			= Locale.ConvertTextKey(pWonder.Description),
+					sName			= L(pWonder.Description),
 					sNameWithColor	= sNameWithColor,
-					sToolTip		= GetHelpTextForBuilding(iWonder, false, false, false),
+					sToolTip		= GetHelpTextForBuilding(eWonder, false, false, false),
 					iTech			= CheckTech(pWonder, sPrereqTechType),
-					sTechName		= Locale.ConvertTextKey(GameInfo.Technologies[sPrereqTechType].Description),
+					sTechName		= L(GameInfo.Technologies[sPrereqTechType].Description),
 					sTechType		= sPrereqTechType,
 					iEra			= GameInfoTypes[GameInfo.Technologies[sPrereqTechType].Era],
-					sEraName		= Locale.ConvertTextKey(GameInfo.Eras[GameInfo.Technologies[sPrereqTechType].Era].Description),
+					sEraName		= L(GameInfo.Eras[GameInfo.Technologies[sPrereqTechType].Era].Description),
+					eMaxStartEra	= GameInfoTypes[pWonder.MaxStartEra] or 10,
 				
 					pIconAtlas     = pWonder.IconAtlas,
 					pPortraitIndex = pWonder.PortraitIndex,
@@ -435,22 +478,23 @@ function GetWonders(tWonders)
 					isEspionage   	= ((IsEspionage(pWonder)		or IsEspionage(pWonderDummy))		and -1 or 0),
 					isTourism     	= ((IsTourism(pWonder)			or IsTourism(pWonderDummy))			and -1 or 0),
 
-					iPlayer = -1
+					ePlayer = -1
 				}
 			else
-				tWonders[iWonder] = {
-					iWonder			= iWonder,
+				tWonders[eWonder] = {
+					eWonder			= eWonder,
 					sType			= pWonder.Type,
 					iClass			= GameInfoTypes[pWonder.BuildingClass], 
-					sName			= Locale.ConvertTextKey(pWonder.Description),
+					sName			= L(pWonder.Description),
 					sNameWithColor	= sNameWithColor,
-					sToolTip		= GetHelpTextForBuilding(iWonder, false, false, false),
+					sToolTip		= GetHelpTextForBuilding(eWonder, false, false, false),
 					iTech			= CheckTech(pWonder, sPrereqTechType),
-					sTechName		= Locale.ConvertTextKey(GameInfo.Technologies[sPrereqTechType].Description),
+					sTechName		= L(GameInfo.Technologies[sPrereqTechType].Description),
 					sTechType		= sPrereqTechType,
 					iEra			= GameInfoTypes[GameInfo.Technologies[sPrereqTechType].Era],
-					sEraName		= Locale.ConvertTextKey(GameInfo.Eras[GameInfo.Technologies[sPrereqTechType].Era].Description),
-				
+					sEraName		= L(GameInfo.Eras[GameInfo.Technologies[sPrereqTechType].Era].Description),
+					eMaxStartEra	= GameInfoTypes[pWonder.MaxStartEra] or 10,
+
 					pIconAtlas     = pWonder.IconAtlas,
 					pPortraitIndex = pWonder.PortraitIndex,
 				
@@ -480,7 +524,7 @@ function GetWonders(tWonders)
 					isEspionage   	= (IsEspionage(pWonder) and -1 or 0),
 					isTourism     	= (IsTourism(pWonder) and -1 or 0),
 
-					iPlayer = -1
+					ePlayer = -1
 				}
 			end
 		end
@@ -494,7 +538,7 @@ function UpdateWonders(tWonders)
 		GetWonders(tWonders)
 	else
 		for _, wonder in pairs(tWonders) do
-			wonder.iPlayer = -1
+			wonder.ePlayer = -1
 		end
 	end
 
@@ -520,15 +564,15 @@ function UpdateWonders(tWonders)
 					for wonderID, wonder in pairs(tWonders) do
 						if city:IsHasBuilding(wonderID) then
 							if bPlayerMet then
-								wonder.iPlayer = playerID
+								wonder.ePlayer = playerID
 								wonder.sPlayer = sPlayerName
 								wonder.iCity = city:GetID()
 								wonder.sCity = city:GetName()
 							else
-								wonder.iPlayer = -2
-								wonder.sPlayer = "Unknown"
+								wonder.ePlayer = -2
+								wonder.sPlayer = L("TXT_KEY_WONDERPLANNER_UNKNOWN")
 								wonder.iCity = -2
-								wonder.sCity = "Unknown"
+								wonder.sCity = L("TXT_KEY_WONDERPLANNER_UNKNOWN")
 							end
 						end
 					end
@@ -539,8 +583,8 @@ function UpdateWonders(tWonders)
 
 	-- destroyed wonders
 	for _, wonder in pairs(tWonders) do
-		if wonder.iPlayer == -1 and Game.IsBuildingClassMaxedOut(wonder.iClass) then
-			wonder.iPlayer = GameDefines.MAX_PLAYERS
+		if wonder.ePlayer == -1 and Game.IsBuildingClassMaxedOut(wonder.iClass) then
+			wonder.ePlayer = GameDefines.MAX_PLAYERS
 			wonder.sPlayer = sDestroyed
 		end
 	end
@@ -618,7 +662,6 @@ end
 -- adan_eslavo (left only expansion)
 function IsExpansion(pBuilding)
 	for i, unit in pairs(g_Settlers) do
-		print(g_Settlers[i])
 		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=g_Settlers[i]} do
 			return true
 		end
@@ -972,17 +1015,17 @@ function IsCombatBonus(pBuilding)
 end
 -- end of markings
 
-function IsLocked(pWonder, iPlayer)
+function IsLocked(pWonder, ePlayer)
 	local bLocked = false
 	local sReason = nil
-	local pPlayer = Players[iPlayer]
+	local pPlayer = Players[ePlayer]
 	local iIdeologyBranch = pWonder.iIdeologyBranch
 	local sPolicyType = pWonder.sPolicyType
 	local bHoly = pWonder.bHoly
 
 	if Game.GetBuildingClassCreatedCount(pWonder.iBuildingClass) > 0 then
 		bLocked = true
-		sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED")
+		sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED")
 	elseif bHoly then
 		local bFoundHolyCity = false
 
@@ -995,12 +1038,12 @@ function IsLocked(pWonder, iPlayer)
 
 		if not bFoundHolyCity then
 			bLocked = true
-			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION", g_ColorHoly)
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION", g_ColorHoly)
 		end
 	elseif iIdeologyBranch then
 		if not pPlayer:IsPolicyBranchUnlocked(iIdeologyBranch) then
 			bLocked = true
-			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY", g_ColorIdeology, Locale.ConvertTextKey(GameInfo.PolicyBranchTypes[iIdeologyBranch].Description))
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY", g_ColorIdeology, L(GameInfo.PolicyBranchTypes[iIdeologyBranch].Description))
 		end
 	elseif sPolicyType then
 		local iPolicyBranch, sPolicyBranchName
@@ -1012,7 +1055,7 @@ function IsLocked(pWonder, iPlayer)
 		
 		if not pPlayer:IsPolicyBranchFinished(iPolicyBranch) then
 			bLocked = true
-			sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, Locale.ConvertTextKey(sPolicyBranchName))
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, L(sPolicyBranchName))
 		end
 	elseif pWonder.bLeagueProject then
 		local sProjectName
@@ -1022,7 +1065,7 @@ function IsLocked(pWonder, iPlayer)
 		end
 
 		bLocked = true
-		sReason = Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT", g_ColorCongress, Locale.ConvertTextKey(sProjectName))
+		sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT", g_ColorCongress, L(sProjectName))
 	end
 	
 	return bLocked, sReason
@@ -1034,9 +1077,9 @@ function CheckTech(pBuilding, sPrereqTechType)
 	return ((PreGame.GetEra() > iMaxStartEra) and -1 or GameInfoTypes[sPrereqTechType])
 end
 
-function GetTechs(iPlayer)
+function GetTechs(ePlayer)
 	local techs = {}
-	local pTeam = Teams[Players[iPlayer]:GetTeam()]
+	local pTeam = Teams[Players[ePlayer]:GetTeam()]
 
 	for pTech in GameInfo.Technologies() do
 		if (pTeam:IsHasTech(pTech.ID)) then
@@ -1054,8 +1097,8 @@ function OnEraSelected(iEra)
 
 		Controls.EraMenu:GetButton():LocalizeAndSetText(GameInfo.Eras[g_EraLimit].Description)
 
-		for iWonder, wonder in pairs(g_Wonders) do
-			if (wonder.iPlayer == -1) then
+		for eWonder, wonder in pairs(g_Wonders) do
+			if (wonder.ePlayer == -1) then
 				wonder.instance.Wonder:SetHide(wonder.iEra > g_EraLimit)
 			end
 		end
@@ -1065,8 +1108,8 @@ function OnEraSelected(iEra)
 	end
 end
 
-function UpdateEraList(iPlayer)
-	local pPlayer = Players[iPlayer]
+function UpdateEraList(ePlayer)
+	local pPlayer = Players[ePlayer]
 	local iTeam = pPlayer:GetTeam()
 
 	Controls.EraMenu:ClearEntries()
@@ -1078,7 +1121,7 @@ function UpdateEraList(iPlayer)
 		Controls.EraMenu:BuildEntry("InstanceOne", era)
 	
 		era.Button:SetVoid1(iEra)
-		era.Button:SetText(Locale.ConvertTextKey(pEra.Description))
+		era.Button:SetText(L(pEra.Description))
 	end
 
 	Controls.EraMenu:GetButton():LocalizeAndSetText(GameInfo.Eras[g_EraLimit].Description)
@@ -1104,14 +1147,14 @@ ContextPtr:SetInputHandler(InputHandler)
 
 function OnWondersUpdate()
 	if (not ContextPtr:IsHidden()) then
-		local iPlayer = Game.GetActivePlayer()
+		local ePlayer = Game.GetActivePlayer()
 
 		if (g_EraLimit == -1) then
-			g_EraLimit = math.min(#GameInfo.Eras-1, Players[iPlayer]:GetCurrentEra()+2)
+			g_EraLimit = math.min(#GameInfo.Eras-1, Players[ePlayer]:GetCurrentEra()+2)
 		end
 
-		UpdateEraList(iPlayer)
-		UpdateData(iPlayer)
+		UpdateEraList(ePlayer)
+		UpdateData(ePlayer)
 	end
 end
 LuaEvents.WonderPlannerDisplay.Add(function() ContextPtr:SetHide(false) end)
@@ -1157,7 +1200,7 @@ function OnDiploCornerPopup()
 end
 
 function OnAdditionalInformationDropdownGatherEntries(additionalEntries)
-	table.insert(additionalEntries, {text=Locale.ConvertTextKey("TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK"), call=OnDiploCornerPopup, art="WonderPlannerLogo.dds"})
+	table.insert(additionalEntries, {text=L("TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK"), call=OnDiploCornerPopup, art="WonderPlannerLogo.dds"})
 end
 LuaEvents.AdditionalInformationDropdownGatherEntries.Add(OnAdditionalInformationDropdownGatherEntries)
 LuaEvents.RequestRefreshAdditionalInformationDropdownEntries()
