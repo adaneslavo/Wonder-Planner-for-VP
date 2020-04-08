@@ -1,4 +1,8 @@
 Changelog:
+v7:
+- fix for IGE;
+- fix for League Wonders;
+
 v6:
 - added WLTKD, Settler, WC Votes and FreeGreatPerson (to free units) to logic;
 - sorting Great People now counts GreatPeopleRateChange value during sorting;

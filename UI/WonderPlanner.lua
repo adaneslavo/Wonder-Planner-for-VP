@@ -78,6 +78,15 @@ local g_GreatPeopleIcons = {
 	'[ICON_GREAT_PEOPLE]'
 }
 
+local g_LeagueProjects = {
+	'BUILDING_UN',
+	'BUILDING_MENIN_GATE',
+	'BUILDING_GRAND_CANAL',
+	'BUILDING_OLYMPIC_VILLAGE',
+	'BUILDING_CRYSTAL_PALACE',
+	'BUILDING_INTERNATIONAL_SPACE_STATION'
+}
+
 local g_Settlers = {}
 
 for unit in GameInfo.Units() do
@@ -174,11 +183,29 @@ end
 
 function OnWonderConstruction(ePlayer, eCity, eBuilding, bGold, bFaith)
 	for building in GameInfo.Buildings{ID=eBuilding} do
-		SetPersistentProperty(tostring(building.ID), Game.GetGameTurnYear());
+		SetPersistentProperty(tostring(building.ID), Game.GetGameTurnYear())
 		break
 	end
 end
 GameEvents.CityConstructed.Add(OnWonderConstruction)
+
+function OnLeagueWonderGranted(ePlayer)
+	local pPlayer = Players[ePlayer]
+	
+	for _, leagueWonder in ipairs(g_LeagueProjects) do
+		if not GetPersistentProperty(leagueWonder) then
+			for city in pPlayer:Cities() do
+				eBuilding = GameInfo.Buildings[leagueWonder].ID
+
+				if city:IsHasBuilding(eBuilding) then
+					SetPersistentProperty(leagueWonder, true)
+					SetPersistentProperty(tostring(eBuilding), Game.GetGameTurnYear())
+				end
+			end
+		end
+	end
+end
+GameEvents.PlayerDoTurn.Add(OnLeagueWonderGranted)
 
 function UpdateData(ePlayer)
 	local pPlayer = Players[ePlayer]
@@ -237,7 +264,7 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 		end
 		-----------------------
 		local iTrueTechNeeded = Players[ePlayer]:FindPathLength(GameInfoTypes[pWonder.sTechType], false)
-		print(iTrueTechNeeded)
+		
 		if bMaxEra then
 			sort.needed = -100;			
 		else
@@ -307,9 +334,11 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 			instance.Tech:SetToolTipString(sDestroyed)
 		end
 		-----------------------
-		sort.year = GetPersistentProperty(eWonder)
+		sort.year = GetPersistentProperty(eWonder) or -10000
 		local sBetterYearName = ""
-		if sort.year < 0 then
+		if sort.year < 0 and sort.year == -10000 then
+			sBetterYearName = "Granted"
+		elseif sort.year < 0 and sort.year ~= -10000 then	
 			sBetterYearName = -sort.year .. " BC"
 		else
 			sBetterYearName = sort.year .. " AD"
