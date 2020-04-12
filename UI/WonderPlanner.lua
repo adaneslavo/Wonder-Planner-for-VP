@@ -440,7 +440,7 @@ function GetWonders(tWonders)
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
 				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
 			elseif pWonder.PolicyType and pWonder.PolicyType == "POLICY_LHASA" then
-				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (Alliance with Lhasa)[ENDCOLOR]'
+				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (Lhasa)[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
 				local sProjectName
 				
