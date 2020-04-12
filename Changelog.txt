@@ -1,4 +1,7 @@
 Changelog:
+v7.1:
+- fix for UCS v4 (Potala Palace);
+
 v7:
 - fix for IGE;
 - fix for League Wonders;

@@ -39,6 +39,7 @@ local g_ColorPolicy = '[COLOR_MAGENTA]'
 local g_ColorIdeology = '[COLOR_YELLOW]'
 local g_ColorCongress = '[COLOR:45:150:50:255]'
 local g_ColorCorporation = '[COLOR_YIELD_FOOD]'
+local g_ColorUniqueCs = '[COLOR:45:90:170:255]'
 
 local g_AvailableSpecialists = {
 	'SPECIALIST_ENGINEER',
@@ -435,9 +436,11 @@ function GetWonders(tWonders)
 			elseif pWonder.PolicyBranchType then
 				local sIdeologyName = 'TXT_KEY_' .. pWonder.PolicyBranchType
 				sNameWithColor = g_ColorIdeology .. sNameWithoutColor .. ' (' .. L(sIdeologyName) .. ')[ENDCOLOR]'
-			elseif pWonder.PolicyType then
+			elseif pWonder.PolicyType and pWonder.PolicyType ~= "POLICY_LHASA" then
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
 				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
+			elseif pWonder.PolicyType and pWonder.PolicyType == "POLICY_LHASA" then
+				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (Alliance with Lhasa)[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
 				local sProjectName
 				
@@ -483,8 +486,8 @@ function GetWonders(tWonders)
 					pPortraitIndex = pWonder.PortraitIndex,
 				
 					iBuildingClass	= GameInfoTypes[pWonder.BuildingClass],
-					iIdeologyBranch	= pWonder.PolicyBranchType and GameInfoTypes[pWonder.PolicyBranchType],
-					sPolicyType		= pWonder.PolicyType,
+					sIdeologyBranch	= pWonder.PolicyBranchType,
+					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= "POLICY_LHASA" and pWonder.PolicyType or nil,
 					bLeagueProject	= pWonder.UnlockedByLeague,
 					bHoly			= pWonder.HolyCity,
 
@@ -528,8 +531,8 @@ function GetWonders(tWonders)
 					pPortraitIndex = pWonder.PortraitIndex,
 				
 					iBuildingClass	= GameInfoTypes[pWonder.BuildingClass],
-					iIdeologyBranch	= pWonder.PolicyBranchType and GameInfoTypes[pWonder.PolicyBranchType],
-					sPolicyType		= pWonder.PolicyType,
+					sIdeologyBranch	= pWonder.PolicyBranchType,
+					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= "POLICY_LHASA" and pWonder.PolicyType or nil,
 					bLeagueProject	= pWonder.UnlockedByLeague,
 					bHoly			= pWonder.HolyCity,
 
@@ -1048,7 +1051,12 @@ function IsLocked(pWonder, ePlayer)
 	local bLocked = false
 	local sReason = nil
 	local pPlayer = Players[ePlayer]
-	local iIdeologyBranch = pWonder.iIdeologyBranch
+
+	local iIdeologyBranch
+	if pWonder.sIdeologyBranch ~= nil then
+		iIdeologyBranch = GameInfoTypes[pWonder.sIdeologyBranch]
+	end
+
 	local sPolicyType = pWonder.sPolicyType
 	local bHoly = pWonder.bHoly
 
