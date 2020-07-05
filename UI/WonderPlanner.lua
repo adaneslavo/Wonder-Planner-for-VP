@@ -445,7 +445,9 @@ function GetWonders(tWonders)
 				local sProjectName
 				
 				for row in GameInfo.LeagueProjectRewards{Building=pWonder.Type} do
-					sProjectName = row.Description
+					for project in GameInfo.LeagueProjects{RewardTier3=row.Type} do
+						sProjectName = project.Description
+					end
 				end
 				
 				sNameWithColor = g_ColorCongress .. sNameWithoutColor .. ' (' .. L(sProjectName) .. ')[ENDCOLOR]'
