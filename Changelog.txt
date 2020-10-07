@@ -1,4 +1,12 @@
 Changelog:
+v8:
+- added few more checks for Trade column (TR distance changes; TR Sea and Land Gold bonuses);
+- improved tooltips for Great People column;
+	- has more accurate sorting values;
+	- shows all relevant values in tooltip;
+	- added description to icons in tooltip;
+	- added GGenP and GAdmP to the list;
+
 v7.1:
 - fix for UCS v4 (Potala Palace);
 

@@ -5,7 +5,7 @@
     <ProjectGuid>{97246e6e-1a68-4178-aa71-c289582aec03}</ProjectGuid>
     <Name>(ui) Wonder Planner for VP</Name>
     <Guid>d4a7e692-5d05-4436-bc84-13236d75575f</Guid>
-    <ModVersion>7</ModVersion>
+    <ModVersion>8</ModVersion>
     <Stability>Stable</Stability>
     <Teaser>Lists built and available Wonders with their focus</Teaser>
     <Description>Lists built and available Wonders with their focus. Player can sort out information by what he actually needs at the moment. Anti-cheat logic included.</Description>

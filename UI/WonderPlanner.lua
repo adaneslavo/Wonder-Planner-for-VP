@@ -370,7 +370,7 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 	local iResult = pWonder.isGreatPeople
 	local sGreatPeopleTooltip = pWonder.isGreatPeopleTT
 	local iRateChange = pWonder.isGreatPeopleRC or 0
-	sort.greatpeople = (iResult * 100) + iRateChange
+	sort.greatpeople = (iResult * 1000) + iRateChange
 	instance.IsGreatPeople:SetText(g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult + 1])
 	if sGreatPeopleTooltip then
 		instance.IsGreatPeople:SetToolTipString(sGreatPeopleTooltip)
@@ -746,7 +746,8 @@ function IsTrade(pBuilding)
 		end
 	end
 
-	return (pBuilding.CityConnectionTradeRouteModifier ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 or pBuilding.NumTradeRouteBonus ~= 0)
+	return (pBuilding.CityConnectionTradeRouteModifier ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 or pBuilding.NumTradeRouteBonus ~= 0 or
+			pBuilding.TradeRouteSeaGoldBonus ~= 0 or pBuilding.TradeRouteLandGoldBonus ~= 0 or pBuilding.TradeRouteSeaDistanceModifier ~= 0 or pBuilding.TradeRouteLandDistanceModifier ~= 0)
 end
 
 -- adan_eslavo (added science yields)
@@ -756,52 +757,126 @@ end
 	
 -- adan_eslavo (modified values)
 function IsGreatPeople(pBuilding)
-	local iResult1, iResult2, iResult3
+	local iResult1a, iResult1b, iResult1c, iResult2, iResult3
 	local iNumberOfResults = 0
-	local iGreatRateChange
+	local iGreatRateChange = 0
+	local iValue1a, iValue1b, iValue1c, iValue2, iValue3
 
 	if pBuilding.SpecialistCount > 0 or pBuilding.GreatPeopleRateChange > 0 then
 		for i, specialist in ipairs(g_AvailableSpecialists) do
 			if pBuilding.SpecialistType == specialist then
-				iResult1 = (i - #g_GreatPeopleIcons) -- reverted for sorting order
+				iResult1a = (i - #g_GreatPeopleIcons) -- reverted for sorting order
 				iNumberOfResults = iNumberOfResults + 1
-				iGreatRateChange = -pBuilding.GreatPeopleRateChange
+				iGreatRateChange = -pBuilding.GreatPeopleRateChange + (-pBuilding.SpecialistCount)
+				
+				if pBuilding.SpecialistCount > 0 then
+					iValue1a = L("TXT_KEY_WONDERPLANNER_GPP_VER_1A", pBuilding.SpecialistCount, g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1a + 1])
+				end
+				
+				if pBuilding.GreatPeopleRateChange > 0 then
+					local sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_1B", pBuilding.GreatPeopleRateChange, g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1a + 1])
+
+					if iValue1a ~= nil then
+						iValue1a = iValue1a .. '[NEWLINE]' .. sTooltip
+					else
+						iValue1a = sTooltip
+					end
+				end
 			end
 		end
 	end
-	
+
+	for yieldrow in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type} do
+		if yieldrow.YieldType == "YIELD_GREAT_GENERAL_POINTS" then
+			iResult1b = -3
+			iGreatRateChange = iGreatRateChange - yieldrow.Yield
+			iNumberOfResults = iNumberOfResults + 1
+
+			iValue1b = '+' .. yieldrow.Yield .. " GPP/Turn [ICON_GREAT_GENERAL]"
+		end
+
+		if yieldrow.YieldType == "YIELD_GREAT_ADMIRAL_POINTS" then
+			iResult1c = -4
+			iGreatRateChange = iGreatRateChange - yieldrow.Yield
+			iNumberOfResults = iNumberOfResults + 1
+		
+			iValue1c = '+' .. yieldrow.Yield .. " GPP/Turn [ICON_GREAT_ADMIRAL]"
+		end
+	end
+
 	for unit, unitID in pairs(g_GreatPeopleUnits) do 
 		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=unit} do
 			iResult2 = (g_GreatPeopleUnits[unit] - #g_GreatPeopleIcons) -- sometimes two types fit (free great person and specialist are different)
 			iNumberOfResults = iNumberOfResults + 1
+			iValue2 = 'free ' .. g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult2 + 1]
+			iGreatRateChange = iGreatRateChange - 100
 		end
 	end
-	
+
 	if pBuilding.FreeGreatPeople > 0 or pBuilding.GreatPeopleRateModifier > 0 or pBuilding.GlobalGreatPeopleRateModifier > 0 then
 		iResult3 = (-1)
 		iNumberOfResults = iNumberOfResults + 1
-	end
-	
-	local sGreatPeopleTooltip
-	
-	if iNumberOfResults == 0 then
-		return {false, sGreatPeopleTooltip, nil}
-	elseif iNumberOfResults == 1 or (iNumberOfResults == 2 and iResult1 == iResult2) then
-		return {(iResult1 or iResult2 or iResult3), sGreatPeopleTooltip, iGreatRateChange}
-	else
-		if iResult1 ~= nil then
-			sGreatPeopleTooltip = g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1 + 1]
-			
-			if iResult2 ~= nil and iResult1 ~= iResult2 then
-				sGreatPeopleTooltip = sGreatPeopleTooltip .. ',' .. g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult2 + 1]
+		
+		if pBuilding.GreatPeopleRateModifier > 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateModifier
+			iValue3 = L("TXT_KEY_WONDERPLANNER_GPP_VER_3A", pBuilding.GreatPeopleRateModifier)
+		end
+		
+		if pBuilding.GlobalGreatPeopleRateModifier > 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GlobalGreatPeopleRateModifier
+			local sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3B", pBuilding.GlobalGreatPeopleRateModifier)
+
+			if iValue3 ~= nil then
+				iValue3 = iValue3 .. '[NEWLINE]' .. sTooltip
+			else
+				iValue3 = sTooltip
 			end
-			if iResult3 ~= nil then
-				sGreatPeopleTooltip = sGreatPeopleTooltip .. ',[ICON_GREAT_PEOPLE]'
-			end
-		else
-			sGreatPeopleTooltip = g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult2 + 1] .. ',[ICON_GREAT_PEOPLE]'
 		end
 
+		if pBuilding.FreeGreatPeople > 0 then
+			iGreatRateChange = iGreatRateChange - 100
+			
+			if iValue3 ~= nil then
+				iValue3 = iValue3 .. '[NEWLINE]free [ICON_GREAT_PEOPLE]'
+			else
+				iValue3 = 'free [ICON_GREAT_PEOPLE]'
+			end
+		end
+	end
+
+	local sGreatPeopleTooltip = nil
+
+	if iValue1a ~= nil then
+		sGreatPeopleTooltip = iValue1a
+	end
+	if sGreatPeopleTooltip == nil and iValue1b ~= nil then
+		sGreatPeopleTooltip = iValue1b
+	elseif iValue1b ~= nil then
+		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue1b
+	end
+	if sGreatPeopleTooltip == nil and iValue1c ~= nil then
+		sGreatPeopleTooltip = iValue1c
+	elseif iValue1c ~= nil then
+		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue1c
+	end
+	if sGreatPeopleTooltip == nil and iValue2 ~= nil then
+		sGreatPeopleTooltip = iValue2
+	elseif iValue2 ~= nil then
+		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue2
+	end
+	if sGreatPeopleTooltip == nil and iValue3 ~= nil then
+		sGreatPeopleTooltip = iValue3
+	elseif iValue3 ~= nil then
+		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue3
+	end
+
+	if iNumberOfResults == 0 then
+		return {false, sGreatPeopleTooltip, nil}
+	elseif iNumberOfResults == 1 then
+		return {(iResult1a or iResult1b or iResult1c or iResult2 or iResult3), sGreatPeopleTooltip, iGreatRateChange}
+	elseif iNumberOfResults == 2 and iResult2 ~= nil and ((iResult1a or iResult1b or iResult1c) == iResult2) then
+		return {iResult2, sGreatPeopleTooltip, iGreatRateChange}
+	else
 		return {-#g_GreatPeopleIcons, sGreatPeopleTooltip, iGreatRateChange}
 	end
 end

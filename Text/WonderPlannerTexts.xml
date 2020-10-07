@@ -117,6 +117,19 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT">
 			<Text>Player has not won the congress voting for {1_ColorCongress}{2_WorldProject}[ENDCOLOR] yet</Text>
 		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1A">
+			<Text>+{1_spec_count} slots {2_icon}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1B">
+			<Text>+{1_gpp_rate} GPP/Turn {2_icon}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3A">
+			<Text>+{1_gpp_rate_mod}% [ICON_GREAT_PEOPLE]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3B">
+			<Text>+{1_gpp_rate_mod}% global [ICON_GREAT_PEOPLE]</Text>
+		</Row>
 		
 		<Row Tag="TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK">
 			<Text>Wonder Status</Text>
