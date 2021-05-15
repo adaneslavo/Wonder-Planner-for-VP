@@ -884,10 +884,10 @@ end
 -- adan_eslavo (added many new possible outcomes)
 function IsEspionage(pBuilding)
 	local bVotes = pBuilding.VotesPerGPT > 0 or pBuilding.FaithToVotes > 0 or pBuilding.CapitalsToVotes > 0 or pBuilding.DoFToVotes > 0 or pBuilding.RAToVotes > 0 or pBuilding.ExtraLeagueVotes > 0
-	local bAdvancedActions = (pBuilding.AdvancedActionGold > 0 or pBuilding.AdvancedActionScience > 0 or pBuilding.AdvancedActionUnrest > 0 or pBuilding.AdvancedActionRebellion > 0 or pBuilding.AdvancedActionGP > 0 or pBuilding.AdvancedActionUnit > 0 or pBuilding.AdvancedActionWonder > 0 or pBuilding.AdvancedActionBuilding > 0)
-	local bBlockingActions = (pBuilding.BlockBuildingDestructionSpies > 0 or pBuilding.BlockWWDestructionSpies > 0 or pBuilding.BlockUDestructionSpies > 0 or pBuilding.BlockGPDestructionSpies > 0 or pBuilding.BlockRebellionSpies > 0 or pBuilding.BlockUnrestSpies > 0 or pBuilding.BlockScienceTheft > 0 or pBuilding.BlockGoldTheft > 0)
+	--local bAdvancedActions = (pBuilding.AdvancedActionGold > 0 or pBuilding.AdvancedActionScience > 0 or pBuilding.AdvancedActionUnrest > 0 or pBuilding.AdvancedActionRebellion > 0 or pBuilding.AdvancedActionGP > 0 or pBuilding.AdvancedActionUnit > 0 or pBuilding.AdvancedActionWonder > 0 or pBuilding.AdvancedActionBuilding > 0)
+	--local bBlockingActions = (pBuilding.BlockBuildingDestructionSpies > 0 or pBuilding.BlockWWDestructionSpies > 0 or pBuilding.BlockUDestructionSpies > 0 or pBuilding.BlockGPDestructionSpies > 0 or pBuilding.BlockRebellionSpies > 0 or pBuilding.BlockUnrestSpies > 0 or pBuilding.BlockScienceTheft > 0 or pBuilding.BlockGoldTheft > 0)
 
-	return ((pBuilding.Espionage == true or pBuilding.AffectSpiesNow == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true) or bAdvancedActions or bBlockingActions or bVotes)
+	return ((pBuilding.Espionage == true or pBuilding.ExtraSpies > 0 or pBuilding.EspionageModifier ~= 0 or pBuilding.GlobalEspionageModifier ~= 0 or pBuilding.AffectSpiesNow == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true) --[[or bAdvancedActions or bBlockingActions--]] or bVotes)
 end
 	
 -- adan_eslavo (added tourism yields)
