@@ -1,4 +1,13 @@
 Changelog:
+v11:
+- new Diplo Corner icon with shrinking animation (by @gwennog);
+
+v10:
+- compatibility with VP 2.0;
+
+v9:
+- compatibility with VP 5-5-2 from 2021;
+
 v8:
 - added few more checks for Trade column (TR distance changes; TR Sea and Land Gold bonuses);
 - improved tooltips for Great People column;
