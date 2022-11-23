@@ -665,11 +665,13 @@ function IsHappy(pBuilding)
 	end
 	  
 	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0 or pBuilding.WLTKDTurns > 0
-		or pBuilding.EmpireNeedsModifier ~= 0 or pBuilding.EmpireNeedsModifierGlobal ~= 0 
-		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0
+		or pBuilding.EmpireSizeModifierReduction ~= 0 or pBuilding.EmpireSizeModifierReductionGlobal ~= 0 
+		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0
 		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0
-		or pBuilding.PovertyHappinessChange ~= 0 or pBuilding.DefenseHappinessChange ~= 0 or pBuilding.IlliteracyHappinessChange ~= 0 or pBuilding.UnculturedHappinessChange ~= 0  or pBuilding.MinorityHappinessChange ~= 0
-		or pBuilding.PovertyHappinessChangeGlobal ~= 0 or pBuilding.DefenseHappinessChangeGlobal ~= 0 or pBuilding.IlliteracyHappinessChangeGlobal ~= 0 or pBuilding.UnculturedHappinessChangeGlobal ~= 0  or pBuilding.MinorityHappinessChangeGlobal ~= 0)
+		or pBuilding.GoldMedianModifier ~= 0 or pBuilding.BasicNeedsMedianModifier ~= 0 or pBuilding.ScienceMedianModifier ~= 0 or pBuilding.CultureMedianModifier ~= 0  or pBuilding.ReligiousUnrestModifier ~= 0
+		or pBuilding.GoldMedianModifierGlobal ~= 0 or pBuilding.BasicNeedsMedianModifierGlobal ~= 0 or pBuilding.ScienceMedianModifierGlobal ~= 0 or pBuilding.CultureMedianModifierGlobal ~= 0  or pBuilding.ReligiousUnrestModifierGlobal ~= 0
+		or pBuilding.PovertyFlatReduction ~= 0 or pBuilding.DistressFlatReduction ~= 0 or pBuilding.IlliteracyFlatReduction ~= 0 or pBuilding.BoredomFlatReduction ~= 0  or pBuilding.ReligiousUnrestFlatReduction ~= 0
+		or pBuilding.PovertyFlatReductionGlobal ~= 0 or pBuilding.DistressFlatReductionGlobal ~= 0 or pBuilding.IlliteracyFlatReductionGlobal ~= 0 or pBuilding.BoredomFlatReductionGlobal ~= 0  or pBuilding.ReligiousUnrestFlatReductionGlobal ~= 0)
 end
 	
 --adan_eslavo (added free buildings)

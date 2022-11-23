@@ -1,4 +1,8 @@
 Changelog:
+v12:
+- compatibility with VP 3.0!
+- added missing unhappiness factors;
+
 v11:
 - new Diplo Corner icon with shrinking animation (by @gwennog);
 
