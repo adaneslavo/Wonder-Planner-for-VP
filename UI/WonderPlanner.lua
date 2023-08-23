@@ -39,7 +39,8 @@ local g_ColorPolicy = '[COLOR_MAGENTA]'
 local g_ColorIdeology = '[COLOR_YELLOW]'
 local g_ColorCongress = '[COLOR:45:150:50:255]'
 local g_ColorCorporation = '[COLOR_YIELD_FOOD]'
-local g_ColorUniqueCs = '[COLOR:45:90:170:255]'
+local g_ColorUniqueCs = '[COLOR:210:125:255:255]'	-- Lhasa
+local g_ColorUniqueCiv = '[COLOR:45:90:170:255]'	-- America
 
 local g_AvailableSpecialists = {
 	'SPECIALIST_ENGINEER',
@@ -439,8 +440,12 @@ function GetWonders(tWonders)
 			elseif pWonder.PolicyType and pWonder.PolicyType ~= "POLICY_LHASA" then
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
 				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
-			elseif pWonder.PolicyType and pWonder.PolicyType == "POLICY_LHASA" then
-				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (Lhasa)[ENDCOLOR]'
+			elseif pWonder.EventChoiceRequiredActive then
+				local sUniqueCSName = L(GameInfo.EventChoices{Type=pWonder.EventChoiceRequiredActive}().Description)
+				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (' .. sUniqueCSName .. ')[ENDCOLOR]'
+			elseif pWonder.CivilizationRequired then
+				local sUniqueCivName = L(GameInfo.Civilizations{Type=pWonder.CivilizationRequired}().ShortDescription)
+				sNameWithColor = g_ColorUniqueCiv .. sNameWithoutColor .. ' (' .. sUniqueCivName .. ')[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
 				local sProjectName
 				

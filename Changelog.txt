@@ -1,4 +1,9 @@
 Changelog:
+v13:
+- added compatibility for VP v3.8;
+- added new colour and automatic check for WWs realated to Major Civilizations (f.e. America);
+- changed colour and added automatic check for WWs realated to City-States (f.e. Lhasa);
+
 v12:
 - compatibility with VP 3.0!
 - added missing unhappiness factors;
