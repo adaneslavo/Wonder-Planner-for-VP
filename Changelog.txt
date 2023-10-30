@@ -1,4 +1,7 @@
 Changelog:
+v14:
+- fix of Building_DomainProductionModifiers;
+
 v13:
 - added compatibility for VP v3.8;
 - added new colour and automatic check for WWs realated to Major Civilizations (f.e. America);

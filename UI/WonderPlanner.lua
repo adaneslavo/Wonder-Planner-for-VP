@@ -1124,7 +1124,7 @@ function IsCombatBonus(pBuilding)
 		if (row.Experience > 0) then return true end
 	end
 	for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
-		if (row.Experience > 0) then return true end
+		if (row.Modifier > 0) then return true end
 	end
 
 	return false
