@@ -1,4 +1,18 @@
 Changelog:
+v15:
+- new functionality: Cities that can build Wonders:
+	- highlights available World Wonders with green background;
+	- shows number of cities that can build particular wonder;
+	- shows number of cities where wonders are blocked by policies or other coditions;
+	- shows tooltip with list of cities that can build particular wonder, that have them blocked or constructing it;
+	- "Technologies" title adjusted to new conditions;
+- new functionality: checkbox:
+	- added checkbox disabling Era limitation (sets Era limit to Information Era and disables dropdown list);
+	- changed default Era limit to current Era +1 (was +2);
+- hides number of required techs if they are equal 0;
+- "outdated" World Wonders are sorted at the bottom of the list;
+- fixed some icons positioning (plus and shield);
+
 v14:
 - fix of Building_DomainProductionModifiers;
 

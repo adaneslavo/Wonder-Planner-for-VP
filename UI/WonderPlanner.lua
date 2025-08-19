@@ -31,6 +31,13 @@ local g_ReverseSort = false
 local g_Civs = {}
 local g_Wonders = {init=false}
 local g_EraLimit = -1
+local g_MaxEraLimit = -1
+
+for era in DB.Query("SELECT Eras.ID, Eras.Type FROM Eras") do
+	if g_MaxEraLimit < era.ID then
+		g_MaxEraLimit = era.ID
+	end
+end
 
 local sDestroyed = L("TXT_KEY_WONDERPLANNER_DESTROYED")
 
@@ -252,8 +259,16 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 	TruncateString(instance.Name, 260, pWonder.sNameWithColor)
 	instance.Name:SetToolTipString(pWonder.sToolTip)
 
+	local pActivePlayer = Players[Game.GetActivePlayer()]
+	
+	local iAvailableCities, iAvailableCitiesHidden = 0, 0
+	local sAvailableCity, sAvailableCityTT = "", ""
+	local bAvailableCity, bAvailableCityHidden = false, false
+	local sTextColor = "[COLOR_YIELD_FOOD]"
+	local sFinalText = ""
+
 	if pWonder.ePlayer == -1 then
-		local pTeam = Teams[Players[Game.GetActivePlayer()]:GetTeam()]
+		local pTeam = Teams[pActivePlayer:GetTeam()]
 		local eCurrentEra = pTeam:GetCurrentEra()
 		local eMaxStartEra = pWonder.eMaxStartEra
 		local bMaxEra = false
@@ -263,12 +278,63 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 			bMaxEra = true
 		else
 			instance.WonderOutdated:SetHide(true)
+
+			for city in pActivePlayer:Cities() do
+				if city:CanConstruct(eWonder, 0, 0, 0) then
+					instance.WonderAvailable:SetHide(false)
+					iAvailableCities = iAvailableCities + 1
+					bAvailableCity = true
+					
+					if iAvailableCities == 1 then
+						sAvailableCityTT = L("TXT_KEY_WONDERPLANNER_CITIES_LIST", pWonder.sName) .. city:GetName()
+					elseif iAvailableCities >= 2 then
+						sAvailableCityTT = sAvailableCityTT .. "[NEWLINE][ICON_BULLET]" .. city:GetName()
+					end
+				end
+			end
+
+			for city in pActivePlayer:Cities() do
+				if city:CanConstruct(eWonder, 0, 1, 0) and not city:CanConstruct(eWonder, 0, 0, 0) then
+					instance.WonderAvailable:SetHide(false)
+					iAvailableCitiesHidden = iAvailableCitiesHidden + 1
+					bAvailableCityHidden = true
+					
+					if city:GetProductionBuilding() == eWonder then
+						sFinalText = "[COLOR_YIELD_GOLD]" .. city:GetName() .. " (constructing)[ENDCOLOR]"
+						sTextColor = "[COLOR_YIELD_GOLD]"
+					else
+						sFinalText = "[COLOR_YIELD_FOOD]" .. city:GetName() .. " (blocked)[ENDCOLOR]"
+					end
+
+					if iAvailableCitiesHidden == 1 then
+						sAvailableCityTT = L("TXT_KEY_WONDERPLANNER_CITIES_LIST", pWonder.sName) .. sFinalText
+					elseif iAvailableCitiesHidden >= 2 then
+						sAvailableCityTT = sAvailableCityTT .. "[NEWLINE][ICON_BULLET]" .. sFinalText
+					end
+				end
+			end
+			
+			if iAvailableCities == 0 and iAvailableCitiesHidden == 0 and not bMaxEra then
+				instance.WonderAvailable:SetHide(true)
+			elseif iAvailableCities == 1 and iAvailableCitiesHidden == 0 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITY")
+			elseif iAvailableCities > 1 and iAvailableCitiesHidden == 0 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITIES", iAvailableCities)
+			elseif iAvailableCities == 1 and iAvailableCitiesHidden == 1 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITY_HIDDEN_ONE", sTextColor)
+			elseif iAvailableCities == 1 and iAvailableCitiesHidden ~= 1 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITY_HIDDEN_MORE", sTextColor, iAvailableCitiesHidden)
+			elseif iAvailableCities ~= 1 and iAvailableCitiesHidden == 1 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITIES_HIDDEN_ONE", iAvailableCities, sTextColor)
+			elseif iAvailableCities ~= 1 and iAvailableCitiesHidden ~= 1 then
+				sAvailableCity = L("TXT_KEY_WONDERPLANNER_CITIES_HIDDEN_MORE", iAvailableCities, sTextColor, iAvailableCitiesHidden)
+			end
 		end
 		-----------------------
 		local iTrueTechNeeded = Players[ePlayer]:FindPathLength(GameInfoTypes[pWonder.sTechType], false)
 		
 		if bMaxEra then
-			sort.needed = -100;			
+			sort.needed = 1000;			
 		else
 			sort.needed = iTrueTechNeeded			
 		end
@@ -279,7 +345,10 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 		if bLocked then
 			instance.TechsNeeded:SetText("[ICON_LOCKED]")
 			instance.TechsNeeded:SetToolTipString(sReason)
-		else
+		elseif iTrueTechNeeded == 0 then
+			instance.TechsNeeded:SetText(nil)
+			instance.TechsNeeded:SetToolTipString(nil)
+		else	
 			instance.TechsNeeded:SetText(iTrueTechNeeded)
 			instance.TechsNeeded:SetToolTipString(nil)
 		end
@@ -300,17 +369,27 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 		local sTrueTechName = ""
 		
 		if bMaxEra then
-			sort.tech = "AAAA"
+			sort.tech = "ZZZZ"
 			sTrueTechName = "         OUTDATED!"
+		elseif bAvailableCity or bAvailableCityHidden then
+			sort.tech = "AAAA" .. sAvailableCity
+			sTrueTechName = sAvailableCity
+			instance.Tech:SetOffsetVal(-30, 0)
 		elseif iTrueTechNeeded == 0 then
-			sort.tech = "AAAB"
+			sort.tech = "AAAC"
 			sTrueTechName = ""
 		else
 			sort.tech = pWonder.sTechName
 			sTrueTechName = sort.tech
 		end
+		
 		instance.Tech:SetText(sTrueTechName)
-		instance.Tech:SetToolTipString(pWonder.sEraName)
+		
+		if bAvailableCity or bAvailableCityHidden then
+			instance.Tech:SetToolTipString(sAvailableCityTT)
+		else
+			instance.Tech:SetToolTipString(pWonder.sEraName)
+		end
 		-----------------------
 		instance.Year:SetHide(true)
 		instance.Wonder:SetHide(pWonder.iEra > g_EraLimit)
@@ -1251,6 +1330,25 @@ function UpdateEraList(ePlayer)
 	Controls.EraMenu:RegisterSelectionCallback(OnEraSelected)
 end
 
+function OnNoEraCheck()
+	local eActivePlayer = Game.GetActivePlayer()
+	
+	if Controls.NoEraLimitCheckbox:IsChecked() then
+		g_EraLimit = g_MaxEraLimit
+		Controls.EraMenu:GetButton():LocalizeAndSetText(GameInfo.Eras[g_EraLimit].Description)
+		Controls.EraMenu:SetDisabled(true)
+		UpdateEraList(eActivePlayer)
+		OnWondersUpdate()
+	else
+		g_EraLimit = math.min(#GameInfo.Eras - 1, Players[eActivePlayer]:GetCurrentEra() + 1)
+		Controls.EraMenu:GetButton():LocalizeAndSetText(GameInfo.Eras[g_EraLimit].Description)
+		Controls.EraMenu:SetDisabled(false)		
+		UpdateEraList(eActivePlayer)
+		OnWondersUpdate()
+	end
+end
+Controls.NoEraLimitCheckbox:RegisterCallback(Mouse.eLClick, OnNoEraCheck)
+
 function OnClose()
 	ContextPtr:SetHide(true)
 end
@@ -1271,7 +1369,7 @@ function OnWondersUpdate()
 		local ePlayer = Game.GetActivePlayer()
 
 		if (g_EraLimit == -1) then
-			g_EraLimit = math.min(#GameInfo.Eras-1, Players[ePlayer]:GetCurrentEra()+2)
+			g_EraLimit = math.min(#GameInfo.Eras - 1, Players[ePlayer]:GetCurrentEra() + 1)
 		end
 
 		UpdateEraList(ePlayer)

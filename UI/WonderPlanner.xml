@@ -64,19 +64,20 @@
 				<Label ID="IsOffense" String="[ICON_WAR]" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 			</Box>
 			<Box Size="24,32" Color="White,0">
-				<Label ID="IsFreeUnit" String="[ICON_PLUS]" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+				<Label ID="IsFreeUnit" String="[ICON_PLUS]" Anchor="C,C" Offset="1,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 			</Box>
 			<Box Size="24,32" Color="220,200,40,40">
 				<Label ID="IsExpansion" String="[ICON_ARROW_RIGHT]" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 			</Box>
 			<Box Size="24,32" Color="White,0">
-				<Label ID="IsDefense" String="[ICON_STRENGTH]" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+				<Label ID="IsDefense" String="[ICON_STRENGTH]" Anchor="C,C" Offset="0,-2" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 			</Box>
 			<Box Size="24,32" Color="220,200,40,40">
 				<Label ID="IsEspionage" String="[ICON_SPY]" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 			</Box>
 
 			<Box ID="WonderOutdated" Anchor="C,T" Size="993,32" Offset="-994,0" Color="Red,40" Hidden="1" />
+			<Box ID="WonderAvailable" Anchor="C,T" Size="993,32" Offset="-994,0" Color="Green,20" Hidden="1" />
 		</Stack>
 	</Instance>
 
@@ -179,13 +180,13 @@
 							<TextButton ID="SortPlannerOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="White,0">
-							<TextButton ID="SortPlannerFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" COffset="0,-1" olorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+							<TextButton ID="SortPlannerFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Offset="1,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="220,200,40,40">
 							<TextButton ID="SortPlannerExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="White,0">
-							<TextButton ID="SortPlannerDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+							<TextButton ID="SortPlannerDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Offset="0,-2" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="220,200,40,40">
 							<TextButton ID="SortPlannerEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
@@ -264,13 +265,13 @@
 							<TextButton ID="SortBuiltOffense" String="[ICON_WAR]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="White,0">
-							<TextButton ID="SortBuiltFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+							<TextButton ID="SortBuiltFreeUnit" String="[ICON_PLUS]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT" Anchor="C,C" Offset="1,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="220,200,40,40">
 							<TextButton ID="SortBuiltExpansion" String="[ICON_ARROW_RIGHT]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="White,0">
-							<TextButton ID="SortBuiltDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
+							<TextButton ID="SortBuiltDefense" String="[ICON_STRENGTH]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_DEFENSE_TT" Anchor="C,C" Offset="0,-2" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
 						</Box>
 						<Box Size="24,32" Color="220,200,40,40">
 							<TextButton ID="SortBuiltEspionage" String="[ICON_SPY]" ToolTip="TXT_KEY_WONDERPLANNER_SORT_ESPIONAGE_TT" Anchor="C,C" Offset="0,-1" ColorSet="Beige_Black_Alpha" Font="TwCenMT20"/>
@@ -294,15 +295,17 @@
 			<Image Anchor="C,B" Offset="0,143" Texture="HorizontalTrim.dds" Size="1022,5" />
 		</Box>
 
-		<Box Anchor="C,B" AnchorSide="I,I" Offset="0,54" Size="1015,56" Color="255,255,255,0" >
+		<Box Anchor="C,B" AnchorSide="I,I" Offset="0,53" Size="1015,56" Color="255,255,255,0" >
 			<GridButton Anchor="L,B" Style="SmallButton" Size="150,32"  Offset="20,0" StateOffsetIncrement="0,0" ID="CloseButton">
 				<Label Anchor="C,C"  Offset="0,0"  String="TXT_KEY_CLOSE" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
 			</GridButton>
 
-			<Box ID="EraLimit" Anchor="L,B" Offset="200,2" Size="300,27" Color="255,255,255,0">
+			<Box ID="EraLimit" Anchor="L,B" Offset="340,5" Size="300,27" Color="255,255,255,0">
 				<Stack Padding="10" StackGrowth="Right">
 					<Label Anchor="L,C" String="TXT_KEY_WONDERPLANNER_ERA_LIMIT" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
 					<PullDown ID="EraMenu" Anchor="L,C" Style="GenericPullDown" ScrollThreshold="75" Size="190,27" SpaceForScroll="1"/>
+					<CheckBox ID="NoEraLimitCheckbox" Offset="15,0" Anchor="L,C"/>
+					<Label Anchor="L,C" Offset="-5,0" String="TXT_KEY_WONDERPLANNER_NO_ERA_LIMIT" Font="TwCenMT18" ColorSet="Beige_Black_Alpha" FontStyle="Shadow" />
 				</Stack>
 			</Box>
 		</Box>

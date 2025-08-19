@@ -21,6 +21,9 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_ERA_LIMIT">
 			<Text>Limit to </Text>
 		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_NO_ERA_LIMIT">
+			<Text>Disable Era limitation</Text>
+		</Row>
 
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_WONDER">
 			<Text>Wonder</Text>
@@ -35,10 +38,10 @@
 			<Text>Sort by [COLOR_POSITIVE_TEXT]Civilization[ENDCOLOR] then by [COLOR_POSITIVE_TEXT]City[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH">
-			<Text>Technology</Text>
+			<Text>Technology/Cities</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TECH_TT">
-			<Text>Sort by [COLOR_POSITIVE_TEXT]Technology[ENDCOLOR]</Text>
+			<Text>Sort by [COLOR_POSITIVE_TEXT]Technology/Cities[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_NEEDED">
 			<Text>#</Text>
@@ -130,7 +133,30 @@
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3B">
 			<Text>+{1_gpp_rate_mod}% global [ICON_GREAT_PEOPLE]</Text>
 		</Row>
+
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITY">
+			<Text>Available in [COLOR_POSITIVE_TEXT]1[ENDCOLOR] City.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITIES">
+			<Text>Available in [COLOR_POSITIVE_TEXT]{1_NumCity}[ENDCOLOR] Cities.</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITY_HIDDEN_ONE">
+			<Text>Available in [COLOR_POSITIVE_TEXT]1[ENDCOLOR] City ({1_Color}+1[ENDCOLOR] blocked).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITY_HIDDEN_MORE">
+			<Text>Available in [COLOR_POSITIVE_TEXT]1[ENDCOLOR] City ({1_Color}+{2_Hidden}[ENDCOLOR] blocked).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITIES_HIDDEN_ONE">
+			<Text>Available in [COLOR_POSITIVE_TEXT]{1_NumCity}[ENDCOLOR] Cities ({2_Color}+1[ENDCOLOR] blocked).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITIES_HIDDEN_MORE">
+			<Text>Available in [COLOR_POSITIVE_TEXT]{1_NumCity}[ENDCOLOR] Cities ({2_Color}+{3_Hidden}[ENDCOLOR] blocked).</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITIES_LIST">
+			<Text>Cities that can construct [COLOR_YIELD_GOLD]{1_Wonder}[ENDCOLOR]:[NEWLINE][ICON_BULLET]</Text>
+		</Row>
 		
+
 		<Row Tag="TXT_KEY_WONDERPLANNER_DIPLO_CORNER_HOOK">
 			<Text>Wonder Status</Text>
 		</Row>
