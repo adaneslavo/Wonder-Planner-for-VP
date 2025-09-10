@@ -42,7 +42,8 @@ end
 local sDestroyed = L("TXT_KEY_WONDERPLANNER_DESTROYED")
 
 local g_ColorHoly = '[COLOR_MENU_BLUE]'
-local g_ColorPolicy = '[COLOR_MAGENTA]'
+local g_ColorPolicyFinisher = '[COLOR_MAGENTA]'
+local g_ColorPolicy = '[COLOR:255:170:255:255]' 	-- Policies outside Policy Branch
 local g_ColorIdeology = '[COLOR_YELLOW]'
 local g_ColorCongress = '[COLOR:45:150:50:255]'
 local g_ColorCorporation = '[COLOR_YIELD_FOOD]'
@@ -509,6 +510,7 @@ function GetWonders(tWonders)
 
 			local sNameWithColor
 			local sNameWithoutColor = L(pWonder.Description)
+			local sPolicyTag = pWonder.PolicyType
 			
 			-- setting colors to names
 			if pWonder.HolyCity then
@@ -516,8 +518,11 @@ function GetWonders(tWonders)
 			elseif pWonder.PolicyBranchType then
 				local sIdeologyName = 'TXT_KEY_' .. pWonder.PolicyBranchType
 				sNameWithColor = g_ColorIdeology .. sNameWithoutColor .. ' (' .. L(sIdeologyName) .. ')[ENDCOLOR]'
-			elseif pWonder.PolicyType and pWonder.PolicyType ~= "POLICY_LHASA" then
+			elseif sPolicyTag and pWonder.PolicyType ~= "POLICY_LHASA" and GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
+				sNameWithColor = g_ColorPolicyFinisher .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
+			elseif sPolicyTag and pWonder.PolicyType ~= "POLICY_LHASA" and not GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
+				local sPolicyName = 'TXT_KEY_' .. pWonder.PolicyType
 				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
 			elseif pWonder.EventChoiceRequiredActive then
 				local sUniqueCSName = L(GameInfo.EventChoices{Type=pWonder.EventChoiceRequiredActive}().Description)
@@ -545,9 +550,11 @@ function GetWonders(tWonders)
 			
 			-- setting techs for wonders which do not have ones
 			if pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
-				sPrereqTechType = 'TECH_INDUSTRIALIZATION'
-			elseif pWonder.PrereqTech == nil and not pWonder.UnlockedByLeague then
+				sPrereqTechType = 'TECH_PRINTING_PRESS'
+			elseif pWonder.PrereqTech == nil and not pWonder.UnlockedByLeague and not pWonder.PolicyType then
 				sPrereqTechType = 'TECH_CORPORATIONS'
+			elseif pWonder.PrereqTech == nil and pWonder.PolicyType then
+				sPrereqTechType = 'TECH_AGRICULTURE'
 			else
 				sPrereqTechType = pWonder.PrereqTech
 			end
@@ -729,8 +736,44 @@ function IsHappy(pBuilding)
 			return true
 		end
 	end
+	for row in GameInfo.Building_BuildingClassLocalHappiness{BuildingType=pBuilding.Type} do
+		if row.Happiness > 0 then
+			return true
+		end
+	end
+
+	for row in GameInfo.Building_ResourceHappinessChange{BuildingType=pBuilding.Type} do
+		if row.HappinessChange > 0 then
+			return true
+		end
+	end
+
+	for row in GameInfo.Building_WLTKDFromProject{BuildingType=pBuilding.Type} do
+		if row.Turns > 0 then
+			return true
+		end
+	end
+
 	for rowBuilding in GameInfo.Building_ResourceQuantity{BuildingType=pBuilding.Type} do
 		if rowBuilding.Quantity > 0 then
+			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
+				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
+					return true
+				end
+			end
+		end
+	end
+	for rowBuilding in GameInfo.Building_ResourceQuantityFromPOP{BuildingType=pBuilding.Type} do
+		if rowBuilding.Modifier > 0 then
+			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
+				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
+					return true
+				end
+			end
+		end
+	end
+	for rowBuilding in GameInfo.Building_ResourceQuantityPerXFranchises{BuildingType=pBuilding.Type} do
+		if rowBuilding.NumFranchises > 0 then
 			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
 				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
 					return true
@@ -755,7 +798,8 @@ function IsHappy(pBuilding)
 		or pBuilding.GoldMedianModifier ~= 0 or pBuilding.BasicNeedsMedianModifier ~= 0 or pBuilding.ScienceMedianModifier ~= 0 or pBuilding.CultureMedianModifier ~= 0  or pBuilding.ReligiousUnrestModifier ~= 0
 		or pBuilding.GoldMedianModifierGlobal ~= 0 or pBuilding.BasicNeedsMedianModifierGlobal ~= 0 or pBuilding.ScienceMedianModifierGlobal ~= 0 or pBuilding.CultureMedianModifierGlobal ~= 0  or pBuilding.ReligiousUnrestModifierGlobal ~= 0
 		or pBuilding.PovertyFlatReduction ~= 0 or pBuilding.DistressFlatReduction ~= 0 or pBuilding.IlliteracyFlatReduction ~= 0 or pBuilding.BoredomFlatReduction ~= 0  or pBuilding.ReligiousUnrestFlatReduction ~= 0
-		or pBuilding.PovertyFlatReductionGlobal ~= 0 or pBuilding.DistressFlatReductionGlobal ~= 0 or pBuilding.IlliteracyFlatReductionGlobal ~= 0 or pBuilding.BoredomFlatReductionGlobal ~= 0  or pBuilding.ReligiousUnrestFlatReductionGlobal ~= 0)
+		or pBuilding.PovertyFlatReductionGlobal ~= 0 or pBuilding.DistressFlatReductionGlobal ~= 0 or pBuilding.IlliteracyFlatReductionGlobal ~= 0 or pBuilding.BoredomFlatReductionGlobal ~= 0  or pBuilding.ReligiousUnrestFlatReductionGlobal ~= 0
+		or pBuilding.GlobalHappinessPerMajorWar ~= 0)
 end
 	
 --adan_eslavo (added free buildings)
@@ -766,17 +810,23 @@ function IsFreeUnit(pBuilding)
 		end
 	end
 
+	for row in GameInfo.Building_FreeSpecialistCounts{BuildingType=pBuilding.Type} do
+		if row.Count > 0 then
+			return true
+		end
+	end
+
 	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeGreatPeople > 0)
 end
 	
 -- adan_eslavo (added heal rate change)
 function IsDefense(pBuilding)
-	return (pBuilding.BorderObstacle == true or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.Defense ~= 0 or (pBuilding.ExtraCityHitPoints ~= nil and pBuilding.ExtraCityHitPoints ~= 0) or pBuilding.HealRateChange ~= 0)
+	return (pBuilding.BorderObstacle == true or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.Defense ~= 0 or (pBuilding.ExtraCityHitPoints ~= nil and pBuilding.ExtraCityHitPoints ~= 0) or pBuilding.HealRateChange ~= 0 or pBuilding.DefensePerXWonder ~= 0)
 end
 	
 -- adan_eslavo (added supply modifiers and range strike)
 function IsOffense(pBuilding)
-	return (pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil or IsCombatBonus(pBuilding) or pBuilding.CitySupplyModifier > 0 or pBuilding.CitySupplyModifierGlobal > 0 or pBuilding.CitySupplyFlat > 0 or pBuilding.CitySupplyFlatGlobal > 0 or pBuilding.UnitUpgradeCostMod ~= 0 or pBuilding.AllowsRangeStrike == true)
+	return (pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil or IsCombatBonus(pBuilding) or pBuilding.CitySupplyModifier > 0 or pBuilding.CitySupplyModifierGlobal > 0 or pBuilding.CitySupplyFlat > 0 or pBuilding.CitySupplyFlatGlobal > 0 or pBuilding.UnitUpgradeCostMod ~= 0 or pBuilding.AllowsRangeStrike == true or pBuilding.GarrisonRangedAttackModifier ~= 0 or pBuilding.ExperiencePerGoldenAge ~= 0)
 end
 	
 -- adan_eslavo (left only expansion)
@@ -988,6 +1038,28 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldChangesFromAccomplishments{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldChangesFromMonopoly{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldChangesFromPassingTR{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldChangesFromXCityStateStrategicResource{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+
+	for row in GameInfo.Building_YieldChangesPerCityStrengthTimes100{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldChangesPerGoldenAge{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldChangesPerLocalTheme{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
 	for row in GameInfo.Building_YieldChangesPerPop{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
@@ -997,10 +1069,30 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldChangesPerReligion{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldChangesPerXBuilding{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldChangesPerXTiles{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+
+	for row in GameInfo.Building_YieldChangeWorldWonder{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldChangeWorldWonderGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+
 	for row in GameInfo.Building_YieldFromBirth{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldFromBirthRetroactive{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_YieldFromBorderGrowth{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromCombatExperienceTimes100{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromConstruction{BuildingType=pBuilding.Type, YieldType=sYieldType} do
@@ -1009,16 +1101,34 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldFromDeath{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
-	for row in GameInfo.Building_YieldFromGPExpend{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+	for row in GameInfo.Building_YieldFromFaithPurchase{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
-	for row in GameInfo.Building_YieldFromFaithPurchase{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+	for row in GameInfo.Building_YieldFromGoldenAgeStart{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end 
+	for row in GameInfo.Building_YieldFromGPBirthScaledWithArtistBulb{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromGPBirthScaledWithPerTurnYield{BuildingType=pBuilding.Type, YieldOut=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromGPBirthScaledWithWriterBulb{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromGPExpend{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromInternalTR{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromInternalTREnd{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromInternationalTREnd{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromLongCount{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromPillage{BuildingType=pBuilding.Type, YieldType=sYieldType} do
@@ -1039,16 +1149,34 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldFromPurchase{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldFromPurchaseGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_YieldFromSpyAttack{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromSpyDefense{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldFromSpyDefenseOrID{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromSpyIdentify{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromSpyRigElection{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_YieldFromTech{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldFromUnitGiftGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_YieldFromUnitLevelUp{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_YieldFromUnitLevelUpGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_YieldFromUnitProduction{BuildingType=pBuilding.Type, YieldType=sYieldType} do
@@ -1063,12 +1191,20 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldFromVictoryGlobalPlayer{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_YieldFromWLTKD{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_YieldFromYieldPercent{BuildingType=pBuilding.Type, YieldOut=sYieldType} do
 		if (row.Value > 0) then return true end
 	end	
+	for row in GameInfo.Building_YieldFromYieldPercentGlobal{BuildingType=pBuilding.Type, YieldOut=sYieldType} do
+		if (row.Value > 0) then return true end
+	end	
+
 	for row in GameInfo.Building_YieldModifiers{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end	  
+
 	for row in GameInfo.Building_YieldPerAlly{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end	  
@@ -1084,6 +1220,10 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldPerXTerrainTimes100{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end	
+
+	for row in GameInfo.Building_AreaYieldModifiers{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_InstantYield{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
@@ -1110,6 +1250,25 @@ function IsYield(pBuilding, sYieldType)
 		for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
 			if (row.Modifier > 0) then return true end
 		end
+
+		for row in GameInfo.Building_UnitCombatProductionModifiers{BuildingType=pBuilding.Type} do
+			if (row.Modifier > 0) then return true end
+		end
+		for row in GameInfo.Building_UnitCombatProductionModifiersGlobal{BuildingType=pBuilding.Type} do
+			if (row.Modifier > 0) then return true end
+		end
+	end
+
+	if sYieldType == 'YIELD_CULTURE' then
+		for row in GameInfo.Building_ResourceCultureChanges{BuildingType=pBuilding.Type} do
+			if (row.CultureChange > 0) then return true end
+		end
+	end
+
+	if sYieldType == 'YIELD_FAITH' then
+		for row in GameInfo.Building_ResourceFaithChanges{BuildingType=pBuilding.Type} do
+			if (row.FaithChange > 0) then return true end
+		end
 	end
 	
 
@@ -1127,7 +1286,6 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_GrowthExtraYield{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
-	
 
 	for row in GameInfo.Building_ImprovementYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
@@ -1136,6 +1294,9 @@ function IsYield(pBuilding, sYieldType)
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_LakePlotYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
+	for row in GameInfo.Building_LakePlotYieldChangesGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_PlotYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
@@ -1156,10 +1317,16 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_SeaPlotYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+	for row in GameInfo.Building_SeaResourceYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
 	for row in GameInfo.Building_TerrainYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 	for row in GameInfo.Building_FeatureYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end	
+	for row in GameInfo.Building_LuxuryYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
 
@@ -1180,6 +1347,10 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_WLTKDYieldMod{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield > 0) then return true end
 	end
+
+	for row in GameInfo.Building_FranchiseTradeRouteCityYield{BuildingType=pBuilding.Type, YieldType=sYieldType} do
+		if (row.Yield > 0) then return true end
+	end
  
 	return false
 end
@@ -1196,15 +1367,34 @@ function IsHurry(pBuilding, sHurryType)
 end
 
 function IsCombatBonus(pBuilding)
+	for row in GameInfo.Building_DomainFreeExperiencePerGreatWork{BuildingType=pBuilding.Type} do
+		if (row.Experience > 0) then return true end
+	end
+	for row in GameInfo.Building_DomainFreeExperiencePerGreatWorkGlobal{BuildingType=pBuilding.Type} do
+		if (row.Experience > 0) then return true end
+	end
+	for row in GameInfo.Building_DomainFreeExperiences{BuildingType=pBuilding.Type} do
+		if (row.Experience > 0) then return true end
+	end
+	for row in GameInfo.Building_DomainFreeExperiencesGlobal{BuildingType=pBuilding.Type} do
+		if (row.Experience > 0) then return true end
+	end
+
+	for row in GameInfo.Building_UnitCombatFreeExperiences{BuildingType=pBuilding.Type} do
+		if (row.Experience > 0) then return true end
+	end
+	
 	for row in GameInfo.Building_UnitCombatProductionModifiers{BuildingType=pBuilding.Type} do
 		if (row.Modifier > 0) then return true end
 	end
-	for row in GameInfo.Building_UnitCombatFreeExperiences{BuildingType=pBuilding.Type} do
-		if (row.Experience > 0) then return true end
+	for row in GameInfo.Building_UnitCombatProductionModifiersGlobal{BuildingType=pBuilding.Type} do
+		if (row.Modifier > 0) then return true end
 	end
 	for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
 		if (row.Modifier > 0) then return true end
 	end
+
+	if pBuilding.GlobalMilitaryProductionModPerMajorWar ~= 0 then return true end
 
 	return false
 end
@@ -1253,9 +1443,16 @@ function IsLocked(pWonder, ePlayer)
 			sPolicyBranchName = row.Description
 		end
 		
-		if not pPlayer:IsPolicyBranchFinished(iPolicyBranch) then
-			bLocked = true
-			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, L(sPolicyBranchName))
+		if iPolicyBranch ~= nil then
+			if not pPlayer:IsPolicyBranchFinished(iPolicyBranch) then
+				bLocked = true
+				sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicyFinisher, L(sPolicyBranchName))
+			end
+		else
+			if not pPlayer:HasPolicy(GameInfo.Policies{Type=sPolicyType}().ID) then
+				bLocked = true
+				sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, L(GameInfo.Policies{Type=sPolicyType}().Description))
+			end
 		end
 	elseif pWonder.bLeagueProject then
 		local sProjectName
