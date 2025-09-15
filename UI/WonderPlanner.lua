@@ -1,5 +1,3 @@
-print("Loading WonderPlanner.lua from Wonder Planner")
-
 include("IconSupport")
 include("InstanceManager")
 include("InfoTooltipInclude")
@@ -245,7 +243,7 @@ end
 function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 	local instance = (pWonder.ePlayer == -1) and g_PlannerIM:GetInstance() or g_BuiltIM:GetInstance()
 	pWonder.instance = instance
-
+	
 	local sort = {}
 	g_SortTable[tostring(instance.Wonder)] = sort
 
@@ -522,6 +520,7 @@ function GetWonders(tWonders)
 				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
 				sNameWithColor = g_ColorPolicyFinisher .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
 			elseif sPolicyTag and pWonder.PolicyType ~= "POLICY_LHASA" and not GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
+				sNameWithoutColor = string.gsub(sNameWithoutColor, '%[COLOR_MAGENTA%].-%[ENDCOLOR%] ', '')
 				local sPolicyName = 'TXT_KEY_' .. pWonder.PolicyType
 				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
 			elseif pWonder.EventChoiceRequiredActive then
@@ -728,8 +727,8 @@ function IsWonder(pBuilding)
 	return false
 end
 
+
 -- markings
--- adan_eslavo (added local unhappiness)
 function IsHappy(pBuilding)
 	for row in GameInfo.Building_BuildingClassHappiness{BuildingType=pBuilding.Type} do
 		if row.Happiness > 0 then
@@ -791,18 +790,20 @@ function IsHappy(pBuilding)
 		end
 	end
 	  
-	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0 or pBuilding.WLTKDTurns > 0
+	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 
+		or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0
+		or pBuilding.WLTKDTurns ~= 0
 		or pBuilding.EmpireSizeModifierReduction ~= 0 or pBuilding.EmpireSizeModifierReductionGlobal ~= 0 
 		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0
-		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0
+		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0 or pBuilding.NoStarvationNonSpecialist == true
 		or pBuilding.GoldMedianModifier ~= 0 or pBuilding.BasicNeedsMedianModifier ~= 0 or pBuilding.ScienceMedianModifier ~= 0 or pBuilding.CultureMedianModifier ~= 0  or pBuilding.ReligiousUnrestModifier ~= 0
 		or pBuilding.GoldMedianModifierGlobal ~= 0 or pBuilding.BasicNeedsMedianModifierGlobal ~= 0 or pBuilding.ScienceMedianModifierGlobal ~= 0 or pBuilding.CultureMedianModifierGlobal ~= 0  or pBuilding.ReligiousUnrestModifierGlobal ~= 0
 		or pBuilding.PovertyFlatReduction ~= 0 or pBuilding.DistressFlatReduction ~= 0 or pBuilding.IlliteracyFlatReduction ~= 0 or pBuilding.BoredomFlatReduction ~= 0  or pBuilding.ReligiousUnrestFlatReduction ~= 0
 		or pBuilding.PovertyFlatReductionGlobal ~= 0 or pBuilding.DistressFlatReductionGlobal ~= 0 or pBuilding.IlliteracyFlatReductionGlobal ~= 0 or pBuilding.BoredomFlatReductionGlobal ~= 0  or pBuilding.ReligiousUnrestFlatReductionGlobal ~= 0
-		or pBuilding.GlobalHappinessPerMajorWar ~= 0)
+		or pBuilding.GlobalHappinessPerMajorWar ~= 0
+		or pBuilding.ResourceDiversityModifier ~= 0)
 end
 	
---adan_eslavo (added free buildings)
 function IsFreeUnit(pBuilding)
 	for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type} do
 		if (row.NumUnits > 0) then
@@ -819,17 +820,24 @@ function IsFreeUnit(pBuilding)
 	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeGreatPeople > 0)
 end
 	
--- adan_eslavo (added heal rate change)
 function IsDefense(pBuilding)
-	return (pBuilding.BorderObstacle == true or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.Defense ~= 0 or (pBuilding.ExtraCityHitPoints ~= nil and pBuilding.ExtraCityHitPoints ~= 0) or pBuilding.HealRateChange ~= 0 or pBuilding.DefensePerXWonder ~= 0)
+	return (pBuilding.BorderObstacle == true or pBuilding.IgnoreDefensivePactLimit == true or pBuilding.CityIndirectFire == true
+		or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.Defense ~= 0 or pBuilding.BuildingDefenseModifier ~= 0
+		or pBuilding.ExtraCityHitPoints ~= 0 or pBuilding.HealRateChange ~= 0 or pBuilding.DamageReductionFlat ~= 0 
+		or pBuilding.DefensePerXWonder ~= 0 or pBuilding.NukeInterceptionChance ~= 0 or pBuilding.AlwaysHeal == true
+		or pBuilding.CityAirStrikeDefense ~= 0 or pBuilding.GarrisonRangedAttackModifier ~= 0
+		or pBuilding.AllowsRangeStrike == true or pBuilding.RangedStrikeModifier ~= 0 or pBuilding.CityRangedStrikeRange ~= 0)
 end
 	
--- adan_eslavo (added supply modifiers and range strike)
 function IsOffense(pBuilding)
-	return (pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil or IsCombatBonus(pBuilding) or pBuilding.CitySupplyModifier > 0 or pBuilding.CitySupplyModifierGlobal > 0 or pBuilding.CitySupplyFlat > 0 or pBuilding.CitySupplyFlatGlobal > 0 or pBuilding.UnitUpgradeCostMod ~= 0 or pBuilding.AllowsRangeStrike == true or pBuilding.GarrisonRangedAttackModifier ~= 0 or pBuilding.ExperiencePerGoldenAge ~= 0)
+	return (pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil or IsCombatBonus(pBuilding) 
+		or pBuilding.CitySupplyModifier > 0 or pBuilding.CitySupplyModifierGlobal > 0
+		or pBuilding.CitySupplyFlat > 0 or pBuilding.CitySupplyFlatGlobal > 0
+		or pBuilding.UnitUpgradeCostMod ~= 0 
+		or pBuilding.ExperiencePerGoldenAge ~= 0
+		or pBuilding.AirModifierGlobal ~= 0)
 end
 	
--- adan_eslavo (left only expansion)
 function IsExpansion(pBuilding)
 	for i, unit in pairs(g_Settlers) do
 		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=g_Settlers[i]} do
@@ -837,39 +845,44 @@ function IsExpansion(pBuilding)
 		end
 	end
 	
-	return (pBuilding.GlobalPlotCultureCostModifier ~= 0 or pBuilding.GlobalPlotBuyCostModifier ~= 0 or pBuilding.GlobalPopulationChange ~= 0)
+	return (pBuilding.GlobalPlotCultureCostModifier ~= 0 or pBuilding.GlobalPlotBuyCostModifier ~= 0 or pBuilding.GlobalPopulationChange ~= 0
+		or pBuilding.GlobalCityWorkingChange ~= 0 or pBuilding.CityWorkingChange ~= 0
+		or pBuilding.GlobalCityAutomatonWorkersChange ~= 0 or pBuilding.CityAutomatonWorkersChange ~= 0)
 end
 	
--- adan_eslavo (created construction marking)
+-- adan_eslavo (created)
 function IsConstruction(pBuilding)
-	return (pBuilding.WorkerSpeedModifier ~= 0 or IsYield(pBuilding, "YIELD_PRODUCTION") or pBuilding.FreeBuilding ~= nil or pBuilding.WonderProductionModifier ~= 0 or pBuilding.BuildingProductionModifier ~= 0)
+	return (pBuilding.WorkerSpeedModifier ~= 0 or IsYield(pBuilding, "YIELD_PRODUCTION") or pBuilding.FreeBuilding ~= nil 
+		or pBuilding.WonderProductionModifier ~= 0 or pBuilding.BuildingProductionModifier ~= 0)
 end
 	
--- adan_eslavo (deleted culture limit)
 function IsCulture(pBuilding)
-	return (pBuilding.GlobalCultureRateModifier ~= 0 or pBuilding.CultureRateModifier ~= 0 or pBuilding.FreePolicies ~= 0 or pBuilding.PolicyCostModifier ~= 0 or IsYield(pBuilding, "YIELD_CULTURE"))
+	return (pBuilding.GlobalCultureRateModifier ~= 0 or pBuilding.CultureRateModifier ~= 0
+		or pBuilding.FreePolicies ~= 0 or pBuilding.FreeArtifacts ~= 0 
+		or pBuilding.PolicyCostModifier ~= 0 or IsYield(pBuilding, "YIELD_CULTURE"))
 end
 	
--- adan_eslavo (added holy city value)
 function IsFaith(pBuilding)
-	return (IsYield(pBuilding, "YIELD_FAITH") or pBuilding.ExtraMissionarySpreads ~= 0 or pBuilding.HolyCity == true or pBuilding.ReligiousPressureModifier == true)
+	return (IsYield(pBuilding, "YIELD_FAITH") 
+		or pBuilding.ExtraMissionarySpreads ~= 0 or pBuilding.ExtraMissionaryStrengthGlobal ~= 0 or pBuilding.HolyCity == true 
+		or pBuilding.ReligiousPressureModifier == true or pBuilding.ConversionModifier ~= 0 or pBuilding.GlobalConversionModifier ~= 0
+		or pBuilding.BasePressureModifierGlobal ~= 0 or pBuilding.InstantReligiousPressure ~= 0)
 end
 
 function IsFood(pBuilding)
 	return (IsYield(pBuilding, "YIELD_FOOD"))
 end
 
--- adan_eslavo (cut trade and golden age)
 function IsGold(pBuilding)
 	return (pBuilding.GreatPersonExpendGold ~= 0 or IsYield(pBuilding, "YIELD_GOLD") or IsHurry(pBuilding, "HURRY_GOLD") or pBuilding.CityConnectionTradeRouteModifier ~= 0)
 end
 	
--- adan_eslavo (created golden age marking)
+-- adan_eslavo (created)
 function IsGoldenAge(pBuilding)
 	return (pBuilding.GoldenAgeModifier ~= 0 or pBuilding.GoldenAge == true or IsYield(pBuilding, "YIELD_GOLDEN_AGE_POINTS"))
 end
 	
--- adan_eslavo (created trade marking)
+-- adan_eslavo (created)
 function IsTrade(pBuilding)
 	for row in GameInfo.Building_ResourceQuantity{BuildingType=pBuilding.Type} do
 		if row.Quantity > 0 then
@@ -882,16 +895,34 @@ function IsTrade(pBuilding)
 		end
 	end
 
-	return (pBuilding.CityConnectionTradeRouteModifier ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 or pBuilding.NumTradeRouteBonus ~= 0 or
-			pBuilding.TradeRouteSeaGoldBonus ~= 0 or pBuilding.TradeRouteLandGoldBonus ~= 0 or pBuilding.TradeRouteSeaDistanceModifier ~= 0 or pBuilding.TradeRouteLandDistanceModifier ~= 0)
+	return (pBuilding.CityConnectionTradeRouteModifier ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 
+		or pBuilding.NumTradeRouteBonus ~= 0 or	pBuilding.TradeRouteSeaGoldBonus ~= 0 or pBuilding.TradeRouteLandGoldBonus ~= 0 
+		or pBuilding.TradeRouteSeaDistanceModifier ~= 0 or pBuilding.TradeRouteLandDistanceModifier ~= 0
+		or pBuilding.TRTurnModLocal ~= 0 or pBuilding.TRTurnModGlobal ~= 0 or pBuilding.TRVisionBoost ~= 0 or pBuilding.TRSpeedBoost ~= 0
+		or pBuilding.FinishSeaTRTourism ~= 0 or pBuilding.FinishLandTRTourism ~= 0)
 end
 
--- adan_eslavo (added science yields)
 function IsScience(pBuilding)
-	return (pBuilding.FreeTechs ~= 0 or (pBuilding.GlobalSpaceProductionModifier ~= nil and pBuilding.GlobalSpaceProductionModifier ~= 0) or pBuilding.MedianTechPercentChange ~= 0 or IsYield(pBuilding, "YIELD_SCIENCE"))
+	return (pBuilding.FreeTechs ~= 0 or (pBuilding.GlobalSpaceProductionModifier ~= nil and pBuilding.GlobalSpaceProductionModifier ~= 0) 
+		or pBuilding.MedianTechPercentChange ~= 0 or IsYield(pBuilding, "YIELD_SCIENCE"))
 end
 	
--- adan_eslavo (modified values)
+function IsEspionage(pBuilding)
+	local bVotes = pBuilding.VotesPerGPT > 0 or pBuilding.FaithToVotes > 0 or pBuilding.CapitalsToVotes > 0 or 
+		pBuilding.DoFToVotes > 0 or pBuilding.RAToVotes > 0 or pBuilding.ExtraLeagueVotes > 0
+	
+	return (bVotes or (pBuilding.Espionage == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true 		
+		or pBuilding.GlobalSpySecurityModifier ~= 0 or pBuilding.SpySecurityModifier ~= 0 or pBuilding.SpySecurityModifierPerXPop ~= 0 	
+		or pBuilding.EspionageModifier ~= 0 or pBuilding.GlobalEspionageModifier ~= 0 
+		or pBuilding.AffectSpiesNow == true or pBuilding.ExtraSpies > 0))
+end
+	
+function IsTourism(pBuilding)
+	return (pBuilding.GreatWorkCount ~= 0 or pBuilding.TechEnhancedTourism ~= 0 or IsYield(pBuilding, "YIELD_TOURISM")
+		or pBuilding.GlobalGreatWorksTourismModifier ~= 0 or pBuilding.GlobalLandmarksTourismPercent ~= 0
+		or pBuilding.EventTourism == true)
+end
+	
 function IsGreatPeople(pBuilding)
 	local iResult1a, iResult1b, iResult1c, iResult2, iResult3
 	local iNumberOfResults = 0
@@ -1016,23 +1047,8 @@ function IsGreatPeople(pBuilding)
 		return {-#g_GreatPeopleIcons, sGreatPeopleTooltip, iGreatRateChange}
 	end
 end
-	
--- adan_eslavo (added many new possible outcomes)
-function IsEspionage(pBuilding)
-	local bVotes = pBuilding.VotesPerGPT > 0 or pBuilding.FaithToVotes > 0 or pBuilding.CapitalsToVotes > 0 or pBuilding.DoFToVotes > 0 or pBuilding.RAToVotes > 0 or pBuilding.ExtraLeagueVotes > 0
-	--local bAdvancedActions = (pBuilding.AdvancedActionGold > 0 or pBuilding.AdvancedActionScience > 0 or pBuilding.AdvancedActionUnrest > 0 or pBuilding.AdvancedActionRebellion > 0 or pBuilding.AdvancedActionGP > 0 or pBuilding.AdvancedActionUnit > 0 or pBuilding.AdvancedActionWonder > 0 or pBuilding.AdvancedActionBuilding > 0)
-	--local bBlockingActions = (pBuilding.BlockBuildingDestructionSpies > 0 or pBuilding.BlockWWDestructionSpies > 0 or pBuilding.BlockUDestructionSpies > 0 or pBuilding.BlockGPDestructionSpies > 0 or pBuilding.BlockRebellionSpies > 0 or pBuilding.BlockUnrestSpies > 0 or pBuilding.BlockScienceTheft > 0 or pBuilding.BlockGoldTheft > 0)
-
-	return ((pBuilding.Espionage == true or pBuilding.ExtraSpies > 0 or pBuilding.EspionageModifier ~= 0 or pBuilding.GlobalEspionageModifier ~= 0 or pBuilding.AffectSpiesNow == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true) --[[or bAdvancedActions or bBlockingActions--]] or bVotes)
-end
-	
--- adan_eslavo (added tourism yields)
-function IsTourism(pBuilding)
-	return (pBuilding.GreatWorkCount ~= 0 or pBuilding.TechEnhancedTourism ~= 0 or IsYield(pBuilding, "YIELD_TOURISM"))
-end
 
 
--- adan_eslavo (simplified - no limits now, many new tables)
 -- yield calculator
 function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
@@ -1620,5 +1636,3 @@ function OnAdditionalInformationDropdownGatherEntries(additionalEntries)
 end
 LuaEvents.AdditionalInformationDropdownGatherEntries.Add(OnAdditionalInformationDropdownGatherEntries)
 LuaEvents.RequestRefreshAdditionalInformationDropdownEntries()
-
-print("Loaded WonderPlanner.lua from Wonder Planner")
