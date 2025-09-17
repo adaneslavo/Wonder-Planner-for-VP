@@ -86,13 +86,13 @@
 			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Religion[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_HAPPY_TT">
-			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Happiness[ENDCOLOR] or add [COLOR_POSITIVE_TEXT]Luxuries[ENDCOLOR]</Text>
+			<Text>Group wonders that increase [COLOR_POSITIVE_TEXT]Happiness[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_OFFENSE_TT">
 			<Text>Group wonders that strengthen [COLOR_POSITIVE_TEXT]Offensive Capabilities[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_FREEUNIT_TT">
-			<Text>Group wonders that grant a [COLOR_POSITIVE_TEXT]Free Unit[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Building[ENDCOLOR]</Text>
+			<Text>Group wonders that grant a [COLOR_POSITIVE_TEXT]Free Unit[ENDCOLOR] or a [COLOR_POSITIVE_TEXT]Free Building[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_EXPANSION_TT">
 			<Text>Group wonders that help with [COLOR_POSITIVE_TEXT]Expansion[ENDCOLOR]</Text>
@@ -121,17 +121,44 @@
 			<Text>Player has not won the congress voting for {1_ColorCongress}{2_WorldProject}[ENDCOLOR] yet</Text>
 		</Row>
 
-		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1A">
-			<Text>+{1_spec_count} slots {2_icon}</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1">
+			<Text>[ICON_BULLET]free {1_great_person}</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1B">
-			<Text>+{1_gpp_rate} GPP/Turn {2_icon}</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2A1">
+			<Text>[ICON_BULLET]1 slot for {2_icon}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2A2">
+			<Text>[ICON_BULLET]{1_spec_count} slots for {2_icon}</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2B">
+			<Text>[ICON_BULLET]+{1_gpp_rate}{2_icon}/Turn </Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2C">
+			<Text>[ICON_BULLET]+{1_gpp_rate}%{2_icon}/Turn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2D">
+			<Text>[ICON_BULLET]{1_gpp_rate}{2_icon} on [ICON_PRODUCTION] {3_Era} Building Construction (scaling with Era)</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2E">
+			<Text>[ICON_BULLET]{1_gpp_rate}%{2_icon} on [ICON_PRODUCTION] {3_Era} Building Construction</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3A">
-			<Text>+{1_gpp_rate_mod}% [ICON_GREAT_PEOPLE]</Text>
+			<Text>[ICON_BULLET]free [ICON_GREAT_PEOPLE]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3B">
-			<Text>+{1_gpp_rate_mod}% global [ICON_GREAT_PEOPLE]</Text>
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn in Empire</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3C">
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3D">
+			<Text>[ICON_BULLET]{1_gpp_rate_mod}[ICON_GREAT_PEOPLE] towards most advanced [ICON_GREAT_PEOPLE] on [ICON_CITIZEN] Birth</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3E">
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per [ICON_CITY_STATE] Marriage</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3F">
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per local [ICON_GREAT_WORK] Theme</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_WONDERPLANNER_CITY">

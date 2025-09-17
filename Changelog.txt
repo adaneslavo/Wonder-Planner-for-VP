@@ -2,8 +2,10 @@ Changelog:
 v16:
 - moved World Congress Wonders to Printing Press (was Industrialization);
 - now World Wonders available from Policies not being Policy or Ideology finishers are coloured light Magenta and treated as separate cathegory;
+- massive revision of the Great Person marking code (simplification and universalization);
 - added new Building's table columns to the checking functions;
 - added new tables to the checking functions;
+- many text corrections;
 
 v15:
 - new functionality: Cities that can build Wonders:

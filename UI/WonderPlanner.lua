@@ -66,9 +66,22 @@ local g_GreatPeopleUnits = {
 	['UNIT_WRITER'] = 5,
 	['UNIT_MUSICIAN'] = 6,
 	['UNIT_GREAT_DIPLOMAT'] = 7,
-	['UNIT_GREAT_ADMIRAL'] = 8,
-	['UNIT_GREAT_GENERAL'] = 9,
+	['UNIT_GREAT_GENERAL'] = 8,
+	['UNIT_GREAT_ADMIRAL'] = 9,
 	['UNIT_PROPHET'] = 10
+}
+
+local g_GreatPersonTypes = {
+	['GREATPERSON_ENGINEER'] = 1,
+	['GREATPERSON_MERCHANT'] = 2,
+	['GREATPERSON_SCIENTIST'] = 3,
+	['GREATPERSON_ARTIST'] = 4,
+	['GREATPERSON_WRITER'] = 5,
+	['GREATPERSON_MUSICIAN'] = 6,
+	['GREATPERSON_DIPLOMAT'] = 7,
+	['GREATPERSON_GENERAL'] = 8,
+	['GREATPERSON_ADMIRAL'] = 9,
+	['GREATPERSON_PROPHET'] = 10
 }
 
 local g_GreatPeopleIcons = {
@@ -80,8 +93,8 @@ local g_GreatPeopleIcons = {
 	'[ICON_GREAT_WRITER]',
 	'[ICON_GREAT_MUSICIAN]',
 	'[ICON_DIPLOMAT]',
-	'[ICON_GREAT_ADMIRAL]',
 	'[ICON_GREAT_GENERAL]',
+	'[ICON_GREAT_ADMIRAL]',
 	'[ICON_PROPHET]',
 	'[ICON_GREAT_PEOPLE]'
 }
@@ -446,9 +459,9 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 	sort.trade = pWonder.isTrade
 	instance.IsTrade:SetHide(sort.trade == 0)
 	
-	local iResult = pWonder.isGreatPeople
-	local sGreatPeopleTooltip = pWonder.isGreatPeopleTT
-	local iRateChange = pWonder.isGreatPeopleRC or 0
+	local iResult = pWonder.isGreatPeople -- sorting value (sorting by top GP check)
+	local sGreatPeopleTooltip = pWonder.isGreatPeopleTT -- tooltip text
+	local iRateChange = pWonder.isGreatPeopleRC -- sum of all great people values (if few WWs have same top GP check, it sorted by this value)
 	sort.greatpeople = (iResult * 1000) + iRateChange
 	instance.IsGreatPeople:SetText(g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult + 1])
 	if sGreatPeopleTooltip then
@@ -593,7 +606,7 @@ function GetWonders(tWonders)
 					isTrade  		= ((IsTrade(pWonder)			or IsTrade(pWonderDummy))			and -1 or 0),
 					isGreatPeople	= ((IsGreatPeople(pWonder)[1]	or IsGreatPeople(pWonderDummy)[1])	or 0),
 					isGreatPeopleTT	= (IsGreatPeople(pWonder)[2]	or IsGreatPeople(pWonderDummy)[2]),
-					isGreatPeopleRC	= (IsGreatPeople(pWonder)[3]	or IsGreatPeople(pWonderDummy)[3]),
+					isGreatPeopleRC	= ((IsGreatPeople(pWonder)[3]	or IsGreatPeople(pWonderDummy)[3])	or 0),
 					isFood        	= ((IsFood(pWonder)				or IsFood(pWonderDummy))			and -1 or 0),
 					isGold        	= ((IsGold(pWonder)				or IsGold(pWonderDummy))			and -1 or 0),
 					isScience     	= ((IsScience(pWonder)			or IsScience(pWonderDummy))			and -1 or 0),
@@ -639,7 +652,7 @@ function GetWonders(tWonders)
 					isTrade  		= (IsTrade(pWonder) and -1 or 0),
 					isGreatPeople	= (IsGreatPeople(pWonder)[1] or 0),
 					isGreatPeopleTT	= IsGreatPeople(pWonder)[2],
-					isGreatPeopleRC	= IsGreatPeople(pWonder)[3],
+					isGreatPeopleRC	= (IsGreatPeople(pWonder)[3] or 0),
 					isFood        	= (IsFood(pWonder) and -1 or 0),
 					isGold        	= (IsGold(pWonder) and -1 or 0),
 					isScience     	= (IsScience(pWonder) and -1 or 0),
@@ -753,7 +766,7 @@ function IsHappy(pBuilding)
 		end
 	end
 
-	for rowBuilding in GameInfo.Building_ResourceQuantity{BuildingType=pBuilding.Type} do
+	--[[for rowBuilding in GameInfo.Building_ResourceQuantity{BuildingType=pBuilding.Type} do
 		if rowBuilding.Quantity ~= 0 then
 			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
 				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
@@ -788,20 +801,19 @@ function IsHappy(pBuilding)
 				end
 			end
 		end
-	end
+	end--]]
 	  
 	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 
-		or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0
-		or pBuilding.WLTKDTurns ~= 0
-		or pBuilding.EmpireSizeModifierReduction ~= 0 or pBuilding.EmpireSizeModifierReductionGlobal ~= 0 
-		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0
-		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0 or pBuilding.NoStarvationNonSpecialist == true
 		or pBuilding.GoldMedianModifier ~= 0 or pBuilding.BasicNeedsMedianModifier ~= 0 or pBuilding.ScienceMedianModifier ~= 0 or pBuilding.CultureMedianModifier ~= 0  or pBuilding.ReligiousUnrestModifier ~= 0
 		or pBuilding.GoldMedianModifierGlobal ~= 0 or pBuilding.BasicNeedsMedianModifierGlobal ~= 0 or pBuilding.ScienceMedianModifierGlobal ~= 0 or pBuilding.CultureMedianModifierGlobal ~= 0  or pBuilding.ReligiousUnrestModifierGlobal ~= 0
 		or pBuilding.PovertyFlatReduction ~= 0 or pBuilding.DistressFlatReduction ~= 0 or pBuilding.IlliteracyFlatReduction ~= 0 or pBuilding.BoredomFlatReduction ~= 0  or pBuilding.ReligiousUnrestFlatReduction ~= 0
 		or pBuilding.PovertyFlatReductionGlobal ~= 0 or pBuilding.DistressFlatReductionGlobal ~= 0 or pBuilding.IlliteracyFlatReductionGlobal ~= 0 or pBuilding.BoredomFlatReductionGlobal ~= 0  or pBuilding.ReligiousUnrestFlatReductionGlobal ~= 0
-		or pBuilding.GlobalHappinessPerMajorWar ~= 0
-		or pBuilding.ResourceDiversityModifier ~= 0)
+		or pBuilding.UnhappinessModifier ~= 0 or pBuilding.LocalUnhappinessModifier ~= 0
+		or pBuilding.EmpireSizeModifierReduction ~= 0 or pBuilding.EmpireSizeModifierReductionGlobal ~= 0 
+		or pBuilding.NoUnhappfromXSpecialists ~= 0 or pBuilding.NoUnhappfromXSpecialistsGlobal ~= 0 or pBuilding.NoStarvationNonSpecialist == true
+		or pBuilding.HappinessPerXPolicies ~= 0 or pBuilding.HappinessPerCity ~= 0 or pBuilding.GlobalHappinessPerMajorWar ~= 0
+		or pBuilding.ResourceDiversityModifier ~= 0
+		or pBuilding.WLTKDTurns ~= 0)
 end
 	
 function IsFreeUnit(pBuilding)
@@ -811,28 +823,100 @@ function IsFreeUnit(pBuilding)
 		end
 	end
 
-	for row in GameInfo.Building_FreeSpecialistCounts{BuildingType=pBuilding.Type} do
+	--[[for row in GameInfo.Building_FreeSpecialistCounts{BuildingType=pBuilding.Type} do
 		if row.Count ~= 0 then
+			return true
+		end
+	end--]]
+
+	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeBuilding ~= nil or pBuilding.FreeGreatPeople ~= 0)
+end
+
+function IsFood(pBuilding)
+	return (IsYield(pBuilding, "YIELD_FOOD") or pBuilding.AddsFreshWater == true or pBuilding.AllowsFoodTradeRoutesGlobal == true
+		or pBuilding.GlobalPopulationChange ~= 0 or pBuilding.PopulationChange ~= 0
+		or pBuilding.FoodBonusPerCityMajorityFollower ~= 0)
+end
+	
+-- adan_eslavo (created)
+function IsConstruction(pBuilding)
+	for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
+		if row.Modifier ~= 0 then
 			return true
 		end
 	end
 
-	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeGreatPeople ~= 0)
+	for row in GameInfo.Building_UnitCombatProductionModifiers{BuildingType=pBuilding.Type} do
+		if row.Modifier ~= 0 then
+			return true
+		end
+	end
+	for row in GameInfo.Building_UnitCombatProductionModifiersGlobal{BuildingType=pBuilding.Type} do
+		if row.Modifier ~= 0 then
+			return true
+		end
+	end
+		
+	return (IsYield(pBuilding, "YIELD_PRODUCTION") or pBuilding.AllowsProductionTradeRoutesGlobal == true
+		or pBuilding.WonderProductionModifier ~= 0 or pBuilding.BuildingProductionModifier ~= 0
+		or pBuilding.WorkerSpeedModifier ~= 0)
+end
+
+function IsGold(pBuilding)
+	return (pBuilding.GreatPersonExpendGold ~= 0 or IsYield(pBuilding, "YIELD_GOLD") or IsHurry(pBuilding, "HURRY_GOLD") 
+		or pBuilding.CityConnectionGoldModifier ~= 0 or pBuilding.CityConnectionTradeRouteModifier ~= 0
+		or pBuilding.GlobalBuildingGoldMaintenanceMod ~= 0)
+end
+
+function IsScience(pBuilding)
+	return (IsYield(pBuilding, "YIELD_SCIENCE") or pBuilding.FreeTechs ~= 0
+		 or pBuilding.GlobalSpaceProductionModifier ~= 0 or pBuilding.MedianTechPercentChange ~= 0)
+end
+	
+function IsCulture(pBuilding)
+	for row in GameInfo.Building_ResourceCultureChanges{BuildingType=pBuilding.Type} do
+		if row.CultureChange ~= 0 then
+			return true
+		end
+	end
+		
+	return (IsYield(pBuilding, "YIELD_CULTURE") or pBuilding.FreePolicies ~= 0 or pBuilding.FreeArtifacts ~= 0 
+		or pBuilding.GlobalCultureRateModifier ~= 0 or pBuilding.CultureRateModifier ~= 0 or pBuilding.PolicyCostModifier ~= 0)
+end
+	
+function IsFaith(pBuilding)
+	for row in GameInfo.Building_ResourceFaithChanges{BuildingType=pBuilding.Type} do
+		if row.FaithChange ~= 0 then
+			return true
+		end
+	end
+		
+	return (IsYield(pBuilding, "YIELD_FAITH") or pBuilding.HolyCity == true 
+		or pBuilding.ReligiousPressureModifier == true or pBuilding.ConversionModifier ~= 0 or pBuilding.GlobalConversionModifier ~= 0
+		or pBuilding.BasePressureModifierGlobal ~= 0 or pBuilding.InstantReligiousPressure ~= 0 or pBuilding.TradeReligionModifier ~= 0
+		or pBuilding.ExtraMissionarySpreads ~= 0 or pBuilding.ExtraMissionaryStrengthGlobal ~= 0 
+		or pBuilding.ReformationFollowerReduction ~= 0)
+end
+	
+-- adan_eslavo (created)
+function IsGoldenAge(pBuilding)
+	return (IsYield(pBuilding, "YIELD_GOLDEN_AGE_POINTS") or pBuilding.GoldenAgeModifier ~= 0 or pBuilding.GoldenAge == true)
 end
 	
 function IsDefense(pBuilding)
-	return (pBuilding.BorderObstacle == true or pBuilding.IgnoreDefensivePactLimit == true or pBuilding.CityIndirectFire == true
-		or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.Defense ~= 0 or pBuilding.BuildingDefenseModifier ~= 0
-		or pBuilding.ExtraCityHitPoints ~= 0 or pBuilding.HealRateChange ~= 0 or pBuilding.DamageReductionFlat ~= 0 
-		or pBuilding.DefensePerXWonder ~= 0 or pBuilding.NukeInterceptionChance ~= 0 or pBuilding.AlwaysHeal == true
-		or pBuilding.CityAirStrikeDefense ~= 0 or pBuilding.GarrisonRangedAttackModifier ~= 0
+	return (pBuilding.Defense ~= 0 or pBuilding.BuildingDefenseModifier ~= 0 or pBuilding.GlobalDefenseMod ~= 0 or pBuilding.DefensePerXWonder ~= 0  
+		or pBuilding.ExtraCityHitPoints ~= 0 or pBuilding.DamageReductionFlat ~= 0 or pBuilding.NukeInterceptionChance ~= 0
 		or pBuilding.AllowsRangeStrike == true or pBuilding.RangedStrikeModifier ~= 0 or pBuilding.CityRangedStrikeRange ~= 0
-		or pBuilding.DeepWaterTileDamage ~= 0 or pBuilding.BorderObstacleWater == true or pBuilding.BorderObstacleCity == true
-		or pBuilding.CityGainlessPillage == true or pBuilding.PlayerBorderGainlessPillage == true)
+		or pBuilding.CityAirStrikeDefense ~= 0 or pBuilding.GarrisonRangedAttackModifier ~= 0 or pBuilding.CityIndirectFire == true
+		or pBuilding.HealRateChange ~= 0 or pBuilding.AlwaysHeal == true
+		or pBuilding.BorderObstacle == true or pBuilding.BorderObstacleWater == true or pBuilding.BorderObstacleCity == true
+		or pBuilding.CityGainlessPillage == true or pBuilding.PlayerBorderGainlessPillage == true
+		or pBuilding.DeepWaterTileDamage ~= 0 
+		or pBuilding.IgnoreDefensivePactLimit == true )
 end
 	
 function IsOffense(pBuilding)
-	return (pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil or IsCombatBonus(pBuilding) 
+	return (IsCombatBonus(pBuilding) or pBuilding.FreePromotion ~= nil or pBuilding.TrainedFreePromotion ~= nil
 		or pBuilding.CitySupplyModifier ~= 0 or pBuilding.CitySupplyModifierGlobal ~= 0
 		or pBuilding.CitySupplyFlat ~= 0 or pBuilding.CitySupplyFlatGlobal ~= 0
 		or pBuilding.UnitUpgradeCostMod ~= 0 
@@ -848,48 +932,12 @@ function IsExpansion(pBuilding)
 	end
 	
 	return (pBuilding.GlobalPlotCultureCostModifier ~= 0 or pBuilding.GlobalPlotBuyCostModifier ~= 0
+		or pBuilding.BorderGrowthRateIncreaseGlobal ~= 0 or pBuilding.BorderGrowthRateIncrease ~= 0
 		or pBuilding.GlobalCityWorkingChange ~= 0 or pBuilding.CityWorkingChange ~= 0
 		or pBuilding.GlobalCityAutomatonWorkersChange ~= 0 or pBuilding.CityAutomatonWorkersChange ~= 0
-		or pBuilding.GrantsRandomResourceTerritory ~= 0 or pBuilding.AllowsPuppetPurchase == true or pBuilding.PuppetPurchaseOverride == true
-		or pBuilding.BorderGrowthRateIncreaseGlobal ~= 0 or pBuilding.BorderGrowthRateIncrease ~= 0
-		or pBuilding.AllowsAirRoutes == true or pBuilding.AllowsIndustrialWaterRoutes == true)
-end
-	
--- adan_eslavo (created)
-function IsConstruction(pBuilding)
-	return (pBuilding.WorkerSpeedModifier ~= 0 or IsYield(pBuilding, "YIELD_PRODUCTION") or pBuilding.FreeBuilding ~= nil 
-		or pBuilding.WonderProductionModifier ~= 0 or pBuilding.BuildingProductionModifier ~= 0 or pBuilding.AllowsProductionTradeRoutesGlobal == true)
-end
-	
-function IsCulture(pBuilding)
-	return (pBuilding.GlobalCultureRateModifier ~= 0 or pBuilding.CultureRateModifier ~= 0
-		or pBuilding.FreePolicies ~= 0 or pBuilding.FreeArtifacts ~= 0 
-		or pBuilding.PolicyCostModifier ~= 0 or IsYield(pBuilding, "YIELD_CULTURE"))
-end
-	
-function IsFaith(pBuilding)
-	return (IsYield(pBuilding, "YIELD_FAITH") 
-		or pBuilding.ExtraMissionarySpreads ~= 0 or pBuilding.ExtraMissionaryStrengthGlobal ~= 0 or pBuilding.HolyCity == true 
-		or pBuilding.ReligiousPressureModifier == true or pBuilding.ConversionModifier ~= 0 or pBuilding.GlobalConversionModifier ~= 0
-		or pBuilding.BasePressureModifierGlobal ~= 0 or pBuilding.InstantReligiousPressure ~= 0 or pBuilding.TradeReligionModifier ~= 0
-		or pBuilding.ReformationFollowerReduction ~= 0)
-end
-
-function IsFood(pBuilding)
-	return (IsYield(pBuilding, "YIELD_FOOD") or pBuilding.AllowsFoodTradeRoutesGlobal == true
-	or pBuilding.GlobalPopulationChange ~= 0 or pBuilding.PopulationChange ~= 0
-	or pBuilding.FoodBonusPerCityMajorityFollower ~= 0 or pBuilding.AddsFreshWater == true)
-end
-
-function IsGold(pBuilding)
-	return (pBuilding.GreatPersonExpendGold ~= 0 or IsYield(pBuilding, "YIELD_GOLD") or IsHurry(pBuilding, "HURRY_GOLD") 
-	or pBuilding.CityConnectionGoldModifier ~= 0 or pBuilding.CityConnectionTradeRouteModifier ~= 0
-	or pBuilding.GlobalBuildingGoldMaintenanceMod ~= 0)
-end
-	
--- adan_eslavo (created)
-function IsGoldenAge(pBuilding)
-	return (pBuilding.GoldenAgeModifier ~= 0 or pBuilding.GoldenAge == true or IsYield(pBuilding, "YIELD_GOLDEN_AGE_POINTS"))
+		or pBuilding.AllowsAirRoutes == true or pBuilding.AllowsIndustrialWaterRoutes == true
+		or pBuilding.AllowsPuppetPurchase == true or pBuilding.PuppetPurchaseOverride == true
+		or pBuilding.GrantsRandomResourceTerritory ~= 0)
 end
 	
 -- adan_eslavo (created)
@@ -899,163 +947,264 @@ function IsTrade(pBuilding)
 			return true
 		end
 	end
+	for row in GameInfo.Building_ResourceQuantityFromPOP{BuildingType=pBuilding.Type} do
+		if row.Modifier ~= 0 then
+			return true
+		end
+	end
+	for row in GameInfo.Building_ResourceQuantityPerXFranchises{BuildingType=pBuilding.Type} do
+		if row.NumFranchises ~= 0 then
+			return true
+		end
+	end
 	for row in GameInfo.Building_ResourcePlotsToPlace{BuildingType=pBuilding.Type} do
 		if row.NumPlots ~= 0 then
 			return true
 		end
 	end
 
-	return (pBuilding.CityConnectionTradeRouteModifier ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 
-		or pBuilding.NumTradeRouteBonus ~= 0 or	pBuilding.TradeRouteSeaGoldBonus ~= 0 or pBuilding.TradeRouteLandGoldBonus ~= 0 
+	return (pBuilding.NumTradeRouteBonus ~= 0 or pBuilding.TradeRouteRecipientBonus ~= 0 or pBuilding.TradeRouteTargetBonus ~= 0 
+		or pBuilding.TradeRouteSeaGoldBonus ~= 0 or pBuilding.TradeRouteLandGoldBonus ~= 0 
 		or pBuilding.TradeRouteSeaDistanceModifier ~= 0 or pBuilding.TradeRouteLandDistanceModifier ~= 0
 		or pBuilding.TRTurnModLocal ~= 0 or pBuilding.TRTurnModGlobal ~= 0 or pBuilding.TRVisionBoost ~= 0 or pBuilding.TRSpeedBoost ~= 0
-		or pBuilding.FinishSeaTRTourism ~= 0 or pBuilding.FinishLandTRTourism ~= 0)
-end
-
-function IsScience(pBuilding)
-	return (pBuilding.FreeTechs ~= 0 or (pBuilding.GlobalSpaceProductionModifier ~= nil and pBuilding.GlobalSpaceProductionModifier ~= 0) 
-		or pBuilding.MedianTechPercentChange ~= 0 or IsYield(pBuilding, "YIELD_SCIENCE"))
+		or pBuilding.FinishSeaTRTourism ~= 0 or pBuilding.FinishLandTRTourism ~= 0
+		or pBuilding.CityConnectionTradeRouteModifier ~= 0)
 end
 	
 function IsEspionage(pBuilding)
-	local bVotes = pBuilding.VotesPerGPT ~= 0 or pBuilding.FaithToVotes ~= 0 or pBuilding.CapitalsToVotes ~= 0 or 
-		pBuilding.DoFToVotes ~= 0 or pBuilding.RAToVotes ~= 0 or pBuilding.ExtraLeagueVotes ~= 0 or pBuilding.SingleLeagueVotes ~= 0
+	local bVotes = pBuilding.ExtraLeagueVotes ~= 0 or pBuilding.SingleLeagueVotes ~= 0 or pBuilding.VotesPerGPT ~= 0 
+		or pBuilding.FaithToVotes ~= 0 or pBuilding.CapitalsToVotes ~= 0 or pBuilding.DoFToVotes ~= 0 or pBuilding.RAToVotes ~= 0
 	
-	return (bVotes or (pBuilding.Espionage == true or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true 		
+	return (bVotes or (pBuilding.Espionage == true or pBuilding.AffectSpiesNow == true 
+		or pBuilding.ExtraSpies ~= 0 or pBuilding.SpyRankChange == true or pBuilding.InstantSpyRankChange == true 		
 		or pBuilding.GlobalSpySecurityModifier ~= 0 or pBuilding.SpySecurityModifier ~= 0 or pBuilding.SpySecurityModifierPerXPop ~= 0 	
-		or pBuilding.EspionageModifier ~= 0 or pBuilding.GlobalEspionageModifier ~= 0 
-		or pBuilding.AffectSpiesNow == true or pBuilding.ExtraSpies ~= 0 or pBuilding.DiplomatInfluenceBoost ~= 0))
+		or pBuilding.EspionageModifier ~= 0 or pBuilding.GlobalEspionageModifier ~= 0 	
+		or pBuilding.DiplomatInfluenceBoost ~= 0))
 end
 	
 function IsTourism(pBuilding)
-	return (pBuilding.GreatWorkCount ~= 0 or pBuilding.TechEnhancedTourism ~= 0 or IsYield(pBuilding, "YIELD_TOURISM")
-		or pBuilding.GlobalGreatWorksTourismModifier ~= 0 or pBuilding.GlobalLandmarksTourismPercent ~= 0
-		or pBuilding.EventTourism == true)
+	return (IsYield(pBuilding, "YIELD_TOURISM") or pBuilding.EventTourism == true
+		or pBuilding.GreatWorkCount ~= 0 or pBuilding.GlobalGreatWorksTourismModifier ~= 0 or pBuilding.GlobalLandmarksTourismPercent ~= 0
+		or pBuilding.TechEnhancedTourism ~= 0)
 end
 	
 function IsGreatPeople(pBuilding)
-	local iResult1a, iResult1b, iResult1c, iResult2, iResult3
 	local iNumberOfResults = 0
 	local iGreatRateChange = 0
-	local iValue1a, iValue1b, iValue1c, iValue2, iValue3
+	local iIconID = -1
+	local sTooltip, sFinalTooltip
+	local iSort, iFinalSort
 
+
+	-- PART 1: free GP
+	for unit, unitID in pairs(g_GreatPeopleUnits) do 
+		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=unit} do
+			iNumberOfResults = iNumberOfResults + 1
+			
+			iSort = g_GreatPeopleUnits[unit] - #g_GreatPeopleIcons -- sometimes two types fit (free great person and specialist are different)
+			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
+
+			iGreatRateChange = iGreatRateChange - 100
+			iIconID = g_GreatPeopleUnits[unit] + 1
+			
+			sFinalTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_1", g_GreatPeopleIcons[iIconID])
+		end
+	end
+
+
+	-- PART 2A: specialists and GPP per turn (excluding GGenP and GAdmP)
 	if pBuilding.SpecialistCount ~= 0 or pBuilding.GreatPeopleRateChange ~= 0 then
 		for i, specialist in ipairs(g_AvailableSpecialists) do
 			if pBuilding.SpecialistType == specialist then
-				iResult1a = (i - #g_GreatPeopleIcons) -- reverted for sorting order
 				iNumberOfResults = iNumberOfResults + 1
-				iGreatRateChange = -pBuilding.GreatPeopleRateChange + (-pBuilding.SpecialistCount)
+				
+				-- reverted results for sorting order
+				iSort = i - #g_GreatPeopleIcons
+				iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
+				
+				iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateChange - pBuilding.SpecialistCount
+				iIconID = i + 1
 				
 				if pBuilding.SpecialistCount ~= 0 then
-					iValue1a = L("TXT_KEY_WONDERPLANNER_GPP_VER_1A", pBuilding.SpecialistCount, g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1a + 1])
+					if pBuilding.SpecialistCount ~= 0 == 1 then
+						sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2A1", g_GreatPeopleIcons[iIconID])
+					else
+						sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2A2", pBuilding.SpecialistCount, g_GreatPeopleIcons[iIconID])
+					end
+
+					sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 				end
 				
 				if pBuilding.GreatPeopleRateChange ~= 0 then
-					local sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_1B", pBuilding.GreatPeopleRateChange, g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult1a + 1])
-
-					if iValue1a ~= nil then
-						iValue1a = iValue1a .. '[NEWLINE]' .. sTooltip
-					else
-						iValue1a = sTooltip
-					end
+					sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2B", pBuilding.GreatPeopleRateChange, g_GreatPeopleIcons[iIconID])
+					sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 				end
 			end
 		end
 	end
-
+	
+	-- PART 2B AND 2C: GPP per turn (only GGenP and GAdmP)
 	for yieldrow in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type} do
 		if yieldrow.YieldType == "YIELD_GREAT_GENERAL_POINTS" then
-			iResult1b = -3
-			iGreatRateChange = iGreatRateChange - yieldrow.Yield
 			iNumberOfResults = iNumberOfResults + 1
+			
+			iSort = -4 -- sorting value for civil servant is -5
+			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iValue1b = '+' .. yieldrow.Yield .. " GPP/Turn [ICON_GREAT_GENERAL]"
+			iGreatRateChange = iGreatRateChange - yieldrow.Yield
+			iIconID = 9
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2B", yieldrow.Yield, g_GreatPeopleIcons[iIconID])
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
-
+	end
+	
+	for yieldrow in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type} do
 		if yieldrow.YieldType == "YIELD_GREAT_ADMIRAL_POINTS" then
-			iResult1c = -4
+			iNumberOfResults = iNumberOfResults + 1
+			
+			iSort = -3
+			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
+
 			iGreatRateChange = iGreatRateChange - yieldrow.Yield
-			iNumberOfResults = iNumberOfResults + 1
-		
-			iValue1c = '+' .. yieldrow.Yield .. " GPP/Turn [ICON_GREAT_ADMIRAL]"
+			iIconID = 10
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2B", yieldrow.Yield, g_GreatPeopleIcons[iIconID])
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 	end
 
-	for unit, unitID in pairs(g_GreatPeopleUnits) do 
-		for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type, UnitType=unit} do
-			iResult2 = (g_GreatPeopleUnits[unit] - #g_GreatPeopleIcons) -- sometimes two types fit (free great person and specialist are different)
+	-- PART 2D: specific GP modifiers
+	for row in GameInfo.Building_SpecificGreatPersonRateModifier{BuildingType=pBuilding.Type} do
+		if row.Modifier ~= 0 then
 			iNumberOfResults = iNumberOfResults + 1
-			iValue2 = 'free ' .. g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult2 + 1]
-			iGreatRateChange = iGreatRateChange - 100
-		end
-	end
+			
+			for i, specialist in ipairs(g_AvailableSpecialists) do
+				if row.SpecialistType == specialist then
+					iSort = i - #g_GreatPeopleIcons
+					iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-	if pBuilding.FreeGreatPeople ~= 0 or pBuilding.GreatPeopleRateModifier ~= 0 or pBuilding.GlobalGreatPeopleRateModifier ~= 0 then
-		iResult3 = (-1)
-		iNumberOfResults = iNumberOfResults + 1
-		
-		if pBuilding.GreatPeopleRateModifier ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateModifier
-			iValue3 = L("TXT_KEY_WONDERPLANNER_GPP_VER_3A", pBuilding.GreatPeopleRateModifier)
-		end
-		
-		if pBuilding.GlobalGreatPeopleRateModifier ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GlobalGreatPeopleRateModifier
-			local sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3B", pBuilding.GlobalGreatPeopleRateModifier)
+					iGreatRateChange = iGreatRateChange - row.Modifier
+					iIconID = i + 1
 
-			if iValue3 ~= nil then
-				iValue3 = iValue3 .. '[NEWLINE]' .. sTooltip
-			else
-				iValue3 = sTooltip
+					sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2C", row.Modifier, g_GreatPeopleIcons[iIconID])
+					sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+					break
+				end
 			end
 		end
+	end
+	
+	-- PART 2E AND 2F: GP points or progress from building construction
+	for row in GameInfo.Building_GreatPersonPointFromConstruction{BuildingType=pBuilding.Type} do
+		if row.Value ~= 0 then
+			iNumberOfResults = iNumberOfResults + 1
+
+			iSort = g_GreatPersonTypes[row.GreatPersonType] - #g_GreatPeopleIcons
+			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
+
+			iGreatRateChange = iGreatRateChange - row.Value
+			iIconID = g_GreatPersonTypes[row.GreatPersonType] + 1
+			
+			local sEraName
+
+			for era in GameInfo.Eras{Type=row.EraType} do
+				sEraName = L(era.Description)
+			end			
+
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2D", row.Value, g_GreatPeopleIcons[iIconID], sEraName)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+	end
+				
+	for row in GameInfo.Building_GreatPersonProgressFromConstruction{BuildingType=pBuilding.Type} do
+		if row.Value ~= 0 then
+			iNumberOfResults = iNumberOfResults + 1
+
+			iSort = g_GreatPersonTypes[row.GreatPersonType] - #g_GreatPeopleIcons
+			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
+
+			iGreatRateChange = iGreatRateChange - row.Value
+			iIconID = g_GreatPersonTypes[row.GreatPersonType] + 1
+			
+			local sEraName
+
+			for era in GameInfo.Eras{Type=row.EraType} do
+				sEraName = L(era.Description)
+			end			
+
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2E", row.Value, g_GreatPeopleIcons[iIconID], sEraName)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+	end
+
+
+	-- PART 3: bonuses to overall GP generation
+	if pBuilding.FreeGreatPeople ~= 0 or pBuilding.GreatPeopleRateModifier ~= 0 or pBuilding.GlobalGreatPeopleRateModifier ~= 0
+		or pBuilding.GPRateModifierPerMarriage ~= 0 or pBuilding.GPRateModifierPerLocalTheme ~= 0 or pBuilding.GPPOnCitizenBirth ~= 0 then
+		iNumberOfResults = iNumberOfResults + 1
+		
+		iSort = -1
+		iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
 		if pBuilding.FreeGreatPeople ~= 0 then
 			iGreatRateChange = iGreatRateChange - 100
 			
-			if iValue3 ~= nil then
-				iValue3 = iValue3 .. '[NEWLINE]free [ICON_GREAT_PEOPLE]'
-			else
-				iValue3 = 'free [ICON_GREAT_PEOPLE]'
-			end
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3A")
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+		
+		if pBuilding.GlobalGreatPeopleRateModifier ~= 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GlobalGreatPeopleRateModifier
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3B", pBuilding.GlobalGreatPeopleRateModifier)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+
+		if pBuilding.GreatPeopleRateModifier ~= 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateModifier
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3C", pBuilding.GreatPeopleRateModifier)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+
+		if pBuilding.GPPOnCitizenBirth ~= 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GPPOnCitizenBirth
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3D", pBuilding.GPPOnCitizenBirth)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+
+		if pBuilding.GPRateModifierPerMarriage ~= 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GPRateModifierPerMarriage
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3E", pBuilding.GPRateModifierPerMarriage)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+
+		if pBuilding.GPRateModifierPerLocalTheme ~= 0 then
+			iGreatRateChange = iGreatRateChange - pBuilding.GPRateModifierPerLocalTheme
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3F", pBuilding.GPRateModifierPerLocalTheme)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 	end
 
-	local sGreatPeopleTooltip = nil
-
-	if iValue1a ~= nil then
-		sGreatPeopleTooltip = iValue1a
-	end
-	if sGreatPeopleTooltip == nil and iValue1b ~= nil then
-		sGreatPeopleTooltip = iValue1b
-	elseif iValue1b ~= nil then
-		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue1b
-	end
-	if sGreatPeopleTooltip == nil and iValue1c ~= nil then
-		sGreatPeopleTooltip = iValue1c
-	elseif iValue1c ~= nil then
-		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue1c
-	end
-	if sGreatPeopleTooltip == nil and iValue2 ~= nil then
-		sGreatPeopleTooltip = iValue2
-	elseif iValue2 ~= nil then
-		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue2
-	end
-	if sGreatPeopleTooltip == nil and iValue3 ~= nil then
-		sGreatPeopleTooltip = iValue3
-	elseif iValue3 ~= nil then
-		sGreatPeopleTooltip = sGreatPeopleTooltip .. "[NEWLINE]" .. iValue3
-	end
-
+	-- setting the return table (base sorting plus icon; tooltip; additional sorting)
 	if iNumberOfResults == 0 then
-		return {false, sGreatPeopleTooltip, nil}
-	elseif iNumberOfResults == 1 then
-		return {(iResult1a or iResult1b or iResult1c or iResult2 or iResult3), sGreatPeopleTooltip, iGreatRateChange}
-	elseif iNumberOfResults == 2 and iResult2 ~= nil and ((iResult1a or iResult1b or iResult1c) == iResult2) then
-		return {iResult2, sGreatPeopleTooltip, iGreatRateChange}
+		-- return empty table
+		return {nil, nil, nil}
 	else
-		return {-#g_GreatPeopleIcons, sGreatPeopleTooltip, iGreatRateChange}
+		return {iFinalSort, sFinalTooltip, iGreatRateChange}
 	end
+end
+
+function FinalSortValue(iNewSort, iCurrentSort, iMaxSort)
+	return (iCurrentSort == nil) and iNewSort or ((iCurrentSort == iNewSort) and iCurrentSort or -iMaxSort)
+end
+
+function FinalTooltipValue(iNewValue, iCurrentValue)
+	return (iCurrentValue == nil) and iNewValue or (iCurrentValue .. '[NEWLINE]' .. iNewValue)
 end
 
 
@@ -1270,33 +1419,7 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_BuildingClassYieldModifiers{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Modifier ~= 0) then return true end
 	end
-
-
-	if sYieldType == 'YIELD_PRODUCTION' then
-		for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
-			if (row.Modifier ~= 0) then return true end
-		end
-
-		for row in GameInfo.Building_UnitCombatProductionModifiers{BuildingType=pBuilding.Type} do
-			if (row.Modifier ~= 0) then return true end
-		end
-		for row in GameInfo.Building_UnitCombatProductionModifiersGlobal{BuildingType=pBuilding.Type} do
-			if (row.Modifier ~= 0) then return true end
-		end
-	end
-
-	if sYieldType == 'YIELD_CULTURE' then
-		for row in GameInfo.Building_ResourceCultureChanges{BuildingType=pBuilding.Type} do
-			if (row.CultureChange ~= 0) then return true end
-		end
-	end
-
-	if sYieldType == 'YIELD_FAITH' then
-		for row in GameInfo.Building_ResourceFaithChanges{BuildingType=pBuilding.Type} do
-			if (row.FaithChange ~= 0) then return true end
-		end
-	end
-	
+		
 
 	for row in GameInfo.Building_GreatWorkYieldChanges{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
