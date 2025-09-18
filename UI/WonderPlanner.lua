@@ -108,6 +108,7 @@ local g_LeagueProjects = {
 	'BUILDING_INTERNATIONAL_SPACE_STATION'
 }
 
+local g_PolicyLhasa = "POLICY_LHASA"
 local g_Settlers = {}
 
 for unit in GameInfo.Units() do
@@ -444,8 +445,12 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 
 	sort.happy = pWonder.isHappy
 	instance.IsHappy:SetHide(sort.happy == 0)
-	sort.freeunit = pWonder.isFreeUnit
-	instance.IsFreeUnit:SetHide(sort.freeunit == 0)
+	
+	local sFreeUnitTooltip = pWonder.isFreeUnit
+	sort.freeunit = sFreeUnitTooltip or "zzz"
+	instance.IsFreeUnit:SetHide(not sFreeUnitTooltip)
+	instance.IsFreeUnit:SetToolTipString(sFreeUnitTooltip)
+	
 	sort.defense = pWonder.isDefense
 	instance.IsDefense:SetHide(sort.defense == 0)
 	sort.offense = pWonder.isOffense
@@ -462,7 +467,7 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, pWonder)
 	local iResult = pWonder.isGreatPeople -- sorting value (sorting by top GP check)
 	local sGreatPeopleTooltip = pWonder.isGreatPeopleTT -- tooltip text
 	local iRateChange = pWonder.isGreatPeopleRC -- sum of all great people values (if few WWs have same top GP check, it sorted by this value)
-	sort.greatpeople = (iResult * 1000) + iRateChange
+	sort.greatpeople = (iResult * 100000) + iRateChange
 	instance.IsGreatPeople:SetText(g_GreatPeopleIcons[#g_GreatPeopleIcons + iResult + 1])
 	if sGreatPeopleTooltip then
 		instance.IsGreatPeople:SetToolTipString(sGreatPeopleTooltip)
@@ -522,38 +527,37 @@ function GetWonders(tWonders)
 			local sNameWithColor
 			local sNameWithoutColor = L(pWonder.Description)
 			local sPolicyTag = pWonder.PolicyType
+			local bFromLhasa = sPolicyTag == g_PolicyLhasa
 			
 			-- setting colors to names
 			if pWonder.HolyCity then
-				sNameWithColor = g_ColorHoly .. sNameWithoutColor .. ' (Holy)[ENDCOLOR]'
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME_HOLY", g_ColorHoly, sNameWithoutColor)
 			elseif pWonder.PolicyBranchType then
-				local sIdeologyName = 'TXT_KEY_' .. pWonder.PolicyBranchType
-				sNameWithColor = g_ColorIdeology .. sNameWithoutColor .. ' (' .. L(sIdeologyName) .. ')[ENDCOLOR]'
-			elseif sPolicyTag and pWonder.PolicyType ~= "POLICY_LHASA" and GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
-				local sPolicyName = 'TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_')
-				sNameWithColor = g_ColorPolicyFinisher .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
-			elseif sPolicyTag and pWonder.PolicyType ~= "POLICY_LHASA" and not GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
+				local sIdeologyName = L('TXT_KEY_' .. pWonder.PolicyBranchType)
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorIdeology, sNameWithoutColor, sIdeologyName)
+			elseif sPolicyTag and not bFromLhasa and GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
+				local sPolicyBranchName = L('TXT_KEY_' .. string.gsub(string.gsub(pWonder.PolicyType, '_FINISHER', ''), 'POLICY_', 'POLICY_BRANCH_'))
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorPolicyFinisher, sNameWithoutColor, sPolicyBranchName)
+			elseif sPolicyTag and not bFromLhasa and not GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyTag}() then
 				sNameWithoutColor = string.gsub(sNameWithoutColor, '%[COLOR_MAGENTA%].-%[ENDCOLOR%] ', '')
-				local sPolicyName = 'TXT_KEY_' .. pWonder.PolicyType
-				sNameWithColor = g_ColorPolicy .. sNameWithoutColor .. ' (' .. L(sPolicyName) .. ')[ENDCOLOR]'
+				local sPolicyName = L('TXT_KEY_' .. pWonder.PolicyType)
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorPolicy, sNameWithoutColor, sPolicyName)
 			elseif pWonder.EventChoiceRequiredActive then
 				local sUniqueCSName = L(GameInfo.EventChoices{Type=pWonder.EventChoiceRequiredActive}().Description)
-				sNameWithColor = g_ColorUniqueCs .. sNameWithoutColor .. ' (' .. sUniqueCSName .. ')[ENDCOLOR]'
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorUniqueCs, sNameWithoutColor, sUniqueCSName)
 			elseif pWonder.CivilizationRequired then
 				local sUniqueCivName = L(GameInfo.Civilizations{Type=pWonder.CivilizationRequired}().ShortDescription)
-				sNameWithColor = g_ColorUniqueCiv .. sNameWithoutColor .. ' (' .. sUniqueCivName .. ')[ENDCOLOR]'
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorUniqueCiv, sNameWithoutColor, sUniqueCivName)
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
-				local sProjectName
-				
 				for row in GameInfo.LeagueProjectRewards{Building=pWonder.Type} do
 					for project in GameInfo.LeagueProjects{RewardTier3=row.Type} do
-						sProjectName = project.Description
+						local sProjectName = L(project.Description)
+						sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_ColorCongress, sNameWithoutColor, sProjectName)
 					end
 				end
-				
-				sNameWithColor = g_ColorCongress .. sNameWithoutColor .. ' (' .. L(sProjectName) .. ')[ENDCOLOR]'
 			elseif pWonder.PrereqTech == nil and not pWonder.UnlockedByLeague then
-				sNameWithColor = g_ColorCorporation .. string.gsub(sNameWithoutColor, 'Headquarters', 'HQ') .. '[ENDCOLOR]'
+				sNameWithoutColor = string.gsub(sNameWithoutColor, 'Headquarters', '(HQ)')
+				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_CORPORATION", g_ColorCorporation, sNameWithoutColor)
 			else
 				sNameWithColor = sNameWithoutColor
 			end
@@ -592,12 +596,14 @@ function GetWonders(tWonders)
 				
 					iBuildingClass	= GameInfoTypes[pWonder.BuildingClass],
 					sIdeologyBranch	= pWonder.PolicyBranchType,
-					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= "POLICY_LHASA" and pWonder.PolicyType or nil,
+					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= g_PolicyLhasa and pWonder.PolicyType or nil,
 					bLeagueProject	= pWonder.UnlockedByLeague,
 					bHoly			= pWonder.HolyCity,
+					sCivilization	= pWonder.CivilizationRequired,
+					sEvent			= pWonder.EventChoiceRequiredActive,
 
 					isHappy       	= ((IsHappy(pWonder)			or IsHappy(pWonderDummy))			and -1 or 0),
-					isFreeUnit    	= ((IsFreeUnit(pWonder)			or IsFreeUnit(pWonderDummy))		and -1 or 0),
+					isFreeUnit    	= (IsFreeUnit(pWonder)			or IsFreeUnit(pWonderDummy)),
 					isDefense     	= ((IsDefense(pWonder)			or IsDefense(pWonderDummy))			and -1 or 0),
 					isOffense     	= ((IsOffense(pWonder)			or IsOffense(pWonderDummy))			and -1 or 0),
 					isExpansion   	= ((IsExpansion(pWonder)		or IsExpansion(pWonderDummy))		and -1 or 0),
@@ -637,13 +643,15 @@ function GetWonders(tWonders)
 				
 					iBuildingClass	= GameInfoTypes[pWonder.BuildingClass],
 					sIdeologyBranch	= pWonder.PolicyBranchType,
-					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= "POLICY_LHASA" and pWonder.PolicyType or nil,
+					sPolicyType		= GameInfo.Buildings[eWonder].PolicyType ~= g_PolicyLhasa and pWonder.PolicyType or nil,
 					bLeagueProject	= pWonder.UnlockedByLeague,
 					bHoly			= pWonder.HolyCity,
+					sCivilization	= pWonder.CivilizationRequired,
+					sEvent			= pWonder.EventChoiceRequiredActive,
 
 					-- We use -1 for true and 0 for false as it makes sorting easier
 					isHappy       	= (IsHappy(pWonder)	and -1 or 0),
-					isFreeUnit    	= (IsFreeUnit(pWonder) and -1 or 0),
+					isFreeUnit    	= IsFreeUnit(pWonder),
 					isDefense     	= (IsDefense(pWonder) and -1 or 0),
 					isOffense     	= (IsOffense(pWonder) and -1 or 0),
 					isExpansion   	= (IsExpansion(pWonder) and -1 or 0),
@@ -765,43 +773,6 @@ function IsHappy(pBuilding)
 			return true
 		end
 	end
-
-	--[[for rowBuilding in GameInfo.Building_ResourceQuantity{BuildingType=pBuilding.Type} do
-		if rowBuilding.Quantity ~= 0 then
-			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
-				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
-					return true
-				end
-			end
-		end
-	end
-	for rowBuilding in GameInfo.Building_ResourceQuantityFromPOP{BuildingType=pBuilding.Type} do
-		if rowBuilding.Modifier ~= 0 then
-			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
-				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
-					return true
-				end
-			end
-		end
-	end
-	for rowBuilding in GameInfo.Building_ResourceQuantityPerXFranchises{BuildingType=pBuilding.Type} do
-		if rowBuilding.NumFranchises ~= 0 then
-			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
-				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
-					return true
-				end
-			end
-		end
-	end
-	for rowBuilding in GameInfo.Building_ResourcePlotsToPlace{BuildingType=pBuilding.Type} do
-		if rowBuilding.NumPlots ~= 0 then
-			for rowResource in GameInfo.Resources{Type=rowBuilding.ResourceType} do
-				if rowResource.ResourceClassType == 'RESOURCECLASS_LUXURY' then
-					return true
-				end
-			end
-		end
-	end--]]
 	  
 	return (pBuilding.Happiness ~= 0 or pBuilding.UnmoddedHappiness ~= 0 
 		or pBuilding.GoldMedianModifier ~= 0 or pBuilding.BasicNeedsMedianModifier ~= 0 or pBuilding.ScienceMedianModifier ~= 0 or pBuilding.CultureMedianModifier ~= 0  or pBuilding.ReligiousUnrestModifier ~= 0
@@ -817,19 +788,38 @@ function IsHappy(pBuilding)
 end
 	
 function IsFreeUnit(pBuilding)
-	for row in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type} do
-		if (row.NumUnits ~= 0) then
-			return true
+	local sTooltip, sFinalTooltip
+	
+	for rowBuilding in GameInfo.Building_FreeUnits{BuildingType=pBuilding.Type} do
+		if rowBuilding.NumUnits ~= 0 then
+			for rowFreeUnit in GameInfo.Units{Type=rowBuilding.UnitType} do
+				if rowFreeUnit.CombatClass ~= 'UNITCOMBAT_SPECIAL_PEOPLE' then
+					sTooltip = L(rowFreeUnit.Description)
+					sFinalTooltip = FinalTooltipValueFree(sTooltip, sFinalTooltip, "[COLOR_YIELD_GOLD]")
+				end
+			end
 		end
 	end
 
-	--[[for row in GameInfo.Building_FreeSpecialistCounts{BuildingType=pBuilding.Type} do
-		if row.Count ~= 0 then
-			return true
+	if pBuilding.FreeBuildingThisCity ~= nil then
+		for rowBuilding in GameInfo.Buildings{BuildingClass=pBuilding.FreeBuildingThisCity} do
+			for rowBuildingClass in GameInfo.BuildingClasses{DefaultBuilding=rowBuilding.Type} do
+				sTooltip = L(rowBuilding.Description)
+				sFinalTooltip = FinalTooltipValueFree(sTooltip, sFinalTooltip, "[COLOR_YIELD_FOOD]")
+			end
 		end
-	end--]]
-
-	return (pBuilding.FreeBuildingThisCity ~= nil or pBuilding.FreeBuilding ~= nil or pBuilding.FreeGreatPeople ~= 0)
+	end
+	
+	if pBuilding.FreeBuilding ~= nil then
+		for rowBuilding in GameInfo.Buildings{BuildingClass=pBuilding.FreeBuilding} do
+			for rowBuildingClass in GameInfo.BuildingClasses{DefaultBuilding=rowBuilding.Type} do
+				sTooltip = L(rowBuilding.Description)
+				sFinalTooltip = FinalTooltipValueFree(sTooltip, sFinalTooltip, "[COLOR_YIELD_FOOD]")
+			end
+		end
+	end
+	
+	return sFinalTooltip
 end
 
 function IsFood(pBuilding)
@@ -991,9 +981,9 @@ end
 function IsGreatPeople(pBuilding)
 	local iNumberOfResults = 0
 	local iGreatRateChange = 0
-	local iIconID = -1
-	local sTooltip, sFinalTooltip
-	local iSort, iFinalSort
+	local iIconID = -1	
+	local sEraName, sTooltip, sFinalTooltip, iSort, iFinalSort
+	local iTier1, iTier2, iTier3, iTier4, iTier5 = 10000, 1000, 100, 10, 1
 
 
 	-- PART 1: free GP
@@ -1004,12 +994,13 @@ function IsGreatPeople(pBuilding)
 			iSort = g_GreatPeopleUnits[unit] - #g_GreatPeopleIcons -- sometimes two types fit (free great person and specialist are different)
 			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iGreatRateChange = iGreatRateChange - 100
+			iGreatRateChange = iGreatRateChange - iTier1
 			iIconID = g_GreatPeopleUnits[unit] + 1
 			
 			sFinalTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_1", g_GreatPeopleIcons[iIconID])
 		end
 	end
+
 
 
 	-- PART 2A: specialists and GPP per turn (excluding GGenP and GAdmP)
@@ -1022,11 +1013,11 @@ function IsGreatPeople(pBuilding)
 				iSort = i - #g_GreatPeopleIcons
 				iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 				
-				iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateChange - pBuilding.SpecialistCount
+				iGreatRateChange = iGreatRateChange - (iTier2 * pBuilding.SpecialistCount) - (iTier3 * pBuilding.GreatPeopleRateChange)
 				iIconID = i + 1
 				
 				if pBuilding.SpecialistCount ~= 0 then
-					if pBuilding.SpecialistCount ~= 0 == 1 then
+					if pBuilding.SpecialistCount == 1 then
 						sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2A1", g_GreatPeopleIcons[iIconID])
 					else
 						sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2A2", pBuilding.SpecialistCount, g_GreatPeopleIcons[iIconID])
@@ -1043,7 +1034,7 @@ function IsGreatPeople(pBuilding)
 		end
 	end
 	
-	-- PART 2B AND 2C: GPP per turn (only GGenP and GAdmP)
+	-- PART 2B: GPP per turn (only GGenP and GAdmP)
 	for yieldrow in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type} do
 		if yieldrow.YieldType == "YIELD_GREAT_GENERAL_POINTS" then
 			iNumberOfResults = iNumberOfResults + 1
@@ -1051,14 +1042,13 @@ function IsGreatPeople(pBuilding)
 			iSort = -4 -- sorting value for civil servant is -5
 			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iGreatRateChange = iGreatRateChange - yieldrow.Yield
+			iGreatRateChange = iGreatRateChange - (iTier3 * yieldrow.Yield)
 			iIconID = 9
 			
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2B", yieldrow.Yield, g_GreatPeopleIcons[iIconID])
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 	end
-	
 	for yieldrow in GameInfo.Building_YieldChanges{BuildingType=pBuilding.Type} do
 		if yieldrow.YieldType == "YIELD_GREAT_ADMIRAL_POINTS" then
 			iNumberOfResults = iNumberOfResults + 1
@@ -1066,7 +1056,7 @@ function IsGreatPeople(pBuilding)
 			iSort = -3
 			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iGreatRateChange = iGreatRateChange - yieldrow.Yield
+			iGreatRateChange = iGreatRateChange - (iTier3 * yieldrow.Yield)
 			iIconID = 10
 			
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2B", yieldrow.Yield, g_GreatPeopleIcons[iIconID])
@@ -1074,7 +1064,7 @@ function IsGreatPeople(pBuilding)
 		end
 	end
 
-	-- PART 2D: specific GP modifiers
+	-- PART 2C: specific GP modifiers
 	for row in GameInfo.Building_SpecificGreatPersonRateModifier{BuildingType=pBuilding.Type} do
 		if row.Modifier ~= 0 then
 			iNumberOfResults = iNumberOfResults + 1
@@ -1084,10 +1074,13 @@ function IsGreatPeople(pBuilding)
 					iSort = i - #g_GreatPeopleIcons
 					iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-					iGreatRateChange = iGreatRateChange - row.Modifier
+					iGreatRateChange = iGreatRateChange - (iTier5 * row.Modifier)
 					iIconID = i + 1
 
 					sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2C", row.Modifier, g_GreatPeopleIcons[iIconID])
+					
+					if pBuilding.IsDummy then sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_EXTENSION", sTooltip) end
+					
 					sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 					break
 				end
@@ -1095,7 +1088,7 @@ function IsGreatPeople(pBuilding)
 		end
 	end
 	
-	-- PART 2E AND 2F: GP points or progress from building construction
+	-- PART 2D: GP points or progress from building construction
 	for row in GameInfo.Building_GreatPersonPointFromConstruction{BuildingType=pBuilding.Type} do
 		if row.Value ~= 0 then
 			iNumberOfResults = iNumberOfResults + 1
@@ -1103,10 +1096,8 @@ function IsGreatPeople(pBuilding)
 			iSort = g_GreatPersonTypes[row.GreatPersonType] - #g_GreatPeopleIcons
 			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iGreatRateChange = iGreatRateChange - row.Value
+			iGreatRateChange = iGreatRateChange - (iTier5 * row.Value)
 			iIconID = g_GreatPersonTypes[row.GreatPersonType] + 1
-			
-			local sEraName
 
 			for era in GameInfo.Eras{Type=row.EraType} do
 				sEraName = L(era.Description)
@@ -1115,8 +1106,7 @@ function IsGreatPeople(pBuilding)
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_2D", row.Value, g_GreatPeopleIcons[iIconID], sEraName)
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
-	end
-				
+	end			
 	for row in GameInfo.Building_GreatPersonProgressFromConstruction{BuildingType=pBuilding.Type} do
 		if row.Value ~= 0 then
 			iNumberOfResults = iNumberOfResults + 1
@@ -1124,10 +1114,8 @@ function IsGreatPeople(pBuilding)
 			iSort = g_GreatPersonTypes[row.GreatPersonType] - #g_GreatPeopleIcons
 			iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
-			iGreatRateChange = iGreatRateChange - row.Value
+			iGreatRateChange = iGreatRateChange - (iTier4 * row.Value)
 			iIconID = g_GreatPersonTypes[row.GreatPersonType] + 1
-			
-			local sEraName
 
 			for era in GameInfo.Eras{Type=row.EraType} do
 				sEraName = L(era.Description)
@@ -1139,6 +1127,7 @@ function IsGreatPeople(pBuilding)
 	end
 
 
+
 	-- PART 3: bonuses to overall GP generation
 	if pBuilding.FreeGreatPeople ~= 0 or pBuilding.GreatPeopleRateModifier ~= 0 or pBuilding.GlobalGreatPeopleRateModifier ~= 0
 		or pBuilding.GPRateModifierPerMarriage ~= 0 or pBuilding.GPRateModifierPerLocalTheme ~= 0 or pBuilding.GPPOnCitizenBirth ~= 0 then
@@ -1148,62 +1137,70 @@ function IsGreatPeople(pBuilding)
 		iFinalSort = FinalSortValue(iSort, iFinalSort, #g_GreatPeopleIcons)
 
 		if pBuilding.FreeGreatPeople ~= 0 then
-			iGreatRateChange = iGreatRateChange - 100
+			iGreatRateChange = iGreatRateChange - iTier1
 			
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3A")
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 		
 		if pBuilding.GlobalGreatPeopleRateModifier ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GlobalGreatPeopleRateModifier
+			iGreatRateChange = iGreatRateChange - (iTier5 * pBuilding.GlobalGreatPeopleRateModifier)
 			
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3B", pBuilding.GlobalGreatPeopleRateModifier)
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 
 		if pBuilding.GreatPeopleRateModifier ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GreatPeopleRateModifier
+			iGreatRateChange = iGreatRateChange - (iTier5 * pBuilding.GreatPeopleRateModifier)
 			
 			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3C", pBuilding.GreatPeopleRateModifier)
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 
-		if pBuilding.GPPOnCitizenBirth ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GPPOnCitizenBirth
-			
-			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3D", pBuilding.GPPOnCitizenBirth)
-			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
-		end
-
 		if pBuilding.GPRateModifierPerMarriage ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GPRateModifierPerMarriage
+			iGreatRateChange = iGreatRateChange - (iTier5 * pBuilding.GPRateModifierPerMarriage)
 			
-			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3E", pBuilding.GPRateModifierPerMarriage)
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3D", pBuilding.GPRateModifierPerMarriage)
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 
 		if pBuilding.GPRateModifierPerLocalTheme ~= 0 then
-			iGreatRateChange = iGreatRateChange - pBuilding.GPRateModifierPerLocalTheme
+			iGreatRateChange = iGreatRateChange - (iTier5 * pBuilding.GPRateModifierPerLocalTheme)
 			
-			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3F", pBuilding.GPRateModifierPerLocalTheme)
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3E", pBuilding.GPRateModifierPerLocalTheme)
+			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
+		end
+
+		if pBuilding.GPPOnCitizenBirth ~= 0 then
+			iGreatRateChange = iGreatRateChange - (iTier5 * pBuilding.GPPOnCitizenBirth)
+			
+			sTooltip = L("TXT_KEY_WONDERPLANNER_GPP_VER_3F", pBuilding.GPPOnCitizenBirth)
 			sFinalTooltip = FinalTooltipValue(sTooltip, sFinalTooltip)
 		end
 	end
 
-	-- setting the return table (base sorting plus icon; tooltip; additional sorting)
 	if iNumberOfResults == 0 then
 		-- return empty table
 		return {nil, nil, nil}
 	else
+		-- returns a table (base sorting also defining an icon; tooltip; additional sorting if base is the same)
 		return {iFinalSort, sFinalTooltip, iGreatRateChange}
 	end
 end
 
 function FinalSortValue(iNewSort, iCurrentSort, iMaxSort)
+	-- function checks if wonder supports one or more types of great people
 	return (iCurrentSort == nil) and iNewSort or ((iCurrentSort == iNewSort) and iCurrentSort or -iMaxSort)
 end
 
 function FinalTooltipValue(iNewValue, iCurrentValue)
+	-- function concatenates multiple lines into one tooltip
+	return (iCurrentValue == nil) and iNewValue or (iCurrentValue .. '[NEWLINE]' .. iNewValue)
+end
+
+function FinalTooltipValueFree(iNewValue, iCurrentValue, sColour)
+	-- function concatenates multiple lines into one tooltip
+	iNewValue = sColour .. iNewValue .. "[ENDCOLOR]"
 	return (iCurrentValue == nil) and iNewValue or (iCurrentValue .. '[NEWLINE]' .. iNewValue)
 end
 
@@ -1225,6 +1222,7 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldChangesFromXCityStateStrategicResource{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end 
+
 
 	for row in GameInfo.Building_YieldChangesPerCityStrengthTimes100{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
@@ -1251,12 +1249,14 @@ function IsYield(pBuilding, sYieldType)
 		if (row.Yield ~= 0) then return true end
 	end
 
+
 	for row in GameInfo.Building_YieldChangeWorldWonder{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end
 	for row in GameInfo.Building_YieldChangeWorldWonderGlobal{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end
+
 
 	for row in GameInfo.Building_YieldFromBirth{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
@@ -1376,9 +1376,11 @@ function IsYield(pBuilding, sYieldType)
 		if (row.Value ~= 0) then return true end
 	end	
 
+
 	for row in GameInfo.Building_YieldModifiers{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end	  
+
 
 	for row in GameInfo.Building_YieldPerAlly{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
@@ -1395,6 +1397,7 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldPerXTerrainTimes100{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end	
+
 
 	for row in GameInfo.Building_AreaYieldModifiers{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
@@ -1497,6 +1500,7 @@ function IsYield(pBuilding, sYieldType)
 		if (row.Yield ~= 0) then return true end
 	end
 
+
 	for row in GameInfo.Building_FranchiseTradeRouteCityYield{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end
@@ -1506,10 +1510,10 @@ end
 
 function IsHurry(pBuilding, sHurryType)
 	for row in GameInfo.Building_HurryModifiers{BuildingType=pBuilding.Type, HurryType=sHurryType} do
-		if (row.HurryCostModifier < 0) then return true end
+		if row.HurryCostModifier < 0 then return true end
 	end
 	for row in GameInfo.Building_HurryModifiersLocal{BuildingType=pBuilding.Type, HurryType=sHurryType} do
-		if (row.HurryCostModifier < 0) then return true end
+		if row.HurryCostModifier < 0 then return true end
 	end
 
 	return false
@@ -1517,30 +1521,30 @@ end
 
 function IsCombatBonus(pBuilding)
 	for row in GameInfo.Building_DomainFreeExperiencePerGreatWork{BuildingType=pBuilding.Type} do
-		if (row.Experience ~= 0) then return true end
+		if row.Experience ~= 0 then return true end
 	end
 	for row in GameInfo.Building_DomainFreeExperiencePerGreatWorkGlobal{BuildingType=pBuilding.Type} do
-		if (row.Experience ~= 0) then return true end
+		if row.Experience ~= 0 then return true end
 	end
 	for row in GameInfo.Building_DomainFreeExperiences{BuildingType=pBuilding.Type} do
-		if (row.Experience ~= 0) then return true end
+		if row.Experience ~= 0 then return true end
 	end
 	for row in GameInfo.Building_DomainFreeExperiencesGlobal{BuildingType=pBuilding.Type} do
-		if (row.Experience ~= 0) then return true end
+		if row.Experience ~= 0 then return true end
 	end
 
 	for row in GameInfo.Building_UnitCombatFreeExperiences{BuildingType=pBuilding.Type} do
-		if (row.Experience ~= 0) then return true end
+		if row.Experience ~= 0 then return true end
 	end
 	
 	for row in GameInfo.Building_UnitCombatProductionModifiers{BuildingType=pBuilding.Type} do
-		if (row.Modifier ~= 0) then return true end
+		if row.Modifier ~= 0 then return true end
 	end
 	for row in GameInfo.Building_UnitCombatProductionModifiersGlobal{BuildingType=pBuilding.Type} do
-		if (row.Modifier ~= 0) then return true end
+		if row.Modifier ~= 0 then return true end
 	end
 	for row in GameInfo.Building_DomainProductionModifiers{BuildingType=pBuilding.Type} do
-		if (row.Modifier ~= 0) then return true end
+		if row.Modifier ~= 0 then return true end
 	end
 
 	if pBuilding.GlobalMilitaryProductionModPerMajorWar ~= 0 then return true end
@@ -1554,14 +1558,14 @@ function IsLocked(pWonder, ePlayer)
 	local sReason = nil
 	local pPlayer = Players[ePlayer]
 
-	local iIdeologyBranch
-	if pWonder.sIdeologyBranch ~= nil then
-		iIdeologyBranch = GameInfoTypes[pWonder.sIdeologyBranch]
-	end
-
-	local sPolicyType = pWonder.sPolicyType
 	local bHoly = pWonder.bHoly
-
+	local sIdeologyBranch = pWonder.sIdeologyBranch
+	local sPolicyType = pWonder.sPolicyType
+	local bLeagueProject = pWonder.bLeagueProject
+	local bUniqueCS = pWonder.sEvent
+	local bUniqueCiv = pWonder.sCivilization
+	
+	
 	if Game.GetBuildingClassCreatedCount(pWonder.iBuildingClass) > 0 then
 		bLocked = true
 		sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED")
@@ -1579,39 +1583,66 @@ function IsLocked(pWonder, ePlayer)
 			bLocked = true
 			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION", g_ColorHoly)
 		end
-	elseif iIdeologyBranch then
-		if not pPlayer:IsPolicyBranchUnlocked(iIdeologyBranch) then
+	elseif sIdeologyBranch then
+		local eIdeologyBranch = GameInfoTypes[sIdeologyBranch]
+		
+		if not pPlayer:IsPolicyBranchUnlocked(eIdeologyBranch) then
 			bLocked = true
-			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY", g_ColorIdeology, L(GameInfo.PolicyBranchTypes[iIdeologyBranch].Description))
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY", g_ColorIdeology, L(GameInfo.PolicyBranchTypes[eIdeologyBranch].Description))
 		end
 	elseif sPolicyType then
-		local iPolicyBranch, sPolicyBranchName
+		local ePolicyBranch, sPolicyBranchName
+		local ePolicy = GameInfo.Policies{Type=sPolicyType}().ID
 		
 		for row in GameInfo.PolicyBranchTypes{FreeFinishingPolicy=sPolicyType} do
-			iPolicyBranch = row.ID
-			sPolicyBranchName = row.Description
+			ePolicyBranch = row.ID
+			sPolicyBranchName = L(row.Description)
 		end
 		
-		if iPolicyBranch ~= nil then
-			if not pPlayer:IsPolicyBranchFinished(iPolicyBranch) then
+		if ePolicyBranch ~= nil then
+			if not pPlayer:IsPolicyBranchFinished(ePolicyBranch) then
 				bLocked = true
-				sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicyFinisher, L(sPolicyBranchName))
+				sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY_BRANCH", g_ColorPolicyFinisher, sPolicyBranchName)
 			end
 		else
-			if not pPlayer:HasPolicy(GameInfo.Policies{Type=sPolicyType}().ID) then
+			if not pPlayer:HasPolicy(ePolicy) then
 				bLocked = true
 				sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY", g_ColorPolicy, L(GameInfo.Policies{Type=sPolicyType}().Description))
 			end
 		end
-	elseif pWonder.bLeagueProject then
-		local sProjectName
+	elseif bLeagueProject then
+		local sProjectName, eResolution
 		
-		for row in GameInfo.LeagueProjectRewards{Building=pWonder.sType} do
-			sProjectName = row.Description
+		for rowLeagueRewards in GameInfo.LeagueProjectRewards{Building=pWonder.sType} do
+			for rowLeagueProject in GameInfo.LeagueProjects{RewardTier3=rowLeagueRewards.Type} do
+				for rowResolution in GameInfo.Resolutions{LeagueProjectEnabled=rowLeagueProject.Type} do
+					eResolution = rowResolution.ID
+					sProjectName = L(rowLeagueProject.Description)
+				end
+			end			
 		end
+		
+		if not Game.IsResolutionPassed(eResolution, 0) then
+			bLocked = true
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT", g_ColorCongress, sProjectName)
+		end
+	elseif bUniqueCS then
+		local pEventChoice = GameInfo.EventChoices{Type=pWonder.sEvent}()
+		local eEventChoice = pEventChoice.ID
+		local iEventChoiceCooldown = pPlayer:GetEventChoiceCooldown(eEventChoice)
+		local sUniqueCSName = L(pEventChoice.Description)
+		
+		if iEventChoiceCooldown == 0 then
+			bLocked = true
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_ALLIANCE", g_ColorUniqueCs, sUniqueCSName)
+		end
+	elseif bUniqueCiv then
+		local pCivilization = GameInfo.Civilizations{Type=pWonder.sCivilization}()
 
-		bLocked = true
-		sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT", g_ColorCongress, L(sProjectName))
+		if pPlayer:GetCivilizationType() ~= pCivilization.ID then
+			bLocked = true
+			sReason = L("TXT_KEY_WONDERPLANNER_LOCKED_WRONG_CIVILIZATION", g_ColorUniqueCiv, pCivilization.ShortDescription)
+		end
 	end
 	
 	return bLocked, sReason
@@ -1628,7 +1659,7 @@ function GetTechs(ePlayer)
 	local pTeam = Teams[Players[ePlayer]:GetTeam()]
 
 	for pTech in GameInfo.Technologies() do
-		if (pTeam:IsHasTech(pTech.ID)) then
+		if pTeam:IsHasTech(pTech.ID) then
 			techs[pTech.ID] = 1
 			techs[pTech.Type] = 1
 		end
@@ -1638,13 +1669,13 @@ function GetTechs(ePlayer)
 end
 
 function OnEraSelected(iEra)
-	if (g_EraLimit ~= iEra) then
+	if g_EraLimit ~= iEra then
 		g_EraLimit = iEra
 
 		Controls.EraMenu:GetButton():LocalizeAndSetText(GameInfo.Eras[g_EraLimit].Description)
 
 		for eWonder, wonder in pairs(g_Wonders) do
-			if (wonder.ePlayer == -1) then
+			if wonder.ePlayer == -1 then
 				wonder.instance.Wonder:SetHide(wonder.iEra > g_EraLimit)
 			end
 		end
@@ -1701,8 +1732,8 @@ end
 Controls.CloseButton:RegisterCallback(Mouse.eLClick, OnClose)
 
 function InputHandler(uiMsg, wParam, lParam)
-	if (uiMsg == KeyEvents.KeyDown) then
-		if (wParam == Keys.VK_ESCAPE) then
+	if uiMsg == KeyEvents.KeyDown then
+		if wParam == Keys.VK_ESCAPE then
 			OnClose()
 			return true
 		end
@@ -1711,7 +1742,7 @@ end
 ContextPtr:SetInputHandler(InputHandler)
 
 function OnWondersUpdate()
-	if (not ContextPtr:IsHidden()) then
+	if not ContextPtr:IsHidden() then
 		local ePlayer = Game.GetActivePlayer()
 
 		if (g_EraLimit == -1) then
@@ -1725,7 +1756,7 @@ end
 LuaEvents.WonderPlannerDisplay.Add(function() ContextPtr:SetHide(false) end)
 
 function ShowHideHandler(bIsHide, bInitState)
-	if (not bInitState and not bIsHide) then
+	if not bInitState and not bIsHide then
 		OnWondersUpdate()
 	end
 end

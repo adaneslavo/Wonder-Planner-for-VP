@@ -108,24 +108,43 @@
 			<Text>Destroyed!</Text>
 		</Row>
 		
+		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME_HOLY">
+			<Text>{1_Color}{2_Name} (Holy)[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME">
+			<Text>{1_Color}{2_Name} ({3_Reason})[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_CORPORATION">
+			<Text>{1_Color}{2_Name}[ENDCOLOR]</Text>
+		</Row>
+		
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION">
-			<Text>Player did not found any {1_ColorHolyCity}Religion[ENDCOLOR]</Text>
+			<Text>Player has not found any {1_ColorHolyCity}Religion[ENDCOLOR] nor does not have a {1_ColorHolyCity}Holy City[ENDCOLOR]</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY">
-			<Text>Player has not unlocked {1_ColorIdeology}{2_IdeologyBranch}[ENDCOLOR] yet</Text>
+			<Text>Player has not unlocked {1_ColorIdeology}{2_IdeologyBranch}[ENDCOLOR] Ideology yet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY_BRANCH">
+			<Text>Player has not finished {1_ColorPolicyBranch}{2_PolicyBranch}[ENDCOLOR] Branch yet</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_POLICY">
-			<Text>Player has not finished {1_ColorPolicy}{2_PolicyBranch}[ENDCOLOR] yet</Text>
+			<Text>Player has not unlocked a {1_ColorPolicy}{2_Policy}[ENDCOLOR] Policy yet</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_WORLD_PROJECT">
-			<Text>Player has not won the congress voting for {1_ColorCongress}{2_WorldProject}[ENDCOLOR] yet</Text>
+			<Text>{1_ColorCongress}{2_WorldProject}[ENDCOLOR] Project has not been passed yet</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_ALLIANCE">
+			<Text>Player is not allied to {1_ColorCS}{2_CS}[ENDCOLOR], doesn't have an {1_ColorCS}Embassy[ENDCOLOR] on its territory nor has enough {1_ColorCS}influence[ENDCOLOR] with it</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_WRONG_CIVILIZATION">
+			<Text>Only {1_ColorCivilization}{2_Civilization}[ENDCOLOR] can construct this World Wonder</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_1">
 			<Text>[ICON_BULLET]free {1_great_person}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2A1">
-			<Text>[ICON_BULLET]1 slot for {2_icon}</Text>
+			<Text>[ICON_BULLET]1 slot for {1_icon}</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_2A2">
 			<Text>[ICON_BULLET]{1_spec_count} slots for {2_icon}</Text>
@@ -152,13 +171,17 @@
 			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3D">
-			<Text>[ICON_BULLET]{1_gpp_rate_mod}[ICON_GREAT_PEOPLE] towards most advanced [ICON_GREAT_PEOPLE] on [ICON_CITIZEN] Birth</Text>
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per [ICON_RES_MARRIAGE] Marriage</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3E">
-			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per [ICON_CITY_STATE] Marriage</Text>
+			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per local [ICON_GREAT_WORK] Theme</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_3F">
-			<Text>[ICON_BULLET]+{1_gpp_rate_mod}%[ICON_GREAT_PEOPLE]/Turn per local [ICON_GREAT_WORK] Theme</Text>
+			<Text>[ICON_BULLET]{1_gpp_rate_mod}[ICON_GREAT_PEOPLE] towards most advanced [ICON_GREAT_PEOPLE] on [ICON_CITIZEN] Birth (scaling with Era)</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_GPP_VER_EXTENSION">
+			<Text>{1_tooltip} in Empire</Text>
 		</Row>
 
 		<Row Tag="TXT_KEY_WONDERPLANNER_CITY">
