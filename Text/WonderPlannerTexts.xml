@@ -104,22 +104,48 @@
 			<Text>Group wonders that affect [COLOR_POSITIVE_TEXT]Diplomacy[ENDCOLOR] or [COLOR_POSITIVE_TEXT]Espionage[ENDCOLOR]</Text>
 		</Row>
 		
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_TOP">
+			<Text>aaaa</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_ALMOST_TOP">
+			<Text>aaac</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_MIDDLE">
+			<Text>bbbb</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_SORT_BOTTOM">
+			<Text>zzzz</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_YEAR_AD">
+			<Text> AD</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_YEAR_BC">
+			<Text> BC</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_GRANTED">
+			<Text>Granted</Text>
+		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_DESTROYED">
 			<Text>Destroyed!</Text>
 		</Row>
-		
-		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME_HOLY">
-			<Text>{1_Color}{2_Name} (Holy)[ENDCOLOR]</Text>
+		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_OUTDATED">
+			<Text>OUTDATED!</Text>
 		</Row>
+
 		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME">
 			<Text>{1_Color}{2_Name} ({3_Reason})[ENDCOLOR]</Text>
 		</Row>
-		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_CORPORATION">
+		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME_HOLY">
+			<Text>{1_Color}{2_Name} (Holy)[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_COLORED_NAME_CORPO">
 			<Text>{1_Color}{2_Name}[ENDCOLOR]</Text>
 		</Row>
 		
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_RELIGION">
-			<Text>Player has not found any {1_ColorHolyCity}Religion[ENDCOLOR] nor does not have a {1_ColorHolyCity}Holy City[ENDCOLOR]</Text>
+			<Text>Player has not founded any {1_ColorHolyCity}Religion[ENDCOLOR] nor has a {1_ColorHolyCity}Holy City[ENDCOLOR] of other Religion</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_IDEOLOGY">
 			<Text>Player has not unlocked {1_ColorIdeology}{2_IdeologyBranch}[ENDCOLOR] Ideology yet</Text>
@@ -134,7 +160,7 @@
 			<Text>{1_ColorCongress}{2_WorldProject}[ENDCOLOR] Project has not been passed yet</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_MISSING_ALLIANCE">
-			<Text>Player is not allied to {1_ColorCS}{2_CS}[ENDCOLOR], doesn't have an {1_ColorCS}Embassy[ENDCOLOR] on its territory nor has enough {1_ColorCS}influence[ENDCOLOR] with it</Text>
+			<Text>Player is not allied to {1_ColorCS}{2_CS}[ENDCOLOR], doesn't have an {1_ColorCS}Embassy[ENDCOLOR] on its territory nor has enough {1_ColorCS}[ICON_INFLUENCE] Influence[ENDCOLOR] with it</Text>
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_LOCKED_WRONG_CIVILIZATION">
 			<Text>Only {1_ColorCivilization}{2_Civilization}[ENDCOLOR] can construct this World Wonder</Text>
@@ -204,6 +230,13 @@
 		</Row>
 		<Row Tag="TXT_KEY_WONDERPLANNER_CITIES_LIST">
 			<Text>Cities that can construct [COLOR_YIELD_GOLD]{1_Wonder}[ENDCOLOR]:[NEWLINE][ICON_BULLET]</Text>
+		</Row>
+		
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITY_TT_CONSTRUCTING">
+			<Text>{1_Color}{2_City} (constructing)[ENDCOLOR]</Text>
+		</Row>
+		<Row Tag="TXT_KEY_WONDERPLANNER_CITY_TT_BLOCKED">
+			<Text>{1_Color}{2_City} (blocked)[ENDCOLOR]</Text>
 		</Row>
 		
 

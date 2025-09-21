@@ -1,16 +1,22 @@
 Changelog:
+v17 (in progress):
+- now mod checks for World Congress Wonders in all 3 tiers of rewards (in case anyone adds new ones there);
+
 v16:
 - new:
-	- now World Wonders available with Policies and not being Policy finishers are coloured light Magenta and treated as separate cathegory;
-	- massive revision of the Great Person marking code (simplification and universalization);
-	- added a tooltip listing all free units and buildings given by the wonder;
-	- added special "lock" checks for wonders blocked by a civilization (America), City-State (Lhasa) or World Congress resolution;
-	- added many new text tags to simplify and clean up the code;
-- changed:
-	- moved World Congress Wonders to Printing Press (was Industrialization);
+	- World Wonders tied to Policies and not being Policy finishers are now coloured light Magenta and treated as separate category with their own texts and tooltips;
+	- code generating icons and tooltips for Great People column were massively revised (simplification, universalization, extension);
+	- added a tooltip listing all Free Units and Buildings given by the wonder;
+	- added special "lock" checks for World Wonders blocked by a Civilization (f.e. America), City-State (f.e. Lhasa from UCS) or World Congress Resolution (f.e. UN);
+	- added many new text tags to simplify and clean up the lua code;
+	- added automatic World Congress Wonders searching query (in case anyone added new ones);
+	- now World Wonders with completed technology requirement are prioritized over these not researched yet (rest is sorted by number of techs needed);
+- updated:
+	- added new VP Building's table columns to the functions generating icons for each column;
+	- added new VP tables to functions generating icons for each column;
 - fixed:
-	- added new Building's table columns to the checking functions;
-	- added new tables to the checking functions;
+	- moved World Congress Wonders to required techs of their corresponding Resolutions or Printing Press if there's no tech requirement (was Industrialization);
+	- now Outdated World Wonders are sorted as last in almost all categories like it should be;
 	- many text corrections;
 
 v15:
