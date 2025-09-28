@@ -1,6 +1,8 @@
 Changelog:
 v17 (in progress):
 - now mod checks for World Congress Wonders in all 3 tiers of rewards (in case anyone adds new ones there);
+- if any player discovers the prereq tech for a project then for all other players the field for required tech is cleared;
+- changed Lhasa colour (yeah, again) to Grey to distguish it from Policy Wonders;
 
 v16:
 - new:
@@ -23,7 +25,7 @@ v15:
 - new functionality: Cities that can build Wonders:
 	- highlights available World Wonders with green background;
 	- shows number of cities that can build particular wonder;
-	- shows number of cities where wonders are blocked by policies or other coditions;
+	- shows number of cities where wonders are blocked by policies or other conditions;
 	- shows tooltip with list of cities that can build particular wonder, that have them blocked or constructing it;
 	- "Technologies" title adjusted to new conditions;
 - new functionality: checkbox:

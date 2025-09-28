@@ -60,7 +60,7 @@ local g_sColorPolicyFinisher = '[COLOR_MAGENTA]'
 local g_sColorPolicy = '[COLOR:255:170:255:255]' 	-- Policies not being Policy Branch Finishers
 local g_sColorCorporation = '[COLOR_YIELD_FOOD]'
 local g_sColorCongress = '[COLOR:45:150:50:255]'
-local g_sColorUniqueCs = '[COLOR:210:125:255:255]'	-- Lhasa
+local g_sColorUniqueCs = '[COLOR:140:140:140:255]'	-- Lhasa
 local g_sColorUniqueCiv = '[COLOR:45:90:170:255]'	-- America
 
 local g_sColorGold = '[COLOR_YIELD_GOLD]'
@@ -350,6 +350,15 @@ function AddWonder(ePlayer, tPlayerTechs, eWonder, tWonder)
 		end
 		-----------------------
 		iTrueTechNeeded = Players[ePlayer]:FindPathLength(GameInfoTypes[tWonder.sTechType], false)
+				
+		-- if any player discovered that the prereq tech then the project is available for World Congress
+		ePrereqTechType = GameInfo.Technologies{Type=tWonder.sTechType}().ID
+		
+		for eplayer = 0, GameDefines.MAX_MAJOR_CIVS - 1, 1 do
+			local pTeam = Teams[Players[eplayer]:GetTeam()]
+			
+			if pTeam:IsHasTech(ePrereqTechType) then iTrueTechNeeded = 0 end
+		end
 		
 		if bMaxEra then
 			sort.needed = 1000;			
@@ -586,9 +595,9 @@ function GetWonders(tWonders)
 				local sUniqueCivName = L(GameInfo.Civilizations{Type=pWonder.CivilizationRequired}().ShortDescription)
 				sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_sColorUniqueCiv, sNameWithoutColor, sUniqueCivName)
 			elseif pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
-				for row in GameInfo.LeagueProjectRewards{Building=pWonder.Type} do
+				for reward in GameInfo.LeagueProjectRewards{Building=pWonder.Type} do
 					for project in GameInfo.LeagueProjects() do
-						if project.RewardTier1 == row.Type or project.RewardTier2 == row.Type or project.RewardTier3 == row.Type then
+						if project.RewardTier1 == reward.Type or project.RewardTier2 == reward.Type or project.RewardTier3 == reward.Type then
 							local sProjectName = L(project.Description)
 							sNameWithColor = L("TXT_KEY_WONDERPLANNER_COLORED_NAME", g_sColorCongress, sNameWithoutColor, sProjectName)
 						end
@@ -601,7 +610,7 @@ function GetWonders(tWonders)
 				sNameWithColor = sNameWithoutColor
 			end
 			
-			local bPrereqTechFound, sPrereqTechType
+			local bPrereqTechFound, ePrereqTechType, sPrereqTechType
 			
 			-- setting techs for wonders which do not have ones
 			if pWonder.PrereqTech == nil and pWonder.UnlockedByLeague then
