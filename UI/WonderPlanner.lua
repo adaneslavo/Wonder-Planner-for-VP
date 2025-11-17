@@ -1290,9 +1290,6 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldChangesFromAccomplishments{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end 
-	for row in GameInfo.Building_YieldChangesFromMonopoly{BuildingType=pBuilding.Type, YieldType=sYieldType} do
-		if (row.Yield ~= 0) then return true end
-	end 
 	for row in GameInfo.Building_YieldChangesFromPassingTR{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end 
@@ -1443,9 +1440,6 @@ function IsYield(pBuilding, sYieldType)
 	for row in GameInfo.Building_YieldFromVictoryGlobalPlayer{BuildingType=pBuilding.Type, YieldType=sYieldType} do
 		if (row.Yield ~= 0) then return true end
 	end
-	for row in GameInfo.Building_YieldFromWLTKD{BuildingType=pBuilding.Type, YieldType=sYieldType} do
-		if (row.Yield ~= 0) then return true end
-	end
 	for row in GameInfo.Building_YieldFromYieldPercent{BuildingType=pBuilding.Type, YieldOut=sYieldType} do
 		if (row.Value ~= 0) then return true end
 	end	
@@ -1577,11 +1571,6 @@ function IsYield(pBuilding, sYieldType)
 		if (row.Yield ~= 0) then return true end
 	end
 
-
-	for row in GameInfo.Building_FranchiseTradeRouteCityYield{BuildingType=pBuilding.Type, YieldType=sYieldType} do
-		if (row.Yield ~= 0) then return true end
-	end
- 
 	return false
 end
 
