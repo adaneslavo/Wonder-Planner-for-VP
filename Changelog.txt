@@ -1,5 +1,5 @@
 Changelog:
-v17 (in progress):
+v17:
 - adapted to VP 5.0;
 - now mod checks for World Congress Wonders in all 3 tiers of rewards (in case anyone adds new ones there);
 - if any player discovers the prereq tech for a project then for all other players the field for required tech is cleared;
